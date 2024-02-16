@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>workers</title>
+</head>
+<body>
+<div id="app">
+    <h1>欢迎您</h1>
+    {{worker.id}}
+    {{worker.name}}
+    {{worker.password}}
+    {{worker.trueName}}
+
+</div>
+
+
+<script src="js/vue.js"></script>
+<script src="js/axios-0.18.0.js"></script>
+
+<script>
+    new Vue({
+        el: "#app",
+        mounted(){
+            this.getWorker();
+        },
+        methods: {
+            getWorker(){
+                axios({
+                    method:"get",
+                    url:"http://localhost:8080/ademob/workers/getWorker"
+                }).then(resp=>{
+                    this.worker=resp.data
+                })
+            }
+        },
+        data() {
+            return {
+                // 员工模型数据
+                worker: {
+                    id: "",
+                    name: "",
+                    password: "",
+                    trueName: "",
+                    clockInHour: "",
+                    clockInMinute: "",
+                    clockOutHour: "",
+                    clockOutHourMinute: "",
+                    profilePhoto: ""
+                },
+            }
+        }
+    })
+</script>
+
+</body>
+</html>

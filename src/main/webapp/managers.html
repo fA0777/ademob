@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>managers</title>
+    <style>
+        .el-table .warning-row {
+            background: oldlace;
+        }
+
+        .el-table .success-row {
+            background: #f0f9eb;
+        }
+    </style>
+
+</head>
+<body>
+<div id="app">
+    <h1>欢迎您</h1>
+    <hr>
+    <h2>功能列表</h2>
+    <hr>
+    <h3>员工基本信息</h3>
+    <el-row>
+        <el-button type="primary" plain @click="addDialogVisible = true">添加</el-button>
+        <el-button type="danger" plain @click="deleteDialogVisible = true">删除</el-button>
+        <el-link type="success" href="showAndUpdateWorkers.html">查询与修改</el-link>
+    </el-row>
+    <hr>
+    <h3>员工出勤情况记录</h3>
+    <el-row>
+        <el-button type="primary" plain @click="addDialogVisible2 = true">添加</el-button>
+        <el-button type="danger" plain @click="deleteDialogVisible2 = true">删除</el-button>
+        <el-link type="success" href="showAndUpdateAttendanceRecord.html">查询与修改</el-link>
+    </el-row>
+    <hr>
+    <h3>管理请假、离职申请</h3>
+    <el-row>
+        <el-link type="primary" href="leaveRecords.html">请假申请</el-link>
+        <el-link type="danger" href="resignations.html">离职申请</el-link>
+    </el-row>
+    <hr>
+    <h3>管理培训活动</h3>
+    <el-row>
+        <el-button type="primary" plain @click="addDialogVisible3 = true">添加</el-button>
+        <el-button type="danger" plain @click="deleteDialogVisible3 = true">删除</el-button>
+        <el-link type="success" href="showAndUpdateTrainingActivities.html">查询与修改</el-link>
+    </el-row>
+    <hr>
+    <h3>管理培训活动员工记录</h3>
+    <el-row>
+        <el-link type="success" href="trainingActivitiesRecords.html">添加、删除、查询与修改</el-link>
+    </el-row>
+    <hr>
+    <h3>管理公告信息</h3>
+    <el-row>
+        <el-link type="success" href="announcements.html">添加、删除、查询与修改</el-link>
+    </el-row>
+    <!--添加员工对话框表单-->
+    <el-dialog
+            title="添加员工"
+            :visible.sync="addDialogVisible"
+            width="40%"
+    >
+
+        <el-form ref="form" :model="worker" label-width="80px">
+            <el-form-item label="用户名">
+                <el-input v-model="worker.name"></el-input>
+            </el-form-item>
+
+            <el-form-item label="密码">
+                <el-input v-model="worker.password"></el-input>
+            </el-form-item>
+
+            <el-form-item label="真实姓名">
+                <el-input v-model="worker.trueName"></el-input>
+            </el-form-item>
+            <el-form-item label="上班时间（时）">
+                <el-input v-model="worker.clockInHour"></el-input>
+            </el-form-item>
+            <el-form-item label="上班时间（分）">
+                <el-input v-model="worker.clockInMinute"></el-input>
+            </el-form-item>
+            <el-form-item label="下班时间（时）">
+                <el-input v-model="worker.clockOutHour"></el-input>
+            </el-form-item>
+            <el-form-item label="下班时间（分）">
+                <el-input v-model="worker.clockOutMinute"></el-input>
+            </el-form-item>
+
+
+            <el-form-item>
+                <el-button type="primary" @click="addWorker">提交</el-button>
+                <el-button @click="addDialogVisible = false">取消</el-button>
+            </el-form-item>
+        </el-form>
+
+    </el-dialog>
+    <!--开除员工对话框表单-->
+    <el-dialog
+            title="开除员工"
+            :visible.sync="deleteDialogVisible"
+            width="40%"
+    >
+
+        <el-form ref="form" label-width="100px">
+            <el-form-item label="开除员工id">
+                <el-input v-model="deleteIds"></el-input>
+            </el-form-item>
+            <el-form-item>
+                <el-button type="primary" @click="deleteWorkers">提交</el-button>
+                <el-button @click="deleteDialogVisible = false">取消</el-button>
+            </el-form-item>
+        </el-form>
+
+    </el-dialog>
+
+    <!--添加员工出勤记录对话框表单-->
+    <el-dialog
+            title="添加员工出勤记录"
+            :visible.sync="addDialogVisible2"
+            width="40%"
+    >
+
+        <el-form ref="form" :model="attendanceRecords" label-width="80px">
+            <el-form-item label="员工id">
+                <el-input v-model="attendanceRecords.workerId"></el-input>
+            </el-form-item>
+
+            <el-form-item label="迟到">
+                <el-input v-model="attendanceRecords.arriveLate"></el-input>
+            </el-form-item>
+
+            <el-form-item label="早退">
+                <el-input v-model="attendanceRecords.leaveEarly"></el-input>
+            </el-form-item>
+            <el-form-item label="缺勤">
+                <el-input v-model="attendanceRecords.absence"></el-input>
+            </el-form-item>
+            <el-form-item label="罚款">
+                <el-input v-model="attendanceRecords.fine"></el-input>
+            </el-form-item>
+
+            <el-form-item>
+                <el-button type="primary" @click="addAttendanceRecord">提交</el-button>
+                <el-button @click="addDialogVisible2 = false">取消</el-button>
+            </el-form-item>
+        </el-form>
+
+    </el-dialog>
+
+    <!--删除员工出勤记录对话框表单-->
+    <el-dialog
+            title="删除员工出勤记录"
+            :visible.sync="deleteDialogVisible2"
+            width="40%"
+    >
+
+        <el-form ref="form" label-width="100px">
+            <el-form-item label="出勤记录id">
+                <el-input v-model="deleteIds2"></el-input>
+            </el-form-item>
+            <el-form-item>
+                <el-button type="primary" @click="deleteAttendanceRecords">提交</el-button>
+                <el-button @click="deleteDialogVisible2 = false">取消</el-button>
+            </el-form-item>
+        </el-form>
+
+    </el-dialog>
+
+    <!--添加培训活动对话框表单-->
+    <el-dialog
+            title="添加培训活动"
+            :visible.sync="addDialogVisible3"
+            width="40%"
+    >
+
+        <el-form ref="form" :model="trainingActivities" label-width="80px">
+            <el-form-item label="培训内容">
+                <el-input v-model="trainingActivities.trainingContent"></el-input>
+            </el-form-item>
+
+
+            <el-form-item>
+                <el-button type="primary" @click="addTrainingActivities">提交</el-button>
+                <el-button @click="addDialogVisible3 = false">取消</el-button>
+            </el-form-item>
+        </el-form>
+
+    </el-dialog>
+
+    <!--删除培训活动对话框表单-->
+    <el-dialog
+            title="删除员工出勤记录"
+            :visible.sync="deleteDialogVisible3"
+            width="40%"
+    >
+
+        <el-form ref="form" label-width="100px">
+            <el-form-item label="培训活动id">
+                <el-input v-model="deleteIds3"></el-input>
+            </el-form-item>
+            <el-form-item>
+                <el-button type="primary" @click="deleteTrainingActivities">提交</el-button>
+                <el-button @click="deleteDialogVisible3 = false">取消</el-button>
+            </el-form-item>
+        </el-form>
+
+    </el-dialog>
+</div>
+
+<script src="js/vue.js"></script>
+<script src="element-ui/lib/index.js"></script>
+<link rel="stylesheet" href="element-ui/lib/theme-chalk/index.css">
+
+<script src="js/axios-0.18.0.js"></script>
+<script>
+    new Vue({
+        el: "#app",
+        methods: {
+            //添加员工
+            addWorker() {
+                axios({
+                    method: "post",
+                    url: "http://localhost:8080/ademob/managers/addWorker",
+                    data: this.worker
+                }).then(resp => {
+                    if ("success" == resp.data) {
+                        //添加成功
+                        //关闭窗口
+                        this.addDialogVisible = false;
+
+                        //弹出提示，添加成功
+                        this.$message({
+                            message: '恭喜你，添加成功',
+                            type: 'success'
+                        });
+                    }
+                })
+            },
+            //开除员工
+            deleteWorkers() {
+                //弹出确认删除的提示框
+                this.$confirm('此操作将删除该数据, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    //点击确认
+                    axios({
+                        method: "post",
+                        url: "http://localhost:8080/ademob/managers/deleteWorkers",
+                        data: this.deleteIds
+                    }).then(resp => {
+                        if ("success" == resp.data) {
+                            //删除成功
+                            //弹出提示
+                            this.$message({
+                                message: '恭喜你，删除成功',
+                                type: 'success'
+                            });
+                        }
+                        //关闭窗口
+                        this.deleteDialogVisible = false;
+                    })
+                }).catch(() => {
+                    //点击取消
+                    this.$message({
+                        type: 'info',
+                        message: '已取消删除'
+                    });
+                    //关闭窗口
+                    this.deleteDialogVisible = false;
+                });
+            },
+            //添加员工出勤记录
+            addAttendanceRecord(){
+                axios({
+                    method: "get",
+                    url: "http://localhost:8080/ademob/managers/addAttendanceRecord?workerId=" + this.attendanceRecords.workerId + "&arriveLate=" + this.attendanceRecords.arriveLate + "&leaveEarly=" + this.attendanceRecords.leaveEarly + "&absence=" + this.attendanceRecords.absence+ "&fine=" + this.attendanceRecords.fine,
+                }).then(resp => {
+                    if ("success" == resp.data) {
+                        //添加成功
+                        //关闭窗口
+                        this.addDialogVisible2 = false;
+
+                        //弹出提示，添加成功
+                        this.$message({
+                            message: '恭喜你，添加成功',
+                            type: 'success'
+                        });
+                    }
+                })
+            },
+            //删除员工出勤记录
+            deleteAttendanceRecords(){
+                //弹出确认删除的提示框
+                this.$confirm('此操作将删除该数据, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    //点击确认
+                    axios({
+                        method: "post",
+                        url: "http://localhost:8080/ademob/managers/deleteAttendanceRecords",
+                        data: this.deleteIds2
+                    }).then(resp => {
+                        if ("success" == resp.data) {
+                            //删除成功
+                            //弹出提示
+                            this.$message({
+                                message: '恭喜你，删除成功',
+                                type: 'success'
+                            });
+                        }
+                        //关闭窗口
+                        this.deleteDialogVisible2 = false;
+                    })
+                }).catch(() => {
+                    //点击取消
+                    this.$message({
+                        type: 'info',
+                        message: '已取消删除'
+                    });
+                    //关闭窗口
+                    this.deleteDialogVisible2 = false;
+                });
+            },
+            //添加培训活动
+            addTrainingActivities(){
+                axios({
+                    method: "post",
+                    url: "http://localhost:8080/ademob/managers/addTrainingActivities",
+                    data: this.trainingActivities
+                }).then(resp => {
+                    if ("success" == resp.data) {
+                        //添加成功
+                        //关闭窗口
+                        this.addDialogVisible3 = false;
+
+                        //弹出提示，添加成功
+                        this.$message({
+                            message: '恭喜你，添加成功',
+                            type: 'success'
+                        });
+                    }
+                })
+            },
+            //删除培训活动
+            deleteTrainingActivities(){
+                //弹出确认删除的提示框
+                this.$confirm('此操作将删除该数据, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    //点击确认
+                    axios({
+                        method: "post",
+                        url: "http://localhost:8080/ademob/managers/deleteTrainingActivities",
+                        data: this.deleteIds3
+                    }).then(resp => {
+                        if ("success" == resp.data) {
+                            //删除成功
+                            //弹出提示
+                            this.$message({
+                                message: '恭喜你，删除成功',
+                                type: 'success'
+                            });
+                        }
+                        //关闭窗口
+                        this.deleteDialogVisible3 = false;
+                    })
+                }).catch(() => {
+                    //点击取消
+                    this.$message({
+                        type: 'info',
+                        message: '已取消删除'
+                    });
+                    //关闭窗口
+                    this.deleteDialogVisible3 = false;
+                });
+            },
+        },
+        data() {
+            return {
+                // 添加员工对话框是否展示的标记
+                addDialogVisible: false,
+                // 删除员工对话框是否展示的标记
+                deleteDialogVisible: false,
+                // 添加员工出勤记录对话框是否展示的标记
+                addDialogVisible2: false,
+                // 删除员工出勤记录对话框是否展示的标记
+                deleteDialogVisible2: false,
+                // 添加培训活动对话框是否展示的标记
+                addDialogVisible3: false,
+                // 删除培训活动对话框是否展示的标记
+                deleteDialogVisible3: false,
+                //要删除（开除）的员工的id
+                deleteIds: "",
+                //要删除的出勤记录id
+                deleteIds2: "",
+                //要删除的培训活动id
+                deleteIds3: "",
+                // 员工模型数据
+                worker: {
+                    id: "",
+                    name: "",
+                    password: "",
+                    trueName: "",
+                    clockInHour: "",
+                    clockInMinute: "",
+                    clockOutHour: "",
+                    clockOutMinute: "",
+                    profilePhoto: ""
+                },
+                //出勤记录模型数据
+                attendanceRecords:{
+                    id:"",
+                    workerId:"",
+                    arriveLate:"",
+                    leaveEarly:"",
+                    absence:"",
+                    fine:""
+                },
+                //培训活动模型数据
+                trainingActivities:{
+                    id:"",
+                    trainingContent:"",
+                    managerId:""
+            }
+            }
+        }
+    })
+</script>
+</body>
+</html>

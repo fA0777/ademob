@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>trainingActivitiesRecords</title>
+
+</head>
+<body>
+<div id="app">
+    <!--搜索表单-->
+    <el-form :inline="true" :model="trainingActivitiesRecords" class="demo-form-inline">
+
+
+        <el-form-item label="id" size="mini">
+            <el-input v-model="trainingActivitiesRecords.id" placeholder="id"></el-input>
+        </el-form-item>
+
+        <el-form-item label="培训活动id" size="mini">
+            <el-input v-model="trainingActivitiesRecords.trainingActivityId" placeholder="培训活动id"></el-input>
+        </el-form-item>
+
+        <el-form-item label="员工id" size="mini">
+            <el-input v-model="trainingActivitiesRecords.workerId" placeholder="员工id"></el-input>
+        </el-form-item>
+
+        <el-form-item label="培训成绩" size="mini">
+            <el-input v-model="trainingActivitiesRecords.score" placeholder="培训成绩"></el-input>
+        </el-form-item>
+
+        <el-form-item label="奖金" size="mini">
+            <el-input v-model="trainingActivitiesRecords.bonus" placeholder="奖金"></el-input>
+        </el-form-item>
+        <el-form-item label="状态" size="mini">
+            <el-input v-model="trainingActivitiesRecords.status" placeholder="状态"></el-input>
+        </el-form-item>
+        <el-form-item label="管理员id" size="mini">
+            <el-input v-model="trainingActivitiesRecords.managerId" placeholder="管理员id"></el-input>
+        </el-form-item>
+
+        <el-form-item>
+            <el-button type="primary" @click="selectByPage">查询</el-button>
+        </el-form-item>
+    </el-form>
+
+    <!--按钮-->
+
+    <el-row>
+        <el-button type="danger" plain @click="deleteTrainingActivitiesRecords">删除</el-button>
+        <el-button type="primary" plain @click="addDialogVisible = true">新增</el-button>
+    </el-row>
+
+    <!--添加数据对话框表单-->
+    <el-dialog
+            title="添加"
+            :visible.sync="addDialogVisible"
+            width="40%"
+    >
+
+        <el-form ref="form" :model="trainingActivitiesRecords" label-width="85px">
+            <el-form-item label="培训活动id">
+                <el-input v-model="trainingActivitiesRecords.trainingActivityId"></el-input>
+            </el-form-item>
+            <el-form-item label="员工id">
+                <el-input v-model="trainingActivitiesRecords.workerId"></el-input>
+            </el-form-item>
+            <el-form-item label="培训成绩">
+                <el-input v-model="trainingActivitiesRecords.score"></el-input>
+            </el-form-item>
+            <el-form-item label="奖金">
+                <el-input v-model="trainingActivitiesRecords.bonus"></el-input>
+            </el-form-item>
+            <el-form-item label="状态">
+                <el-input v-model="trainingActivitiesRecords.status"></el-input>
+            </el-form-item>
+
+            <el-form-item>
+                <el-button type="primary" @click="addTrainingActivitiesRecords">提交</el-button>
+                <el-button @click="addDialogVisible = false">取消</el-button>
+            </el-form-item>
+        </el-form>
+
+    </el-dialog>
+
+    <!--修改培训活动员工记录对话框表单-->
+    <el-dialog
+            title="修改培训活动员工记录"
+            :visible.sync="updateDialogVisible"
+            width="40%"
+    >
+
+        <el-form ref="form" :model="trainingActivitiesRecords" label-width="80px">
+
+
+            <el-form-item label="培训id">
+                <el-input v-model="trainingActivitiesRecords.trainingActivityId"></el-input>
+            </el-form-item>
+            <el-form-item label="员工id">
+                <el-input v-model="trainingActivitiesRecords.workerId"></el-input>
+            </el-form-item>
+            <el-form-item label="培训成绩">
+                <el-input v-model="trainingActivitiesRecords.score"></el-input>
+            </el-form-item>
+            <el-form-item label="奖金">
+                <el-input v-model="trainingActivitiesRecords.bonus"></el-input>
+            </el-form-item>
+            <el-form-item label="状态">
+                <el-input v-model="trainingActivitiesRecords.status"></el-input>
+            </el-form-item>
+            <el-form-item>
+                <el-button type="primary" @click="updateTrainingActivitiesRecords">提交</el-button>
+                <el-button @click="updateDialogVisible = false">取消</el-button>
+            </el-form-item>
+        </el-form>
+
+    </el-dialog>
+
+
+    <!--表格-->
+    <template>
+        <el-table
+                :data="tableData"
+                style="width: 100%"
+                @selection-change="handleSelectionChange"
+        >
+            <el-table-column
+                    type="selection"
+                    width="55">
+            </el-table-column>
+            <el-table-column
+                    type="index"
+                    width="50">
+            </el-table-column>
+
+            <el-table-column
+                    prop="id"
+                    label="id"
+                    align="center"
+            >
+            </el-table-column>
+            <el-table-column
+                    prop="trainingActivityId"
+                    label="培训活动id"
+                    align="center"
+            >
+            </el-table-column>
+            <el-table-column
+                    prop="workerId"
+                    label="员工id"
+                    align="center"
+            >
+            </el-table-column>
+            <el-table-column
+                    prop="score"
+                    label="培训成绩"
+                    align="center"
+            >
+            </el-table-column>
+            <el-table-column
+                    prop="bonus"
+                    label="奖金"
+                    align="center"
+            >
+            </el-table-column>
+            <el-table-column
+                    prop="status"
+                    label="状态"
+                    align="center"
+            >
+            </el-table-column>
+            <el-table-column
+                    prop="managerId"
+                    label="管理员id"
+                    align="center"
+            >
+            </el-table-column>
+
+
+            <el-table-column
+                    align="center"
+                    label="操作">
+
+
+                <template slot-scope="scope">
+                    <el-button type="primary" @click="handleEdit(scope.$index, scope.row);updateDialogVisible =true">
+                        修改
+                    </el-button>
+                </template>
+            </el-table-column>
+        </el-table>
+    </template>
+
+</div>
+
+<script src="js/vue.js"></script>
+<script src="element-ui/lib/index.js"></script>
+<link rel="stylesheet" href="element-ui/lib/theme-chalk/index.css">
+
+<script src="js/axios-0.18.0.js"></script>
+<script>
+    new Vue({
+        el: "#app",
+        mounted() {
+
+            this.selectByPage()
+        },
+        methods: {
+            selectByPage() {
+                axios({
+                    method: "post",
+                    url: "http://localhost:8080/ademob/managers/selectByPageAndCondition6?currentPage=" + this.currentPage + "&pageSize=" + this.pageSize,
+                    data: this.trainingActivitiesRecords
+                }).then(resp => {
+                    //设置表格数据
+                    this.tableData = resp.data.rows;
+                    //设置总记录数
+                    this.totalCount = resp.data.totalCount
+                })
+            },
+            addTrainingActivitiesRecords() {
+                axios({
+                    method: "post",
+                    url: "http://localhost:8080/ademob/managers/addTrainingActivitiesRecords",
+                    data: this.trainingActivitiesRecords
+                }).then(resp => {
+                    if ("success" == resp.data) {
+                        //添加成功
+                        //关闭窗口
+                        this.addDialogVisible = false;
+                        //重新查询数据
+                        this.selectByPage();
+                        //弹出提示，添加成功
+                        this.$message({
+                            message: '恭喜你，添加成功',
+                            type: 'success'
+                        });
+                    }
+                })
+            },
+            //删除
+            deleteTrainingActivitiesRecords() {
+                //弹出确认删除的提示框
+                this.$confirm('此操作将删除该数据, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    //点击确认
+                    //创建id数组，从this.multipleSelection中获取
+                    for (let i = 0; i < this.multipleSelection.length; i++) {
+                        let selectionElement = this.multipleSelection[i];
+                        this.selectedIds[i] = selectionElement.id;
+                    }
+                    //发送ajax请求
+                    axios({
+                        method: "post",
+                        url: "http://localhost:8080/ademob/managers/deleteTrainingActivitiesRecords",
+                        data: this.selectedIds
+                    }).then(resp => {
+                        if ("success" == resp.data) {
+                            //删除成功
+                            //重新查询数据
+                            this.selectByPage();
+                            //弹出提示
+                            this.$message({
+                                message: '恭喜你，删除成功',
+                                type: 'success'
+                            });
+                        }
+                    }).catch(() => {
+                        //点击取消
+                        this.$message({
+                            type: 'info',
+                            message: '已取消删除'
+                        });
+                    });
+                })
+
+            },
+            updateTrainingActivitiesRecords(){
+                axios({
+                    method:"post",
+                    url:"http://localhost:8080/ademob/managers/updateTrainingActivitiesRecords",
+                    data:this.trainingActivitiesRecords
+                }).then(resp=>{
+                    if("success"==resp.data){
+                        //修改成功
+                        //关闭窗口
+                        this.updateDialogVisible = false;
+                        //重新查询数据
+                        this.selectByPage();
+                        //弹出提示，添加成功
+                        this.$message({
+                            message: '恭喜你，修改成功',
+                            type: 'success'
+                        });
+                    }
+                })
+            },
+            // 复选框选中后执行的方法
+            handleSelectionChange(val) {
+                this.multipleSelection = val;
+                console.log(this.multipleSelection)
+            },
+            //分页
+            handleSizeChange(val) {
+                //重新设置每页展示条数
+                this.pageSize = val;
+                //重新查询当前页码数据
+                this.selectByPage();
+            },
+            handleCurrentChange(val) {
+                //重新设置当前页码
+                this.currentPage = val;
+                //重新查询当前页码数据
+                this.selectByPage();
+            },
+            handleEdit(index, row) {
+                console.log(index, row)
+                //row是该行tableData对应的一行
+                this.trainingActivitiesRecords = row
+            }
+        },
+        data() {
+            return {
+                //每页显示条数
+                pageSize: 5,
+                //总记录数
+                totalCount: 100,
+                // 当前页码
+                currentPage: 1,
+                // 添加数据对话框是否展示的标记
+                addDialogVisible: false,
+                // 修改数据对话框是否展示的标记
+                updateDialogVisible: false,
+                //被选中的id数组
+                selectedIds: [],
+                // 复选框选中数据集合
+                multipleSelection: [],
+                //培训活动员工记录模型
+                trainingActivitiesRecords: {
+                    id: "",
+                    trainingActivityId: "",
+                    workerId: "",
+                    score: "",
+                    bonus: "",
+                    status: "",
+                    managerId: ""
+                },
+                //表格数据
+                tableData: [{
+                    id: "1",
+                    trainingActivityId: "1",
+                    workerId: "1",
+                    score: "1",
+                    bonus: "1",
+                    status: "1",
+                    managerId: "1"
+                }]
+            }
+        }
+    })
+</script>
+
+</body>
+</html>

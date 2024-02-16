@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>showAndUpdateAttendanceRecord</title>
+    <style>
+        .el-table .warning-row {
+            background: oldlace;
+        }
+
+        .el-table .success-row {
+            background: #f0f9eb;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+    <!--搜索表单-->
+    <el-form :inline="true" :model="attendanceRecords" class="demo-form-inline">
+
+
+        <el-form-item label="id" size="mini">
+            <el-input v-model="attendanceRecords.id" placeholder="id"></el-input>
+        </el-form-item>
+
+        <el-form-item label="员工id" size="mini">
+            <el-input v-model="attendanceRecords.workerId" placeholder="员工id"></el-input>
+        </el-form-item>
+        <el-form-item label="迟到记录" size="mini">
+            <el-input v-model="attendanceRecords.arriveLate" placeholder="迟到记录"></el-input>
+        </el-form-item>
+        <el-form-item label="早退记录" size="mini">
+            <el-input v-model="attendanceRecords.leaveEarly" placeholder="早退记录"></el-input>
+        </el-form-item>
+        <el-form-item label="缺勤记录" size="mini">
+            <el-input v-model="attendanceRecords.absence" placeholder="缺勤记录"></el-input>
+        </el-form-item>
+        <el-form-item label="罚款" size="mini">
+            <el-input v-model="attendanceRecords.fine" placeholder="罚款"></el-input>
+        </el-form-item>
+
+        <el-form-item>
+            <el-button type="primary" @click="selectByPage">查询</el-button>
+        </el-form-item>
+    </el-form>
+    <!--修改员工出勤记录对话框表单-->
+    <el-dialog
+            title="修改员工出勤记录"
+            :visible.sync="updateDialogVisible"
+            width="40%"
+    >
+
+        <el-form ref="form" :model="attendanceRecords" label-width="80px">
+            <el-form-item label="员工id">
+                <el-input v-model="attendanceRecords.workerId"></el-input>
+            </el-form-item>
+
+            <el-form-item label="迟到">
+                <el-input v-model="attendanceRecords.arriveLate"></el-input>
+            </el-form-item>
+
+            <el-form-item label="早退">
+                <el-input v-model="attendanceRecords.leaveEarly"></el-input>
+            </el-form-item>
+            <el-form-item label="缺勤">
+                <el-input v-model="attendanceRecords.absence"></el-input>
+            </el-form-item>
+            <el-form-item label="罚款">
+                <el-input v-model="attendanceRecords.fine"></el-input>
+            </el-form-item>
+
+            <el-form-item>
+                <el-button type="primary" @click="updateAttendanceRecord">提交</el-button>
+                <el-button @click="updateDialogVisible = false">取消</el-button>
+            </el-form-item>
+        </el-form>
+
+    </el-dialog>
+
+    <!--表格-->
+    <template>
+        <el-table
+                :data="tableData"
+                style="width: 100%"
+                :row-class-name="tableRowClassName"
+                @selection-change="handleSelectionChange"
+        >
+
+            <el-table-column
+                    type="index"
+                    width="50">
+            </el-table-column>
+            <el-table-column
+                    prop="id"
+                    label="id"
+                    align="center"
+            >
+            </el-table-column>
+            <el-table-column
+                    prop="workerId"
+                    label="员工id"
+                    align="center"
+            >
+            </el-table-column>
+            <el-table-column
+                    prop="arriveLate"
+                    align="center"
+                    label="迟到记录">
+            </el-table-column>
+            <el-table-column
+                    prop="leaveEarly"
+                    align="center"
+                    label="早退记录">
+            </el-table-column>
+            <el-table-column
+                    prop="absence"
+                    align="center"
+                    label="缺勤记录">
+            </el-table-column>
+            <el-table-column
+                    prop="fine"
+                    align="center"
+                    label="罚款">
+            </el-table-column>
+
+            <el-table-column
+                    align="center"
+                    label="操作">
+                <template slot-scope="scope">
+                    <el-button type="primary" @click="handleEdit(scope.$index, scope.row);updateDialogVisible =true">
+                        修改
+                    </el-button>
+                </template>
+            </el-table-column>
+        </el-table>
+    </template>
+    <!--分页工具条-->
+    <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="currentPage"
+            :page-sizes="[5, 10, 15, 20]"
+            :page-size="5"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="totalCount">
+    </el-pagination>
+
+</div>
+<script src="js/vue.js"></script>
+<script src="element-ui/lib/index.js"></script>
+<link rel="stylesheet" href="element-ui/lib/theme-chalk/index.css">
+
+<script src="js/axios-0.18.0.js"></script>
+
+<script>
+    new Vue({
+        el: "#app",
+
+        mounted() {
+            this.selectByPage()
+        },
+        methods: {
+            //查询分页数据的方法
+            selectByPage() {
+                axios({
+                    method: "post",
+                    url: "http://localhost:8080/ademob/managers/selectByPageAndCondition2?currentPage=" + this.currentPage + "&pageSize=" + this.pageSize,
+                    data: this.attendanceRecords
+                }).then(resp => {
+                    //设置表格数据
+                    this.tableData = resp.data.rows;
+                    //设置总记录数
+                    this.totalCount = resp.data.totalCount
+                })
+            },
+            //修改员工出勤记录
+            updateAttendanceRecord(){
+                axios({
+                    method:"post",
+                    url:"http://localhost:8080/ademob/managers/updateAttendanceRecord",
+                    data:this.attendanceRecords
+                }).then(resp=>{
+                    if("success"==resp.data){
+                        //修改成功
+                        //关闭窗口
+                        this.updateDialogVisible = false;
+                        //重新查询数据
+                        this.selectByPage();
+                        //弹出提示，添加成功
+                        this.$message({
+                            message: '恭喜你，修改成功',
+                            type: 'success'
+                        });
+                    }
+                })
+            },
+
+            //分页
+            handleSizeChange(val) {
+                //重新设置每页展示条数
+                this.pageSize = val;
+                //重新查询当前页码数据
+                this.selectByPage();
+            },
+            handleCurrentChange(val) {
+                //重新设置当前页码
+                this.currentPage = val;
+                //重新查询当前页码数据
+                this.selectByPage();
+            },
+            handleEdit(index, row) {
+                console.log(index, row)
+                //row是该行tableData对应的一行
+                this.attendanceRecords = row
+            }
+        },
+        data() {
+            return {
+                //修改数据对话框是否展示的标记
+                updateDialogVisible: false,
+                //每页显示条数
+                pageSize: 5,
+                //总记录数
+                totalCount: 100,
+                // 当前页码
+                currentPage: 1,
+                //出勤记录模型数据
+                attendanceRecords: {
+                    id: "",
+                    workerId: "",
+                    arriveLate: "",
+                    leaveEarly: "",
+                    absence: "",
+                    fine: ""
+                },
+                //表格数据
+                tableData: [{
+                    id: 1,
+                    workerId: 1,
+                    arriveLate: "1",
+                    leaveEarly: "1",
+                    absence: "1",
+                    fine: 1
+                }]
+            }
+        }
+    })
+
+</script>
+</body>
+</html>
