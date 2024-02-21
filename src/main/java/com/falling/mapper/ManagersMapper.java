@@ -112,7 +112,7 @@ public interface ManagersMapper {
     int selectTotalCountByCondition3(@Param("leaveRecords") LeaveRecords leaveRecords);
 
     /**
-     *  修改员工请假申请
+     *  修改员工离职申请
      * @param resignations
      */
 

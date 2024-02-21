@@ -11,7 +11,7 @@ public class TrainingActivitiesRecords {
     private Double score;
     //奖金
     private Double bonus;
-    //状态：初始值为0，培训完成为1，软删除为2
+    //状态：初始值为0，审批通过培训中1（未设定奖金），培训完成2（设定了奖金，未发放），奖金已发放到当月工资中3，删除4
     private Integer status;
     //管理员id
     private Integer managerId;

@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>workerBasicInformation</title>
+    <style>
+        .avatar-uploader .el-upload {
+            border: 1px dashed #d9d9d9;
+            border-radius: 6px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        .avatar-uploader .el-upload:hover {
+            border-color: #409EFF;
+        }
+        .avatar-uploader-icon {
+            font-size: 28px;
+            color: #8c939d;
+            width: 178px;
+            height: 178px;
+            line-height: 178px;
+            text-align: center;
+        }
+        .avatar {
+            width: 178px;
+            height: 178px;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+<h1>个人基本信息</h1>
+    <h3>id:{{worker.id}}</h3>
+    <h3>用户名:{{worker.name}}</h3>
+    <h3>真实姓名:{{worker.trueName}}</h3>
+    <h3>上班时间:{{worker.clockInHour}}:{{worker.clockInMinute}}</h3>
+    <h3>下班时间:{{worker.clockOutHour}}:{{worker.clockOutMinute}}</h3>
+    <h3>头像:<div class="block"><el-avatar :size="50" :src="worker.profilePhoto"></el-avatar></div></h3>
+    <el-row>
+        <el-button type="primary" plain @click="updateDialogVisible = true">修改个人基本信息</el-button>
+        <el-button type="danger" plain @click="updateDialogVisible2 = true">修改密码</el-button>
+        <el-button type="success" plain @click="updateDialogVisible3 = true">修改头像</el-button>
+    </el-row>
+    <a href="javascript:location.href='workers/logout'">重新登录</a>
+
+    <!--修改个人基本信息对话框表单-->
+    <el-dialog
+            title="修改个人基本信息"
+            :visible.sync="updateDialogVisible"
+            width="40%"
+    >
+
+        <el-form ref="form" :model="worker" label-width="80px">
+            <el-form-item label="用户名">
+                <el-input v-model="worker.name"></el-input>
+            </el-form-item>
+            <el-form-item label="真实姓名">
+                <el-input v-model="worker.trueName"></el-input>
+            </el-form-item>
+            <el-form-item label="上班时间（时）">
+                <el-input v-model="worker.clockInHour"></el-input>
+            </el-form-item>
+            <el-form-item label="上班时间（分）">
+                <el-input v-model="worker.clockInMinute"></el-input>
+            </el-form-item>
+            <el-form-item label="下班时间（时）">
+                <el-input v-model="worker.clockOutHour"></el-input>
+            </el-form-item>
+            <el-form-item label="下班时间（分）">
+                <el-input v-model="worker.clockOutMinute"></el-input>
+            </el-form-item>
+
+
+            <el-form-item>
+                <el-button type="primary" @click="updateBasicInformation">提交</el-button>
+                <el-button @click="updateDialogVisible = false">取消</el-button>
+            </el-form-item>
+        </el-form>
+
+    </el-dialog>
+
+    <!--修改密码对话框表单-->
+    <el-dialog
+            title="修改密码"
+            :visible.sync="updateDialogVisible2"
+            width="40%"
+    >
+
+        <el-form ref="form" :model="worker" label-width="80px">
+            <el-form-item label="原密码">
+                <el-input v-model="password0" show-password></el-input>
+            </el-form-item>
+            <el-form-item label="新密码">
+                <el-input v-model="password1" show-password></el-input>
+            </el-form-item>
+            <el-form-item label="再次确认新密码">
+                <el-input v-model="password2" show-password></el-input>
+            </el-form-item>
+
+
+
+            <el-form-item>
+                <el-button type="primary" @click="updatePassword">提交</el-button>
+                <el-button @click="updateDialogVisible2 = false">取消</el-button>
+            </el-form-item>
+        </el-form>
+
+    </el-dialog>
+
+<!--    &lt;!&ndash;修改头像对话框表单&ndash;&gt;-->
+<!--    <el-dialog-->
+<!--            title="修改头像"-->
+<!--            :visible.sync="updateDialogVisible3"-->
+<!--            width="40%"-->
+<!--    >-->
+<!--        <el-upload-->
+<!--                class="avatar-uploader"-->
+<!--                action="https://jsonplaceholder.typicode.com/posts/"-->
+<!--                :show-file-list="false"-->
+<!--                :on-success="handleAvatarSuccess"-->
+<!--                :before-upload="beforeAvatarUpload">-->
+<!--            <img v-if="imageUrl" :src="imageUrl" class="avatar">-->
+<!--            <i v-else class="el-icon-plus avatar-uploader-icon"></i>-->
+<!--        </el-upload>-->
+<!--    </el-dialog>-->
+</div>
+
+<script src="js/vue.js"></script>
+<script src="element-ui/lib/index.js"></script>
+<link rel="stylesheet" href="element-ui/lib/theme-chalk/index.css">
+
+<script src="js/axios-0.18.0.js"></script>
+<script>
+    new Vue({
+        el: "#app",
+        mounted(){
+            this.getWorker();
+        },
+        methods: {
+            getWorker(){
+                axios({
+                    method:"get",
+                    url:"http://localhost:8080/ademob/workers/getWorker"
+                }).then(resp=>{
+                    this.worker=resp.data
+                })
+            },
+            updateBasicInformation(){
+                axios({
+                    method:"post",
+                    url:"http://localhost:8080/ademob/workers/updateBasicInformation",
+                    data:this.worker
+                }).then(resp=>{
+                    if("success"==resp.data){
+                        //修改成功
+                        //关闭窗口
+                        this.updateDialogVisible = false;
+                        //重新查询数据
+                        this.getWorker();
+                        //弹出提示，添加成功
+                        this.$message({
+                            message: '恭喜你，修改成功',
+                            type: 'success'
+                        });
+                    }
+                })
+            },
+            updatePassword(){
+                if (this.worker.password!= this.password0){
+                    this.$message.error('原密码有误');
+                    return;
+                }
+                if (this.password1==null||this.password1==""){
+                    this.$message.error('密码不得为空');
+                    return;
+                }
+                if (this.password1!=this.password2){
+                    this.$message.error('两次密码不一致');
+                    return;
+                }
+                this.worker.password=this.password1;
+                axios({
+                    method:"post",
+                    url:"http://localhost:8080/ademob/workers/updatePassword",
+                    data:this.worker
+                }).then(resp=>{
+                    if("success"==resp.data){
+                        //修改成功
+                        //关闭窗口
+                        this.updateDialogVisible2 = false;
+                        //重新查询数据
+                        this.getWorker();
+                        //弹出提示，添加成功
+                        this.$message({
+                            message: '恭喜你，修改成功，请重新登录',
+                            type: 'success'
+                        });
+                        //回到登录界面
+                        this.logout();
+                    }
+                })
+            },
+            logout(){
+                axios({
+                    method:"get",
+                    url:"http://localhost:8080/ademob/workers/logout"
+                })
+            },
+            handleAvatarSuccess(res, file) {
+                this.imageUrl = URL.createObjectURL(file.raw);
+            },
+            beforeAvatarUpload(file) {
+                const isJPG = file.type === 'image/jpeg';
+                const isLt2M = file.size / 1024 / 1024 < 2;
+
+                if (!isJPG) {
+                    this.$message.error('上传头像图片只能是 JPG 格式!');
+                }
+                if (!isLt2M) {
+                    this.$message.error('上传头像图片大小不能超过 2MB!');
+                }
+                return isJPG && isLt2M;
+            }
+        },
+        data() {
+            return {
+                // 修改个人基本信息对话框是否展示的标记
+                updateDialogVisible: false,
+                // 修改密码对话框是否展示的标记
+                updateDialogVisible2: false,
+                // 修改头像对话框是否展示的标记
+                updateDialogVisible3: false,
+                // 员工模型数据
+                worker: {
+                    id: "",
+                    name: "",
+                    password: "",
+                    trueName: "",
+                    clockInHour: "",
+                    clockInMinute: "",
+                    clockOutHour: "",
+                    clockOutHourMinute: "",
+                    profilePhoto: ""
+                },
+                password0:"",
+                password1:"",
+                password2:"",
+                imageUrl: '',
+
+            }
+        }
+    })
+</script>
+</body>
+</html>

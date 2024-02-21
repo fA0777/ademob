@@ -16,7 +16,7 @@ public class LeaveRecords {
     private LocalDateTime endTime;
     //罚款
     private Integer fine;
-    //是否批准: null未审批，0不批准，1批准
+    //是否批准: 0未审批，1批准，2不批准
     private Integer approval;
     //管理员id
     private Integer managerId;

@@ -3,5 +3,354 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.falling.mapper.WorkersMapper">
+    <resultMap id="workersResultMap" type="workers">
+        <result column="true_name" property="trueName"></result>
+        <result column="clock_in_hour" property="clockInHour"></result>
+        <result column="clock_in_minute" property="clockInMinute"></result>
+        <result column="clock_out_hour" property="clockOutHour"></result>
+        <result column="clock_out_minute" property="clockOutMinute"></result>
+        <result column="profile_photo" property="profilePhoto"></result>
+    </resultMap>
+    <resultMap id="attendanceRecordsResultMap" type="attendanceRecords">
+        <result column="worker_id" property="workerId"></result>
+        <result column="arrive_late" property="arriveLate"></result>
+        <result column="leave_early" property="leaveEarly"></result>
+    </resultMap>
+    <resultMap id="leaveRecordsResultMap" type="leaveRecords">
+        <result column="worker_id" property="workerId"></result>
+        <result column="leave_type" property="leaveType"></result>
+        <result column="begin_time" property="beginTime"></result>
+        <result column="end_time" property="endTime"></result>
+        <result column="manager_id" property="managerId"></result>
+    </resultMap>
+    <resultMap id="trainingActivitiesRecordsResultMap" type="trainingActivitiesRecords">
+        <result column="training_activity_id" property="trainingActivityId"></result>
+        <result column="worker_id" property="workerId"></result>
+        <result column="manager_id" property="managerId"></result>
+    </resultMap>
+    <resultMap id="trainingActivitiesResultMap" type="trainingActivities">
+        <result column="training_content" property="trainingContent"></result>
+        <result column="manager_id" property="managerId"></result>
+    </resultMap>
+    <resultMap id="announcementsResultMap" type="announcements">
+        <result column="manager_id" property="managerId"></result>
+        <result column="announcement_content" property="announcementContent"></result>
+    </resultMap>
+    <resultMap id="resignationsResultMap" type="resignations">
+        <result column="worker_id" property="workerId"></result>
+        <result column="manager_id" property="managerId"></result>
+    </resultMap>
 
+    <!--    批量删除请假申请-->
+    <delete id="deleteLeaveRecords">
+        delete from ademob.leave_records where id in
+        <foreach collection="ids" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <!--    批量删除培训活动记录-->
+    <delete id="deleteTrainingActivitiesRecords">
+        delete from ademob.training_activities_records where id in
+        <foreach collection="ids" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </delete>
+    <delete id="deleteResignations">
+        delete from ademob.resignations where id in
+        <foreach collection="ids" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <!--    分页条件查询（出勤记录）-->
+    <select id="selectByPageAndCondition" resultMap="attendanceRecordsResultMap">
+        select * from ademob.attendance_records
+        <where>
+            <if test="attendanceRecord.id!=null">
+                and id = #{attendanceRecord.id}
+            </if>
+
+            <if test="attendanceRecord.workerId!=null">
+                and worker_id = #{attendanceRecord.workerId}
+            </if>
+
+            <if test="attendanceRecord.arriveLate!=null">
+                and arrive_late like #{attendanceRecord.arriveLate}
+            </if>
+            <if test="attendanceRecord.leaveEarly!=null">
+                and leave_early like #{attendanceRecord.leaveEarly}
+            </if>
+            <if test="attendanceRecord.absence!=null">
+                and absence like #{attendanceRecord.absence}
+            </if>
+            <if test="attendanceRecord.fine!=null">
+                and fine = #{attendanceRecord.fine}
+            </if>
+        </where>
+
+        limit #{begin},#{size}
+    </select>
+    <select id="selectTotalCountByCondition" resultType="java.lang.Integer">
+        select * from ademob.attendance_records
+        <where>
+            <if test="attendanceRecord.id!=null">
+                and id = #{attendanceRecord.id}
+            </if>
+
+            <if test="attendanceRecord.workerId!=null">
+                and worker_id = #{attendanceRecord.workerId}
+            </if>
+
+            <if test="attendanceRecord.arriveLate!=null">
+                and arrive_late like #{attendanceRecord.arriveLate}
+            </if>
+            <if test="attendanceRecord.leaveEarly!=null">
+                and leave_early like #{attendanceRecord.leaveEarly}
+            </if>
+            <if test="attendanceRecord.absence!=null">
+                and absence like #{attendanceRecord.absence}
+            </if>
+            <if test="attendanceRecord.fine!=null">
+                and fine = #{attendanceRecord.fine}
+            </if>
+        </where>
+    </select>
+    <select id="selectByPageAndCondition2" resultMap="leaveRecordsResultMap">
+        select * from ademob.leave_records
+        <where>
+            <if test="leaveRecords.id!=null">
+                and id = #{leaveRecords.id}
+            </if>
+
+            <if test="leaveRecords.workerId!=null">
+                and worker_id = #{leaveRecords.workerId}
+            </if>
+
+            <if test="leaveRecords.leaveType!=null">
+                and leave_type = #{leaveRecords.leaveType}
+            </if>
+            <if test="leaveRecords.beginTime!=null">
+                and begin_time like #{leaveRecords.beginTime}
+            </if>
+            <if test="leaveRecords.endTime!=null">
+                and end_time like #{leaveRecords.endTime}
+            </if>
+            <if test="leaveRecords.fine!=null">
+                and fine = #{leaveRecords.fine}
+            </if>
+            <if test="leaveRecords.approval!=null">
+                and approval = #{leaveRecords.approval}
+            </if>
+            <if test="leaveRecords.managerId!=null">
+                and manager_id = #{leaveRecords.managerId}
+            </if>
+        </where>
+
+        limit #{begin},#{size}
+    </select>
+    <select id="selectTotalCountByCondition2" resultType="java.lang.Integer">
+        select count(*) from ademob.leave_records
+        <where>
+            <if test="leaveRecords.id!=null">
+                and id = #{leaveRecords.id}
+            </if>
+
+            <if test="leaveRecords.workerId!=null">
+                and worker_id = #{leaveRecords.workerId}
+            </if>
+
+            <if test="leaveRecords.leaveType!=null">
+                and leave_type = #{leaveRecords.leaveType}
+            </if>
+            <if test="leaveRecords.beginTime!=null">
+                and begin_time like #{leaveRecords.beginTime}
+            </if>
+            <if test="leaveRecords.endTime!=null">
+                and end_time like #{leaveRecords.endTime}
+            </if>
+            <if test="leaveRecords.fine!=null">
+                and fine = #{leaveRecords.fine}
+            </if>
+            <if test="leaveRecords.approval!=null">
+                and approval = #{leaveRecords.approval}
+            </if>
+            <if test="leaveRecords.managerId!=null">
+                and manager_id = #{leaveRecords.managerId}
+            </if>
+        </where>
+    </select>
+    <select id="selectByPageAndCondition3" resultMap="trainingActivitiesResultMap">
+        select * from ademob.training_activities
+        <where>
+            <if test="trainingActivities.id!=null">
+                and id = #{trainingActivities.id}
+            </if>
+            <if test="trainingActivities.trainingContent!=null and trainingActivities.trainingContent!=''">
+                and training_content like #{trainingActivities.trainingContent}
+            </if>
+            <if test="trainingActivities.managerId!=null">
+                and manager_id = #{trainingActivities.managerId}
+            </if>
+        </where>
+
+        limit #{begin},#{size}
+
+    </select>
+    <select id="selectTotalCountByCondition3" resultType="java.lang.Integer">
+        select count(*) from ademob.training_activities
+        <where>
+            <if test="trainingActivities.id!=null">
+                and id = #{trainingActivities.id}
+            </if>
+            <if test="trainingActivities.trainingContent!=null and trainingActivities.trainingContent!=''">
+                and training_content like #{trainingActivities.trainingContent}
+            </if>
+            <if test="trainingActivities.managerId!=null">
+                and manager_id = #{trainingActivities.managerId}
+            </if>
+        </where>
+    </select>
+    <select id="selectByPageAndCondition4" resultMap="trainingActivitiesRecordsResultMap">
+        select * from ademob.training_activities_records
+        <where>
+
+            <if test="trainingActivitiesRecords.id!=null">
+                and id = #{trainingActivitiesRecords.id}
+            </if>
+
+            <if test="trainingActivitiesRecords.trainingActivityId!=null">
+                and training_activity_id = #{trainingActivitiesRecords.trainingActivityId}
+            </if>
+            <if test="trainingActivitiesRecords.workerId!=null">
+                and worker_id = #{trainingActivitiesRecords.workerId}
+            </if>
+            <if test="trainingActivitiesRecords.score!=null">
+                and score = #{trainingActivitiesRecords.score}
+            </if>
+            <if test="trainingActivitiesRecords.bonus!=null">
+                and bonus = #{trainingActivitiesRecords.bonus}
+            </if>
+            <if test="trainingActivitiesRecords.status!=null">
+                and status = #{trainingActivitiesRecords.status}
+            </if>
+            <if test="trainingActivitiesRecords.managerId!=null">
+                and manager_id = #{trainingActivitiesRecords.managerId}
+            </if>
+
+        </where>
+        limit #{begin},#{size}
+    </select>
+    <select id="selectTotalCountByCondition4" resultType="java.lang.Integer">
+        select count(*) from ademob.training_activities_records
+        <where>
+            <if test="trainingActivitiesRecords.id!=null">
+                and id = #{trainingActivitiesRecords.id}
+            </if>
+            <if test="trainingActivitiesRecords.trainingActivityId!=null">
+                and training_activity_id = #{trainingActivitiesRecords.trainingActivityId}
+            </if>
+            <if test="trainingActivitiesRecords.workerId!=null">
+                and worker_id = #{trainingActivitiesRecords.workerId}
+            </if>
+            <if test="trainingActivitiesRecords.score!=null">
+                and score = #{trainingActivitiesRecords.score}
+            </if>
+            <if test="trainingActivitiesRecords.bonus!=null">
+                and bonus = #{trainingActivitiesRecords.bonus}
+            </if>
+            <if test="trainingActivitiesRecords.status!=null">
+                and status = #{trainingActivitiesRecords.status}
+            </if>
+            <if test="trainingActivitiesRecords.managerId!=null">
+                and manager_id = #{trainingActivitiesRecords.managerId}
+            </if>
+        </where>
+    </select>
+    <select id="selectByPageAndCondition5" resultMap="announcementsResultMap">
+        select * from ademob.announcements
+        <where>
+            <if test="announcements.id!=null">
+                and id = #{announcements.id}
+            </if>
+            <if test="announcements.managerId!=null">
+                and manager_id = #{announcements.managerId}
+            </if>
+            <if test="announcements.announcementContent!=null and announcements.announcementContent!=''">
+                and announcement_content like #{announcements.announcementContent}
+            </if>
+            <if test="announcements.status!=null">
+                and status = #{announcements.status}
+            </if>
+
+        </where>
+        limit #{begin},#{size}
+    </select>
+    <select id="selectTotalCountByCondition5" resultType="java.lang.Integer">
+        select count(*) from ademob.announcements
+        <where>
+            <if test="announcements.id!=null">
+                and id = #{announcements.id}
+            </if>
+            <if test="announcements.managerId!=null">
+                and manager_id = #{announcements.managerId}
+            </if>
+            <if test="announcements.announcementContent!=null and announcements.announcementContent!=''">
+                and announcement_content = #{announcements.announcementContent}
+            </if>
+            <if test="announcements.status!=null">
+                and status = #{announcements.status}
+            </if>
+
+        </where>
+    </select>
+    <select id="selectByPageAndCondition6" resultMap="resignationsResultMap">
+        select * from ademob.resignations
+        <where>
+            <if test="resignations.id!=null">
+                and id = #{resignations.id}
+            </if>
+
+            <if test="resignations.workerId!=null">
+                and worker_id = #{resignations.workerId}
+            </if>
+
+            <if test="resignations.reason!=null and resignations.reason!=''">
+                and reason like #{resignations.reason}
+            </if>
+
+            <if test="resignations.approval!=null">
+                and approval = #{resignations.approval}
+            </if>
+            <if test="resignations.managerId!=null">
+                and manager_id = #{resignations.managerId}
+            </if>
+        </where>
+
+        limit #{begin},#{size}
+
+    </select>
+    <select id="selectTotalCountByCondition6" resultType="java.lang.Integer">
+        select count(*) from ademob.resignations
+        <where>
+            <if test="resignations.id!=null">
+                and id = #{resignations.id}
+            </if>
+
+            <if test="resignations.workerId!=null">
+                and worker_id = #{resignations.workerId}
+            </if>
+
+            <if test="resignations.reason!=null and resignations.reason!=''">
+                and reason like #{resignations.reason}
+            </if>
+
+            <if test="resignations.approval!=null">
+                and approval = #{resignations.approval}
+            </if>
+            <if test="resignations.managerId!=null">
+                and manager_id = #{resignations.managerId}
+            </if>
+        </where>
+    </select>
 </mapper>

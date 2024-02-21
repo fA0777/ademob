@@ -2,39 +2,34 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>trainingActivitiesRecords</title>
-
+    <title>workerLeaveRecords</title>
 </head>
 <body>
 <div id="app">
     <!--搜索表单-->
-    <el-form :inline="true" :model="trainingActivitiesRecords" class="demo-form-inline">
+    <el-form :inline="true" :model="leaveRecords" class="demo-form-inline">
 
 
         <el-form-item label="id" size="mini">
-            <el-input v-model="trainingActivitiesRecords.id" placeholder="id"></el-input>
+            <el-input v-model="leaveRecords.id" placeholder="id"></el-input>
         </el-form-item>
-
-        <el-form-item label="培训活动id" size="mini">
-            <el-input v-model="trainingActivitiesRecords.trainingActivityId" placeholder="培训活动id"></el-input>
+        <el-form-item label="请假类型" size="mini">
+            <el-input v-model="leaveRecords.leaveType" placeholder="请假类型"></el-input>
         </el-form-item>
-
-        <el-form-item label="员工id" size="mini">
-            <el-input v-model="trainingActivitiesRecords.workerId" placeholder="员工id"></el-input>
+        <el-form-item label="开始时间" size="mini">
+            <el-input v-model="leaveRecords.beginTime" placeholder="开始时间"></el-input>
         </el-form-item>
-
-        <el-form-item label="培训成绩" size="mini">
-            <el-input v-model="trainingActivitiesRecords.score" placeholder="培训成绩"></el-input>
+        <el-form-item label="结束时间" size="mini">
+            <el-input v-model="leaveRecords.endTime" placeholder="结束时间"></el-input>
         </el-form-item>
-
-        <el-form-item label="奖金" size="mini">
-            <el-input v-model="trainingActivitiesRecords.bonus" placeholder="奖金"></el-input>
+        <el-form-item label="罚款" size="mini">
+            <el-input v-model="leaveRecords.fine" placeholder="罚款"></el-input>
         </el-form-item>
-        <el-form-item label="状态" size="mini">
-            <el-input v-model="trainingActivitiesRecords.status" placeholder="状态"></el-input>
+        <el-form-item label="是否批准" size="mini">
+            <el-input v-model="leaveRecords.approval" placeholder="是否批准"></el-input>
         </el-form-item>
         <el-form-item label="管理员id" size="mini">
-            <el-input v-model="trainingActivitiesRecords.managerId" placeholder="管理员id"></el-input>
+            <el-input v-model="leaveRecords.managerId" placeholder="管理员id"></el-input>
         </el-form-item>
 
         <el-form-item>
@@ -42,87 +37,67 @@
         </el-form-item>
     </el-form>
 
-    <!--按钮-->
-
+    <!--    按钮-->
     <el-row>
-        <el-button type="danger" plain @click="deleteTrainingActivitiesRecords">删除</el-button>
-        <el-button type="primary" plain @click="addDialogVisible = true">新增</el-button>
+        <el-button type="primary" plain @click="addDialogVisible = true">添加</el-button>
+        <el-button type="danger" plain @click="deleteLeaveRecords">删除</el-button>
     </el-row>
 
     <!--添加数据对话框表单-->
     <el-dialog
-            title="添加"
+            title="修改"
             :visible.sync="addDialogVisible"
             width="40%"
     >
 
-        <el-form ref="form" :model="trainingActivitiesRecords" label-width="85px">
-            <el-form-item label="培训活动id">
-                <el-input v-model="trainingActivitiesRecords.trainingActivityId"></el-input>
+        <el-form ref="form" :model="leaveRecords" label-width="80px">
+            <el-form-item label="请假类型">
+                <el-input v-model="leaveRecords.leaveType"></el-input>
             </el-form-item>
-            <el-form-item label="员工id">
-                <el-input v-model="trainingActivitiesRecords.workerId"></el-input>
+            <el-form-item label="开始时间">
+                <el-input v-model="leaveRecords.beginTime"></el-input>
             </el-form-item>
-            <el-form-item label="培训成绩">
-                <el-input v-model="trainingActivitiesRecords.score"></el-input>
+            <el-form-item label="结束时间">
+                <el-input v-model="leaveRecords.endTime"></el-input>
             </el-form-item>
-            <el-form-item label="奖金">
-                <el-input v-model="trainingActivitiesRecords.bonus"></el-input>
-            </el-form-item>
-            <el-form-item label="状态">
-                <el-input v-model="trainingActivitiesRecords.status"></el-input>
-            </el-form-item>
-
             <el-form-item>
-                <el-button type="primary" @click="addTrainingActivitiesRecords">提交</el-button>
+                <el-button type="primary" @click="addLeaveRecords">提交</el-button>
                 <el-button @click="addDialogVisible = false">取消</el-button>
             </el-form-item>
         </el-form>
-
     </el-dialog>
 
-    <!--修改培训活动员工记录对话框表单-->
+
+    <!--修改数据对话框表单-->
     <el-dialog
-            title="修改培训活动员工记录"
+            title="修改"
             :visible.sync="updateDialogVisible"
             width="40%"
     >
 
-        <el-form ref="form" :model="trainingActivitiesRecords" label-width="80px">
- <el-table-column
-                    type="selection"
-                    width="55">
-            </el-table-column>
-
-            <el-form-item label="培训id">
-                <el-input v-model="trainingActivitiesRecords.trainingActivityId"></el-input>
+        <el-form ref="form" :model="leaveRecords" label-width="80px">
+            <el-form-item label="请假类型">
+                <el-input v-model="leaveRecords.leaveType"></el-input>
             </el-form-item>
-            <el-form-item label="员工id">
-                <el-input v-model="trainingActivitiesRecords.workerId"></el-input>
+            <el-form-item label="开始时间">
+                <el-input v-model="leaveRecords.beginTime"></el-input>
             </el-form-item>
-            <el-form-item label="培训成绩">
-                <el-input v-model="trainingActivitiesRecords.score"></el-input>
-            </el-form-item>
-            <el-form-item label="奖金">
-                <el-input v-model="trainingActivitiesRecords.bonus"></el-input>
-            </el-form-item>
-            <el-form-item label="状态">
-                <el-input v-model="trainingActivitiesRecords.status"></el-input>
+            <el-form-item label="结束时间">
+                <el-input v-model="leaveRecords.endTime"></el-input>
             </el-form-item>
             <el-form-item>
-                <el-button type="primary" @click="updateTrainingActivitiesRecords">提交</el-button>
+                <el-button type="primary" @click="updateLeaveRecords">提交</el-button>
                 <el-button @click="updateDialogVisible = false">取消</el-button>
             </el-form-item>
         </el-form>
-
     </el-dialog>
-
 
     <!--表格-->
     <template>
         <el-table
                 :data="tableData"
                 style="width: 100%"
+                :row-class-name="tableRowClassName"
                 @selection-change="handleSelectionChange"
         >
             <el-table-column
@@ -133,7 +108,6 @@
                     type="index"
                     width="50">
             </el-table-column>
-
             <el-table-column
                     prop="id"
                     label="id"
@@ -141,48 +115,39 @@
             >
             </el-table-column>
             <el-table-column
-                    prop="trainingActivityId"
-                    label="培训活动id"
+                    prop="leaveType"
                     align="center"
-            >
+                    label="请假类型">
             </el-table-column>
             <el-table-column
-                    prop="workerId"
-                    label="员工id"
+                    prop="beginTime"
                     align="center"
-            >
+                    label="开始时间">
             </el-table-column>
             <el-table-column
-                    prop="score"
-                    label="培训成绩"
+                    prop="endTime"
                     align="center"
-            >
+                    label="结束时间">
             </el-table-column>
             <el-table-column
-                    prop="bonus"
-                    label="奖金"
+                    prop="fine"
                     align="center"
-            >
+                    label="罚款">
             </el-table-column>
             <el-table-column
-                    prop="status"
-                    label="状态"
+                    prop="approval"
                     align="center"
-            >
+                    label="是否批准">
             </el-table-column>
             <el-table-column
                     prop="managerId"
-                    label="管理员id"
                     align="center"
-            >
+                    label="管理员id">
             </el-table-column>
-
 
             <el-table-column
                     align="center"
                     label="操作">
-
-
                 <template slot-scope="scope">
                     <el-button type="primary" @click="handleEdit(scope.$index, scope.row);updateDialogVisible =true">
                         修改
@@ -191,6 +156,17 @@
             </el-table-column>
         </el-table>
     </template>
+
+    <!--分页工具条-->
+    <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="currentPage"
+            :page-sizes="[5, 10, 15, 20]"
+            :page-size="5"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="totalCount">
+    </el-pagination>
 
 </div>
 
@@ -203,15 +179,15 @@
     new Vue({
         el: "#app",
         mounted() {
-
             this.selectByPage()
         },
         methods: {
+            //查询分页数据的方法
             selectByPage() {
                 axios({
                     method: "post",
-                    url: "http://localhost:8080/ademob/managers/selectByPageAndCondition6?currentPage=" + this.currentPage + "&pageSize=" + this.pageSize,
-                    data: this.trainingActivitiesRecords
+                    url: "http://localhost:8080/ademob/workers/selectByPageAndCondition2?currentPage=" + this.currentPage + "&pageSize=" + this.pageSize,
+                    data: this.leaveRecords
                 }).then(resp => {
                     //设置表格数据
                     this.tableData = resp.data.rows;
@@ -219,14 +195,14 @@
                     this.totalCount = resp.data.totalCount
                 })
             },
-            addTrainingActivitiesRecords() {
+            addLeaveRecords() {
                 axios({
                     method: "post",
-                    url: "http://localhost:8080/ademob/managers/addTrainingActivitiesRecords",
-                    data: this.trainingActivitiesRecords
+                    url: "http://localhost:8080/ademob/workers/addLeaveRecords",
+                    data: this.leaveRecords
                 }).then(resp => {
                     if ("success" == resp.data) {
-                        //添加成功
+                        //修改成功
                         //关闭窗口
                         this.addDialogVisible = false;
                         //重新查询数据
@@ -240,7 +216,7 @@
                 })
             },
             //删除
-            deleteTrainingActivitiesRecords() {
+            deleteLeaveRecords() {
                 //弹出确认删除的提示框
                 this.$confirm('此操作将删除该数据, 是否继续?', '提示', {
                     confirmButtonText: '确定',
@@ -256,7 +232,7 @@
                     //发送ajax请求
                     axios({
                         method: "post",
-                        url: "http://localhost:8080/ademob/managers/deleteTrainingActivitiesRecords",
+                        url: "http://localhost:8080/ademob/workers/deleteLeaveRecords",
                         data: this.selectedIds
                     }).then(resp => {
                         if ("success" == resp.data) {
@@ -268,6 +244,8 @@
                                 message: '恭喜你，删除成功',
                                 type: 'success'
                             });
+                        } else if ("fail" == resp.data) {
+                            this.$message.error('存在已审批的请假申请数据，不得删除');
                         }
                     }).catch(() => {
                         //点击取消
@@ -279,13 +257,13 @@
                 })
 
             },
-            updateTrainingActivitiesRecords(){
+            updateLeaveRecords() {
                 axios({
-                    method:"post",
-                    url:"http://localhost:8080/ademob/managers/updateTrainingActivitiesRecords",
-                    data:this.trainingActivitiesRecords
-                }).then(resp=>{
-                    if("success"==resp.data){
+                    method: "post",
+                    url: "http://localhost:8080/ademob/workers/updateLeaveRecords",
+                    data: this.leaveRecords
+                }).then(resp => {
+                    if ("success" == resp.data) {
                         //修改成功
                         //关闭窗口
                         this.updateDialogVisible = false;
@@ -296,6 +274,8 @@
                             message: '恭喜你，修改成功',
                             type: 'success'
                         });
+                    } else if ("fail" == resp.data) {
+                        this.$message.error('该请假申请已审批，不得修改');
                     }
                 })
             },
@@ -320,49 +300,50 @@
             handleEdit(index, row) {
                 console.log(index, row)
                 //row是该行tableData对应的一行
-                this.trainingActivitiesRecords = row
+                this.leaveRecords = row
             }
         },
         data() {
             return {
+                //添加数据对话框是否展示的标记
+                addDialogVisible: false,
+                //修改数据对话框是否展示的标记
+                updateDialogVisible: false,
+                //被选中的id数组
+                selectedIds: [],
+                // 复选框选中数据集合
+                multipleSelection: [],
                 //每页显示条数
                 pageSize: 5,
                 //总记录数
                 totalCount: 100,
                 // 当前页码
                 currentPage: 1,
-                // 添加数据对话框是否展示的标记
-                addDialogVisible: false,
-                // 修改数据对话框是否展示的标记
-                updateDialogVisible: false,
-                //被选中的id数组
-                selectedIds: [],
-                // 复选框选中数据集合
-                multipleSelection: [],
-                //培训活动员工记录模型
-                trainingActivitiesRecords: {
+                //请假申请模型数据
+                leaveRecords: {
                     id: "",
-                    trainingActivityId: "",
                     workerId: "",
-                    score: "",
-                    bonus: "",
-                    status: "",
+                    leaveType: "",
+                    beginTime: "",
+                    endTime: "",
+                    fine: "",
+                    approval: "",
                     managerId: ""
                 },
                 //表格数据
                 tableData: [{
                     id: "1",
-                    trainingActivityId: "1",
                     workerId: "1",
-                    score: "1",
-                    bonus: "1",
-                    status: "1",
+                    leaveType: "1",
+                    beginTime: "1",
+                    endTime: "1",
+                    fine: "1",
+                    approval: "1",
                     managerId: "1"
                 }]
             }
         }
     })
 </script>
-
 </body>
 </html>

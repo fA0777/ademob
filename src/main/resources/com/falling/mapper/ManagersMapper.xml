@@ -241,7 +241,7 @@
 
     </select>
     <select id="selectTotalCountByCondition3" resultType="java.lang.Integer">
-        select count(*) ademob.leave_records
+        select count(*) from ademob.leave_records
         <where>
             <if test="leaveRecords.id!=null">
                 and id = #{leaveRecords.id}

@@ -8,7 +8,7 @@ public class Resignations {
     private Integer workerId;
     //申请理由
     private String reason;
-    //是否批准: null未审批，0不批准，1批准
+    //是否批准: 0未审批，1不批准，2批准
     private Integer approval;
     //管理员id
     private Integer managerId;
