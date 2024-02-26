@@ -72,18 +72,17 @@
         </foreach>
     </update>
     <update id="deleteSalaryRecordsK">
-    update ademob.resignations set status=2,manager_id=#{managerId} where worker_id in
-    <foreach collection="ids" item="id" separator="," open="(" close=")">
-        #{id}
-    </foreach>
+        update ademob.resignations set status=2,manager_id=#{managerId} where worker_id in
+        <foreach collection="ids" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
     </update>
     <update id="deleteTrainingActivitiesRecordsK">
-    update ademob.resignations set status=2,manager_id=#{managerId} where worker_id in
-    <foreach collection="ids" item="id" separator="," open="(" close=")">
-        #{id}
-    </foreach>
+        update ademob.resignations set status=2,manager_id=#{managerId} where worker_id in
+        <foreach collection="ids" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
     </update>
-
 
 
     <!--    批量软删除员工出勤记录-->
@@ -121,7 +120,7 @@
     <update id="deleteLeaveRecords">
         update ademob.leave_records set status=2,manager_id=#{managerId} where id in
         <foreach collection="ids" item="id" separator="," open="(" close=")">
-        #{id}
+            #{id}
         </foreach>
     </update>
 

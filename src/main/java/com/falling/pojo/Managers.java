@@ -1,4 +1,5 @@
 package com.falling.pojo;
+
 //管理员实体类
 public class Managers {
     //id

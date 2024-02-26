@@ -11,33 +11,34 @@
 
 
         <el-form-item label="id" size="mini">
-            <el-input v-model="trainingActivitiesRecords.id" placeholder="id"></el-input>
+            <el-input placeholder="id" v-model="trainingActivitiesRecords.id"></el-input>
         </el-form-item>
         <el-form-item label="培训活动id" size="mini">
-            <el-input v-model="trainingActivitiesRecords.trainingActivityId" placeholder="培训活动id"></el-input>
+            <el-input placeholder="培训活动id" v-model="trainingActivitiesRecords.trainingActivityId"></el-input>
         </el-form-item>
         <el-form-item label="培训成绩" size="mini">
-            <el-input v-model="trainingActivitiesRecords.score" placeholder="培训成绩"></el-input>
+            <el-input placeholder="培训成绩" v-model="trainingActivitiesRecords.score"></el-input>
         </el-form-item>
         <el-form-item label="奖金" size="mini">
-            <el-input v-model="trainingActivitiesRecords.bonus" placeholder="奖金"></el-input>
+            <el-input placeholder="奖金" v-model="trainingActivitiesRecords.bonus"></el-input>
         </el-form-item>
         <el-form-item label="进程（0未审批，1审批通过培训中，2审批不通过，3审批通过且培训完成，4奖金已发放）" size="mini">
-            <el-input v-model="trainingActivitiesRecords.process" placeholder="进程（0未审批，1审批通过培训中，2审批不通过，3审批通过且培训完成，4奖金已发放）"></el-input>
+            <el-input placeholder="进程（0未审批，1审批通过培训中，2审批不通过，3审批通过且培训完成，4奖金已发放）"
+                      v-model="trainingActivitiesRecords.process"></el-input>
         </el-form-item>
         <el-form-item label="管理员id" size="mini">
-            <el-input v-model="trainingActivitiesRecords.managerId" placeholder="管理员id"></el-input>
+            <el-input placeholder="管理员id" v-model="trainingActivitiesRecords.managerId"></el-input>
         </el-form-item>
 
         <el-form-item>
-            <el-button type="primary" @click="selectByPage">查询</el-button>
+            <el-button @click="selectByPage" type="primary">查询</el-button>
         </el-form-item>
     </el-form>
 
     <!--按钮-->
 
     <el-row>
-        <el-button type="danger" plain @click="deleteTrainingActivitiesRecords">删除</el-button>
+        <el-button @click="deleteTrainingActivitiesRecords" plain type="danger">删除</el-button>
     </el-row>
 
 
@@ -45,8 +46,8 @@
     <template>
         <el-table
                 :data="tableData"
-                style="width: 100%"
                 @selection-change="handleSelectionChange"
+                style="width: 100%"
         >
             <el-table-column
                     type="selection"
@@ -58,39 +59,39 @@
             </el-table-column>
 
             <el-table-column
-                    prop="id"
+                    align="center"
                     label="id"
-                    align="center"
+                    prop="id"
             >
             </el-table-column>
             <el-table-column
-                    prop="trainingActivityId"
+                    align="center"
                     label="培训活动id"
-                    align="center"
+                    prop="trainingActivityId"
             >
             </el-table-column>
             <el-table-column
-                    prop="score"
+                    align="center"
                     label="培训成绩"
-                    align="center"
+                    prop="score"
             >
             </el-table-column>
             <el-table-column
-                    prop="bonus"
+                    align="center"
                     label="奖金"
-                    align="center"
+                    prop="bonus"
             >
             </el-table-column>
             <el-table-column
-                    prop="process"
+                    align="center"
                     label="进程"
-                    align="center"
+                    prop="process"
             >
             </el-table-column>
             <el-table-column
-                    prop="managerId"
-                    label="管理员id"
                     align="center"
+                    label="管理员id"
+                    prop="managerId"
             >
             </el-table-column>
         </el-table>
@@ -99,7 +100,7 @@
 
 <script src="js/vue.js"></script>
 <script src="element-ui/lib/index.js"></script>
-<link rel="stylesheet" href="element-ui/lib/theme-chalk/index.css">
+<link href="element-ui/lib/theme-chalk/index.css" rel="stylesheet">
 
 <script src="js/axios-0.18.0.js"></script>
 <script>
@@ -122,7 +123,7 @@
                     this.totalCount = resp.data.totalCount
                 })
             },
-            deleteTrainingActivitiesRecords(){
+            deleteTrainingActivitiesRecords() {
                 //弹出确认删除的提示框
                 this.$confirm('此操作将删除该数据, 是否继续?', '提示', {
                     confirmButtonText: '确定',
@@ -209,7 +210,7 @@
                     workerId: "",
                     score: "",
                     bonus: "",
-                    process:"",
+                    process: "",
                     status: "",
                     managerId: ""
                 },
@@ -220,7 +221,7 @@
                     workerId: "1",
                     score: "1",
                     bonus: "1",
-                    process:"1",
+                    process: "1",
                     status: "1",
                     managerId: "1"
                 }]

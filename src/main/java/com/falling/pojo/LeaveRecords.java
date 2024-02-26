@@ -1,7 +1,5 @@
 package com.falling.pojo;
 
-import java.time.LocalDateTime;
-
 //请假记录实体类
 public class LeaveRecords {
     //id

@@ -17,8 +17,8 @@ public class BaseServlet extends HttpServlet {
         //获取请求路径
         String uri = req.getRequestURI();
         //获取最后一段路径，方法名
-        int index=uri.lastIndexOf('/');
-        String methodName = uri.substring(index+1);
+        int index = uri.lastIndexOf('/');
+        String methodName = uri.substring(index + 1);
         //执行方法
         //获取字节码对象
         //谁调用我（this所在的方法），我（this）就代表谁
@@ -27,7 +27,7 @@ public class BaseServlet extends HttpServlet {
         try {
             Method method = cls.getMethod(methodName, HttpServletRequest.class, HttpServletResponse.class);
             //执行方法
-            method.invoke(this,req,resp);
+            method.invoke(this, req, resp);
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
         } catch (InvocationTargetException e) {

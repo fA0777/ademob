@@ -22,54 +22,54 @@
     <hr>
     <h3>员工基本信息</h3>
     <el-row>
-        <el-link type="success" href="manageWorkers.html">添加、删除、查询与修改</el-link>
+        <el-link href="manageWorkers.html" type="success">添加、删除、查询与修改</el-link>
     </el-row>
     <hr>
     <h3>员工出勤情况记录</h3>
     <el-row>
-        <el-link type="success" href="attendanceRecord.html">添加、删除、查询与修改</el-link>
+        <el-link href="attendanceRecord.html" type="success">添加、删除、查询与修改</el-link>
     </el-row>
     <hr>
     <h3>管理请假、离职申请</h3>
     <el-row>
-        <el-link type="primary" href="leaveRecords.html">请假申请</el-link>
-        <el-link type="danger" href="resignations.html">离职申请</el-link>
+        <el-link href="leaveRecords.html" type="primary">请假申请</el-link>
+        <el-link href="resignations.html" type="danger">离职申请</el-link>
     </el-row>
     <hr>
     <h3>管理培训活动</h3>
     <el-row>
-        <el-link type="success" href="trainingActivities.html">添加、删除、查询与修改</el-link>
+        <el-link href="trainingActivities.html" type="success">添加、删除、查询与修改</el-link>
     </el-row>
     <hr>
     <h3>管理培训活动员工记录</h3>
     <el-row>
-        <el-link type="success" href="trainingActivitiesRecords.html">添加、删除、查询与修改</el-link>
+        <el-link href="trainingActivitiesRecords.html" type="success">添加、删除、查询与修改</el-link>
     </el-row>
     <hr>
     <h3>管理公告信息</h3>
     <el-row>
-        <el-link type="success" href="announcements.html">添加、删除、查询与修改</el-link>
+        <el-link href="announcements.html" type="success">添加、删除、查询与修改</el-link>
     </el-row>
     <hr>
     <h3>管理工资记录</h3>
     <el-row>
-        <el-link type="success" href="salaryRecords.html">添加、删除、查询与修改</el-link>
+        <el-link href="salaryRecords.html" type="success">添加、删除、查询与修改</el-link>
     </el-row>
 
 
     <!--开除员工对话框表单-->
     <el-dialog
-            title="开除员工"
             :visible.sync="deleteDialogVisible"
+            title="开除员工"
             width="40%"
     >
 
-        <el-form ref="form" label-width="100px">
+        <el-form label-width="100px" ref="form">
             <el-form-item label="开除员工id">
                 <el-input v-model="deleteIds"></el-input>
             </el-form-item>
             <el-form-item>
-                <el-button type="primary" @click="deleteWorkers">提交</el-button>
+                <el-button @click="deleteWorkers" type="primary">提交</el-button>
                 <el-button @click="deleteDialogVisible = false">取消</el-button>
             </el-form-item>
         </el-form>
@@ -81,7 +81,7 @@
 
 <script src="js/vue.js"></script>
 <script src="element-ui/lib/index.js"></script>
-<link rel="stylesheet" href="element-ui/lib/theme-chalk/index.css">
+<link href="element-ui/lib/theme-chalk/index.css" rel="stylesheet">
 
 <script src="js/axios-0.18.0.js"></script>
 <script>
@@ -165,9 +165,9 @@
                     clockOutHour: "",
                     clockOutHourMinute: "",
                     profilePhoto: "",
-                    basicSalary:"",
-                    status:"",
-                    managerId:""
+                    basicSalary: "",
+                    status: "",
+                    managerId: ""
                 }
             }
         }

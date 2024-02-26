@@ -1,4 +1,5 @@
 package com.falling.pojo;
+
 //培训活动实体类
 public class TrainingActivities {
     //id

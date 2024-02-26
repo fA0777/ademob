@@ -12,42 +12,42 @@
 
 
         <el-form-item label="id" size="mini">
-            <el-input v-model="trainingActivities.id" placeholder="id"></el-input>
+            <el-input placeholder="id" v-model="trainingActivities.id"></el-input>
         </el-form-item>
 
         <el-form-item label="培训内容" size="mini">
-            <el-input v-model="trainingActivities.trainingContent" placeholder="培训内容"></el-input>
+            <el-input placeholder="培训内容" v-model="trainingActivities.trainingContent"></el-input>
         </el-form-item>
         <el-form-item label="管理员id" size="mini">
-            <el-input v-model="trainingActivities.managerId" placeholder="管理员id"></el-input>
+            <el-input placeholder="管理员id" v-model="trainingActivities.managerId"></el-input>
         </el-form-item>
 
         <el-form-item>
-            <el-button type="primary" @click="selectByPage">查询</el-button>
+            <el-button @click="selectByPage" type="primary">查询</el-button>
         </el-form-item>
     </el-form>
 
     <!--按钮-->
     <el-row>
-        <el-button type="danger" plain @click="deleteTrainingActivities">删除</el-button>
-        <el-button type="primary" plain @click="addDialogVisible = true">新增</el-button>
+        <el-button @click="deleteTrainingActivities" plain type="danger">删除</el-button>
+        <el-button @click="addDialogVisible = true" plain type="primary">新增</el-button>
     </el-row>
 
     <!--添加培训活动对话框表单-->
     <el-dialog
-            title="添加培训活动"
             :visible.sync="addDialogVisible"
+            title="添加培训活动"
             width="40%"
     >
 
-        <el-form ref="form" :model="trainingActivities" label-width="80px">
+        <el-form :model="trainingActivities" label-width="80px" ref="form">
             <el-form-item label="培训内容">
                 <el-input type="textarea" v-model="trainingActivities.trainingContent"></el-input>
             </el-form-item>
 
 
             <el-form-item>
-                <el-button type="primary" @click="addTrainingActivities">提交</el-button>
+                <el-button @click="addTrainingActivities" type="primary">提交</el-button>
                 <el-button @click="addDialogVisible = false">取消</el-button>
             </el-form-item>
         </el-form>
@@ -57,12 +57,12 @@
 
     <!--修改培训活动对话框表单-->
     <el-dialog
-            title="修改培训活动"
             :visible.sync="updateDialogVisible"
+            title="修改培训活动"
             width="40%"
     >
 
-        <el-form ref="form" :model="trainingActivities" label-width="80px">
+        <el-form :model="trainingActivities" label-width="80px" ref="form">
 
 
             <el-form-item label="培训内容">
@@ -71,7 +71,7 @@
 
 
             <el-form-item>
-                <el-button type="primary" @click="updateTrainingActivities">提交</el-button>
+                <el-button @click="updateTrainingActivities" type="primary">提交</el-button>
                 <el-button @click="updateDialogVisible = false">取消</el-button>
             </el-form-item>
         </el-form>
@@ -82,8 +82,8 @@
     <template>
         <el-table
                 :data="tableData"
-                style="width: 100%"
                 @selection-change="handleSelectionChange"
+                style="width: 100%"
         >
             <el-table-column
                     type="selection"
@@ -94,29 +94,29 @@
                     width="50">
             </el-table-column>
             <el-table-column
-                    prop="id"
-                    label="id"
                     align="center"
+                    label="id"
+                    prop="id"
             >
             </el-table-column>
 
             <el-table-column
-                    prop="trainingContent"
                     align="center"
-                    label="培训内容">
+                    label="培训内容"
+                    prop="trainingContent">
             </el-table-column>
 
             <el-table-column
-                    prop="managerId"
-                    label="管理员id"
                     align="center"
+                    label="管理员id"
+                    prop="managerId"
             >
             </el-table-column>
             <el-table-column
                     align="center"
                     label="操作">
                 <template slot-scope="scope">
-                    <el-button type="primary" @click="handleEdit(scope.$index, scope.row);updateDialogVisible =true">
+                    <el-button @click="handleEdit(scope.$index, scope.row);updateDialogVisible =true" type="primary">
                         修改
                     </el-button>
                 </template>
@@ -127,7 +127,7 @@
 
 <script src="js/vue.js"></script>
 <script src="element-ui/lib/index.js"></script>
-<link rel="stylesheet" href="element-ui/lib/theme-chalk/index.css">
+<link href="element-ui/lib/theme-chalk/index.css" rel="stylesheet">
 
 <script src="js/axios-0.18.0.js"></script>
 <script>
@@ -151,7 +151,7 @@
                 })
             },
             //添加培训活动
-            addTrainingActivities(){
+            addTrainingActivities() {
                 axios({
                     method: "post",
                     url: "http://localhost:8080/ademob/managers/addTrainingActivities",
@@ -172,7 +172,7 @@
                 })
             },
             //删除培训活动
-            deleteTrainingActivities(){
+            deleteTrainingActivities() {
                 //弹出确认删除的提示框
                 this.$confirm('此操作将删除该数据, 是否继续?', '提示', {
                     confirmButtonText: '确定',
@@ -209,13 +209,13 @@
                     });
                 });
             },
-            updateTrainingActivities(){
+            updateTrainingActivities() {
                 axios({
-                    method:"post",
-                    url:"http://localhost:8080/ademob/managers/updateTrainingActivities",
-                    data:this.trainingActivities
-                }).then(resp=>{
-                    if("success"==resp.data){
+                    method: "post",
+                    url: "http://localhost:8080/ademob/managers/updateTrainingActivities",
+                    data: this.trainingActivities
+                }).then(resp => {
+                    if ("success" == resp.data) {
                         //修改成功
                         //关闭窗口
                         this.updateDialogVisible = false;
@@ -273,14 +273,14 @@
                 trainingActivities: {
                     id: "",
                     trainingContent: "",
-                    status:"",
+                    status: "",
                     managerId: ""
                 },
                 //表格数据
                 tableData: [{
                     id: "1",
                     trainingContent: "1",
-                    status:"1",
+                    status: "1",
                     managerId: "1"
                 }]
             }

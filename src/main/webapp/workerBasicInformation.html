@@ -11,9 +11,11 @@
             position: relative;
             overflow: hidden;
         }
+
         .avatar-uploader .el-upload:hover {
             border-color: #409EFF;
         }
+
         .avatar-uploader-icon {
             font-size: 28px;
             color: #8c939d;
@@ -22,6 +24,7 @@
             line-height: 178px;
             text-align: center;
         }
+
         .avatar {
             width: 178px;
             height: 178px;
@@ -31,35 +34,39 @@
 </head>
 <body>
 <div id="app">
-<h1>个人基本信息</h1>
+    <h1>个人基本信息</h1>
     <h3>id:{{worker.id}}</h3>
     <h3>用户名:{{worker.name}}</h3>
     <h3>真实姓名:{{worker.trueName}}</h3>
     <h3>上班时间:{{worker.clockInHour}}:{{worker.clockInMinute}}</h3>
     <h3>下班时间:{{worker.clockOutHour}}:{{worker.clockOutMinute}}</h3>
     <h3>底薪:{{worker.basicSalary}}</h3>
-    <h3>头像:<div class="block"><el-avatar :size="50" :src="worker.profilePhoto"></el-avatar></div></h3>
+    <h3>头像:
+        <div class="block">
+            <el-avatar :size="50" :src="worker.profilePhoto"></el-avatar>
+        </div>
+    </h3>
     <el-row>
-        <el-button type="primary" plain @click="updateDialogVisible = true">修改个人基本信息</el-button>
-        <el-button type="danger" plain @click="updateDialogVisible2 = true">修改密码</el-button>
-        <el-button type="success" plain @click="updateDialogVisible3 = true">修改头像</el-button>
+        <el-button @click="updateDialogVisible = true" plain type="primary">修改个人基本信息</el-button>
+        <el-button @click="updateDialogVisible2 = true" plain type="danger">修改密码</el-button>
+        <el-button @click="updateDialogVisible3 = true" plain type="success">修改头像</el-button>
     </el-row>
     <a href="javascript:location.href='workers/logout'">重新登录</a>
 
     <!--修改用户名-->
     <el-dialog
-            title="修改用户名"
             :visible.sync="updateDialogVisible"
+            title="修改用户名"
             width="40%"
     >
 
-        <el-form ref="form" :model="worker" label-width="80px">
+        <el-form :model="worker" label-width="80px" ref="form">
             <el-form-item label="用户名">
                 <el-input v-model="worker.name"></el-input>
             </el-form-item>
 
             <el-form-item>
-                <el-button type="primary" @click="updateBasicInformation">提交</el-button>
+                <el-button @click="updateBasicInformation" type="primary">提交</el-button>
                 <el-button @click="updateDialogVisible = false">取消</el-button>
             </el-form-item>
         </el-form>
@@ -68,26 +75,25 @@
 
     <!--修改密码对话框表单-->
     <el-dialog
-            title="修改密码"
             :visible.sync="updateDialogVisible2"
+            title="修改密码"
             width="40%"
     >
 
-        <el-form ref="form" :model="worker" label-width="80px">
+        <el-form :model="worker" label-width="80px" ref="form">
             <el-form-item label="原密码">
-                <el-input v-model="password0" show-password></el-input>
+                <el-input show-password v-model="password0"></el-input>
             </el-form-item>
             <el-form-item label="新密码">
-                <el-input v-model="password1" show-password></el-input>
+                <el-input show-password v-model="password1"></el-input>
             </el-form-item>
             <el-form-item label="再次确认新密码">
-                <el-input v-model="password2" show-password></el-input>
+                <el-input show-password v-model="password2"></el-input>
             </el-form-item>
-
 
 
             <el-form-item>
-                <el-button type="primary" @click="updatePassword">提交</el-button>
+                <el-button @click="updatePassword" type="primary">提交</el-button>
                 <el-button @click="updateDialogVisible2 = false">取消</el-button>
             </el-form-item>
         </el-form>
@@ -95,63 +101,47 @@
     </el-dialog>
 
     <el-dialog
-            title="更换头像"
             :visible.sync="updateDialogVisible3"
+            title="更换头像"
             width="40%"
     >
 
-        <el-form ref="form" :model="worker" label-width="80px">
+        <el-form :model="worker" label-width="80px" ref="form">
 
             <el-form-item label="上传头像">
-                <el-input accept="image/*" type="file" name="image" v-model="worker.profilePhoto"></el-input>
+                <el-input accept="image/*" name="image" type="file" v-model="worker.profilePhoto"></el-input>
             </el-form-item>
 
             <el-form-item>
-                <el-button type="primary" @click="updateProfilePhoto">提交</el-button>
+                <el-button @click="updateProfilePhoto" type="primary">提交</el-button>
                 <el-button @click="updateDialogVisible3 = false">取消</el-button>
             </el-form-item>
         </el-form>
 
     </el-dialog>
 
-<!--    &lt;!&ndash;修改头像对话框表单&ndash;&gt;-->
-<!--    <el-dialog-->
-<!--            title="修改头像"-->
-<!--            :visible.sync="updateDialogVisible3"-->
-<!--            width="40%"-->
-<!--    >-->
-<!--        <el-upload-->
-<!--                class="avatar-uploader"-->
-<!--                action="http://localhost:8080/ademob/workers/uploadProfilePhoto"-->
-<!--                :show-file-list="false"-->
-<!--                :on-success="handleAvatarSuccess"-->
-<!--                :before-upload="beforeAvatarUpload">-->
-<!--            <img v-if="imageUrl" :src="imageUrl" class="avatar">-->
-<!--            <i v-else class="el-icon-plus avatar-uploader-icon"></i>-->
-<!--        </el-upload>-->
-<!--    </el-dialog>-->
 
 </div>
 
 <script src="js/vue.js"></script>
 <script src="element-ui/lib/index.js"></script>
-<link rel="stylesheet" href="element-ui/lib/theme-chalk/index.css">
+<link href="element-ui/lib/theme-chalk/index.css" rel="stylesheet">
 
 <script src="js/axios-0.18.0.js"></script>
 <script>
     new Vue({
         el: "#app",
-        mounted(){
+        mounted() {
             this.getWorker();
         },
         methods: {
-            updateProfilePhoto(){
+            updateProfilePhoto() {
                 axios({
-                    method:"post",
-                    url:"http://localhost:8080/ademob/workers/uploadProfilePhoto",
-                    data:this.worker
-                }).then(resp=>{
-                    if("success"==resp.data){
+                    method: "post",
+                    url: "http://localhost:8080/ademob/workers/uploadProfilePhoto",
+                    data: this.worker
+                }).then(resp => {
+                    if ("success" == resp.data) {
                         //修改成功
                         //关闭窗口
                         this.updateDialogVisible3 = false;
@@ -165,21 +155,21 @@
                     }
                 })
             },
-            getWorker(){
+            getWorker() {
                 axios({
-                    method:"get",
-                    url:"http://localhost:8080/ademob/workers/getWorker"
-                }).then(resp=>{
-                    this.worker=resp.data
+                    method: "get",
+                    url: "http://localhost:8080/ademob/workers/getWorker"
+                }).then(resp => {
+                    this.worker = resp.data
                 })
             },
-            updateBasicInformation(){
+            updateBasicInformation() {
                 axios({
-                    method:"post",
-                    url:"http://localhost:8080/ademob/workers/updateBasicInformation",
-                    data:this.worker
-                }).then(resp=>{
-                    if("success"==resp.data){
+                    method: "post",
+                    url: "http://localhost:8080/ademob/workers/updateBasicInformation",
+                    data: this.worker
+                }).then(resp => {
+                    if ("success" == resp.data) {
                         //修改成功
                         //关闭窗口
                         this.updateDialogVisible = false;
@@ -190,38 +180,38 @@
                             message: '恭喜你，修改成功',
                             type: 'success'
                         });
-                    }else if ("fail" == resp.data) {
+                    } else if ("fail" == resp.data) {
                         this.$message.error('用户名已存在，请重新输入');
                     }
                 })
             },
-            updatePassword(){
-                if (this.worker.password!= this.password0){
+            updatePassword() {
+                if (this.worker.password != this.password0) {
                     this.$message.error('原密码有误');
                     return;
                 }
-                var reg=/^\w{6,12}$/
-                let b = reg.test(this.worker.password1);
-                if (b==false){
+                const reg = /^\w{6,12}$/
+                let b = reg.test(this.password1);
+                if (!b) {
                     //不符合要求
                     this.$message.error('密码应为6-12位字母、数字、下划线的组合');
                     return;
                 }
-                if (this.password1==null||this.password1==""){
+                if (this.password1 == null || this.password1 == "") {
                     this.$message.error('密码不得为空');
                     return;
                 }
-                if (this.password1!=this.password2){
+                if (this.password1 != this.password2) {
                     this.$message.error('两次密码不一致');
                     return;
                 }
-                this.worker.password=this.password1;
+                this.worker.password = this.password1;
                 axios({
-                    method:"post",
-                    url:"http://localhost:8080/ademob/workers/updatePassword",
-                    data:this.worker
-                }).then(resp=>{
-                    if("success"==resp.data){
+                    method: "post",
+                    url: "http://localhost:8080/ademob/workers/updatePassword",
+                    data: this.worker
+                }).then(resp => {
+                    if ("success" == resp.data) {
                         //修改成功
                         //关闭窗口
                         this.updateDialogVisible2 = false;
@@ -237,27 +227,12 @@
                     }
                 })
             },
-            logout(){
+            logout() {
                 axios({
-                    method:"get",
-                    url:"http://localhost:8080/ademob/workers/logout"
+                    method: "get",
+                    url: "http://localhost:8080/ademob/workers/logout"
                 })
             },
-            handleAvatarSuccess(res, file) {
-                this.imageUrl = URL.createObjectURL(file.raw);
-            },
-            beforeAvatarUpload(file) {
-                const isJPG = file.type === 'image/jpeg';
-                const isLt2M = file.size / 1024 / 1024 < 2;
-
-                if (!isJPG) {
-                    this.$message.error('上传头像图片只能是 JPG 格式!');
-                }
-                if (!isLt2M) {
-                    this.$message.error('上传头像图片大小不能超过 2MB!');
-                }
-                return isJPG && isLt2M;
-            }
         },
         data() {
             return {
@@ -278,13 +253,13 @@
                     clockOutHour: "",
                     clockOutHourMinute: "",
                     profilePhoto: "",
-                    basicSalary:"",
-                    status:"",
-                    managerId:""
+                    basicSalary: "",
+                    status: "",
+                    managerId: ""
                 },
-                password0:"",
-                password1:"",
-                password2:"",
+                password0: "",
+                password1: "",
+                password2: "",
                 imageUrl: '',
 
             }

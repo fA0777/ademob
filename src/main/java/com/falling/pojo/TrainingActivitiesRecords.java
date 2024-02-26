@@ -1,4 +1,5 @@
 package com.falling.pojo;
+
 //培训活动记录实体类
 public class TrainingActivitiesRecords {
     //id
@@ -22,16 +23,16 @@ public class TrainingActivitiesRecords {
         return id;
     }
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     public Integer getProcess() {
         return process;
     }
 
     public void setProcess(Integer process) {
         this.process = process;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public Integer getTrainingActivityId() {

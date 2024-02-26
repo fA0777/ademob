@@ -20,47 +20,47 @@
 
 
         <el-form-item label="id" size="mini">
-            <el-input v-model="resignations.id" placeholder="id"></el-input>
+            <el-input placeholder="id" v-model="resignations.id"></el-input>
         </el-form-item>
 
         <el-form-item label="员工id" size="mini">
-            <el-input v-model="resignations.workerId" placeholder="员工id"></el-input>
+            <el-input placeholder="员工id" v-model="resignations.workerId"></el-input>
         </el-form-item>
         <el-form-item label="离职理由" size="mini">
-            <el-input v-model="resignations.reason" placeholder="离职理由"></el-input>
+            <el-input placeholder="离职理由" v-model="resignations.reason"></el-input>
         </el-form-item>
         <el-form-item label="是否批准（0未审批，1不批准，2批准）" size="mini">
-            <el-input v-model="resignations.approval" placeholder="是否批准（0未审批，1不批准，2批准）"></el-input>
+            <el-input placeholder="是否批准（0未审批，1不批准，2批准）" v-model="resignations.approval"></el-input>
         </el-form-item>
         <el-form-item label="管理员id" size="mini">
-            <el-input v-model="resignations.managerId" placeholder="管理员id"></el-input>
+            <el-input placeholder="管理员id" v-model="resignations.managerId"></el-input>
         </el-form-item>
 
         <el-form-item>
-            <el-button type="primary" @click="selectByPage">查询</el-button>
+            <el-button @click="selectByPage" type="primary">查询</el-button>
         </el-form-item>
     </el-form>
 
     <!--按钮-->
 
     <el-row>
-        <el-button type="danger" plain @click="deleteResignations">删除</el-button>
+        <el-button @click="deleteResignations" plain type="danger">删除</el-button>
     </el-row>
 
     <!--修改数据对话框表单-->
     <el-dialog
-            title="修改"
             :visible.sync="updateDialogVisible"
+            title="修改"
             width="40%"
     >
 
-        <el-form ref="form" :model="resignations" label-width="80px">
+        <el-form :model="resignations" label-width="80px" ref="form">
             <el-form-item label="是否批准">
                 <el-input v-model="resignations.approval"></el-input>
             </el-form-item>
 
             <el-form-item>
-                <el-button type="primary" @click="updateResignations">提交</el-button>
+                <el-button @click="updateResignations" type="primary">提交</el-button>
                 <el-button @click="updateDialogVisible = false">取消</el-button>
             </el-form-item>
         </el-form>
@@ -71,9 +71,9 @@
     <template>
         <el-table
                 :data="tableData"
-                style="width: 100%"
                 :row-class-name="tableRowClassName"
                 @selection-change="handleSelectionChange"
+                style="width: 100%"
         >
             <el-table-column
                     type="selection"
@@ -84,38 +84,38 @@
                     width="50">
             </el-table-column>
             <el-table-column
-                    prop="id"
+                    align="center"
                     label="id"
-                    align="center"
+                    prop="id"
             >
             </el-table-column>
             <el-table-column
-                    prop="workerId"
+                    align="center"
                     label="员工id"
-                    align="center"
+                    prop="workerId"
             >
             </el-table-column>
             <el-table-column
-                    prop="reason"
                     align="center"
-                    label="离职理由">
+                    label="离职理由"
+                    prop="reason">
             </el-table-column>
             <el-table-column
-                    prop="approval"
                     align="center"
-                    label="是否批准">
+                    label="是否批准"
+                    prop="approval">
             </el-table-column>
             <el-table-column
-                    prop="managerId"
                     align="center"
-                    label="管理员id">
+                    label="管理员id"
+                    prop="managerId">
             </el-table-column>
 
             <el-table-column
                     align="center"
                     label="操作">
                 <template slot-scope="scope">
-                    <el-button type="primary" @click="handleEdit(scope.$index, scope.row);updateDialogVisible =true">
+                    <el-button @click="handleEdit(scope.$index, scope.row);updateDialogVisible =true" type="primary">
                         修改
                     </el-button>
                 </template>
@@ -125,20 +125,20 @@
 
     <!--分页工具条-->
     <el-pagination
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
             :current-page="currentPage"
-            :page-sizes="[5, 10, 15, 20]"
             :page-size="5"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="totalCount">
+            :page-sizes="[5, 10, 15, 20]"
+            :total="totalCount"
+            @current-change="handleCurrentChange"
+            @size-change="handleSizeChange"
+            layout="total, sizes, prev, pager, next, jumper">
     </el-pagination>
 
 </div>
 
 <script src="js/vue.js"></script>
 <script src="element-ui/lib/index.js"></script>
-<link rel="stylesheet" href="element-ui/lib/theme-chalk/index.css">
+<link href="element-ui/lib/theme-chalk/index.css" rel="stylesheet">
 
 <script src="js/axios-0.18.0.js"></script>
 <script>
@@ -161,13 +161,13 @@
                     this.totalCount = resp.data.totalCount
                 })
             },
-            updateResignations(){
+            updateResignations() {
                 axios({
-                    method:"post",
-                    url:"http://localhost:8080/ademob/managers/updateResignations",
-                    data:this.resignations
-                }).then(resp=>{
-                    if("success"==resp.data){
+                    method: "post",
+                    url: "http://localhost:8080/ademob/managers/updateResignations",
+                    data: this.resignations
+                }).then(resp => {
+                    if ("success" == resp.data) {
                         //修改成功
                         //关闭窗口
                         this.updateDialogVisible = false;
@@ -263,7 +263,7 @@
                     workerId: "",
                     reason: "",
                     approval: "",
-                    status:"",
+                    status: "",
                     managerId: ""
                 },
                 //表格数据
@@ -272,7 +272,7 @@
                     workerId: "1",
                     reason: "1",
                     approval: "1",
-                    status:"1",
+                    status: "1",
                     managerId: "1"
                 }]
             }

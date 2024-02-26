@@ -12,8 +12,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @WebServlet("/managers/*")
@@ -57,8 +55,8 @@ public class ManagersServlet extends BaseServlet {
         //将json字符串转成Worker对象
         Workers worker = JSON.parseObject(params, Workers.class);
         //校验用户名是否已存在，若已存在，输出提示，添加员工失败
-        Workers workers=service.selectWorker(worker.getName());
-        if (workers==null){
+        Workers workers = service.selectWorker(worker.getName());
+        if (workers == null) {
             //用户名不存在，可添加
             worker.setProfilePhoto("https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png");
             worker.setStatus(1);
@@ -67,7 +65,7 @@ public class ManagersServlet extends BaseServlet {
             service.addWorker(worker);
             //响应成功的标识
             response.getWriter().write("success");
-        }else {
+        } else {
             //用户名存在，不可添加
             response.getWriter().write("fail");
         }
@@ -83,12 +81,12 @@ public class ManagersServlet extends BaseServlet {
         int[] workersIds = JSON.parseObject(params, int[].class);
         Integer managerId = manager.getId();
         //将该员工相关的数据都软删除
-        service.deleteAttendanceRecordsK(workersIds,managerId);
-        service.deleteLeaveRecordsK(workersIds,managerId);
-        service.deleteResignationsK(workersIds,managerId);
-        service.deleteSalaryRecordsK(workersIds,managerId);
-        service.deleteTrainingActivitiesRecordsK(workersIds,managerId);
-        service.deleteWorkersK(workersIds,managerId);
+        service.deleteAttendanceRecordsK(workersIds, managerId);
+        service.deleteLeaveRecordsK(workersIds, managerId);
+        service.deleteResignationsK(workersIds, managerId);
+        service.deleteSalaryRecordsK(workersIds, managerId);
+        service.deleteTrainingActivitiesRecordsK(workersIds, managerId);
+        service.deleteWorkersK(workersIds, managerId);
         //响应成功的标识
         response.getWriter().write("success");
     }
@@ -103,14 +101,14 @@ public class ManagersServlet extends BaseServlet {
         worker.setManagerId(0);
 
         //校验是否存在用户名相同的其他用户，若已存在，输出提示，修改失败
-        Workers workers=service.selectWorker(worker.getName());
-        if (workers.getId().equals(worker.getId())){
+        Workers workers = service.selectWorker(worker.getName());
+        if (workers.getId().equals(worker.getId())) {
             //不存在，可修改
             //调用service方法
             service.updateWorker(worker);
             //响应成功的标识
             response.getWriter().write("success");
-        }else {
+        } else {
             //存在，不可修改
             response.getWriter().write("fail");
         }
@@ -135,7 +133,7 @@ public class ManagersServlet extends BaseServlet {
         int currentPage = Integer.parseInt(_currentPage);
         int pageSize = Integer.parseInt(_pageSize);
         //调用service进行查询
-        PageBean<Workers> pageBean = service.selectByPageAndCondition(currentPage, pageSize,worker);
+        PageBean<Workers> pageBean = service.selectByPageAndCondition(currentPage, pageSize, worker);
         //把pageBean对象转为json
         String jsonString = JSON.toJSONString(pageBean);
         //写数据
@@ -168,7 +166,7 @@ public class ManagersServlet extends BaseServlet {
         int[] ids = JSON.parseObject(params, int[].class);
         Integer managerId = manager.getId();
         //调用service方法
-        service.deleteAttendanceRecords(ids,managerId);
+        service.deleteAttendanceRecords(ids, managerId);
         //响应成功的标识
         response.getWriter().write("success");
     }
@@ -204,7 +202,7 @@ public class ManagersServlet extends BaseServlet {
         int currentPage = Integer.parseInt(_currentPage);
         int pageSize = Integer.parseInt(_pageSize);
         //调用service进行查询
-        PageBean<AttendanceRecords> pageBean = service.selectByPageAndCondition2(currentPage, pageSize,attendanceRecord);
+        PageBean<AttendanceRecords> pageBean = service.selectByPageAndCondition2(currentPage, pageSize, attendanceRecord);
         //把pageBean对象转为json
         String jsonString = JSON.toJSONString(pageBean);
         //写数据
@@ -230,7 +228,7 @@ public class ManagersServlet extends BaseServlet {
         int currentPage = Integer.parseInt(_currentPage);
         int pageSize = Integer.parseInt(_pageSize);
         //调用service进行查询
-        PageBean<LeaveRecords> pageBean = service.selectByPageAndCondition3(currentPage, pageSize,leaveRecords);
+        PageBean<LeaveRecords> pageBean = service.selectByPageAndCondition3(currentPage, pageSize, leaveRecords);
         //把pageBean对象转为json
         String jsonString = JSON.toJSONString(pageBean);
         //写数据
@@ -256,7 +254,7 @@ public class ManagersServlet extends BaseServlet {
         int currentPage = Integer.parseInt(_currentPage);
         int pageSize = Integer.parseInt(_pageSize);
         //调用service进行查询
-        PageBean<Resignations> pageBean = service.selectByPageAndCondition4(currentPage, pageSize,resignations);
+        PageBean<Resignations> pageBean = service.selectByPageAndCondition4(currentPage, pageSize, resignations);
         //把pageBean对象转为json
         String jsonString = JSON.toJSONString(pageBean);
         //写数据
@@ -264,6 +262,7 @@ public class ManagersServlet extends BaseServlet {
         response.setContentType("text/json;charset=utf-8");
         response.getWriter().write(jsonString);
     }
+
     public void deleteLeaveRecords(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //接受id数组
         BufferedReader br = request.getReader();
@@ -273,7 +272,7 @@ public class ManagersServlet extends BaseServlet {
         int[] ids = JSON.parseObject(params, int[].class);
         Integer managerId = manager.getId();
         //调用service方法
-        service.deleteLeaveRecords(ids,managerId);
+        service.deleteLeaveRecords(ids, managerId);
         //响应成功的标识
         response.getWriter().write("success");
     }
@@ -315,7 +314,7 @@ public class ManagersServlet extends BaseServlet {
         int[] ids = JSON.parseObject(params, int[].class);
         Integer managerId = manager.getId();
         //调用service方法
-        service.deleteResignations(ids,managerId);
+        service.deleteResignations(ids, managerId);
         //响应成功的标识
         response.getWriter().write("success");
     }
@@ -344,7 +343,7 @@ public class ManagersServlet extends BaseServlet {
         int[] ids = JSON.parseObject(params, int[].class);
         Integer managerId = manager.getId();
         //调用service方法
-        service.deleteTrainingActivities(ids,managerId);
+        service.deleteTrainingActivities(ids, managerId);
         //响应成功的标识
         response.getWriter().write("success");
     }
@@ -366,7 +365,7 @@ public class ManagersServlet extends BaseServlet {
         int currentPage = Integer.parseInt(_currentPage);
         int pageSize = Integer.parseInt(_pageSize);
         //调用service进行查询
-        PageBean<TrainingActivities> pageBean = service.selectByPageAndCondition5(currentPage, pageSize,trainingActivities);
+        PageBean<TrainingActivities> pageBean = service.selectByPageAndCondition5(currentPage, pageSize, trainingActivities);
         //把pageBean对象转为json
         String jsonString = JSON.toJSONString(pageBean);
         //写数据
@@ -420,7 +419,7 @@ public class ManagersServlet extends BaseServlet {
         int currentPage = Integer.parseInt(_currentPage);
         int pageSize = Integer.parseInt(_pageSize);
         //调用service进行查询
-        PageBean<TrainingActivitiesRecords> pageBean = service.selectByPageAndCondition6(currentPage, pageSize,trainingActivitiesRecords);
+        PageBean<TrainingActivitiesRecords> pageBean = service.selectByPageAndCondition6(currentPage, pageSize, trainingActivitiesRecords);
         //把pageBean对象转为json
         String jsonString = JSON.toJSONString(pageBean);
         //写数据
@@ -438,7 +437,7 @@ public class ManagersServlet extends BaseServlet {
         int[] ids = JSON.parseObject(params, int[].class);
         Integer managerId = manager.getId();
         //调用service方法
-        service.deleteTrainingActivitiesRecords(ids,managerId);
+        service.deleteTrainingActivitiesRecords(ids, managerId);
         //响应成功的标识
         response.getWriter().write("success");
     }
@@ -481,7 +480,7 @@ public class ManagersServlet extends BaseServlet {
         int[] ids = JSON.parseObject(params, int[].class);
         Integer managerId = manager.getId();
         //调用service方法
-        service.deleteAnnouncements(ids,managerId);
+        service.deleteAnnouncements(ids, managerId);
         //响应成功的标识
         response.getWriter().write("success");
     }
@@ -538,27 +537,27 @@ public class ManagersServlet extends BaseServlet {
         Integer managerId = manager.getId();
         List<Workers> workers = service.selectWorkersF();
         for (Workers worker : workers) {
-            Double bonus=new Double(0);
-            Double fine=new Double(0);
-            Double totalSalary=new Double(0);
+            Double bonus = new Double(0);
+            Double fine = new Double(0);
+            Double totalSalary = new Double(0);
             //获取员工id，底薪
             Integer workerId = worker.getId();
             Double basicSalary = worker.getBasicSalary();
-            totalSalary+=basicSalary;
+            totalSalary += basicSalary;
             //查询该员工的培训活动记录中process为3的数据，获取奖金数据，并将该条记录process设为4
             List<TrainingActivitiesRecords> trainingActivitiesRecords = service.selectTrainingActivitiesRecordsF(workerId);
             for (TrainingActivitiesRecords trainingActivitiesRecord : trainingActivitiesRecords) {
-                bonus+=trainingActivitiesRecord.getBonus();
+                bonus += trainingActivitiesRecord.getBonus();
                 trainingActivitiesRecord.setProcess(4);
                 trainingActivitiesRecord.setManagerId(managerId);
                 service.updateTrainingActivitiesRecordsF(trainingActivitiesRecord);
             }
-            totalSalary+=bonus;
+            totalSalary += bonus;
             //改进：出勤和请假记录像培训活动记录一样，设process和status两个属性，这样才不会在结算工资时将相应数据都软删除了
             //查询该员工的出勤记录中status为1的数据，获取罚款数据，并将该条记录status设为2
             List<AttendanceRecords> attendanceRecords = service.selectAttendanceRecordsF(workerId);
             for (AttendanceRecords attendanceRecord : attendanceRecords) {
-                fine+=attendanceRecord.getFine();
+                fine += attendanceRecord.getFine();
                 attendanceRecord.setStatus(2);
                 attendanceRecord.setManagerId(managerId);
                 service.updateAttendanceRecordsF(attendanceRecord);
@@ -566,12 +565,12 @@ public class ManagersServlet extends BaseServlet {
             //查询该员工的请假记录中status为1的数据，获取罚款数据，并将该条记录status设为2
             List<LeaveRecords> leaveRecords = service.selectLeaveRecordsF(workerId);
             for (LeaveRecords leaveRecord : leaveRecords) {
-                fine+=leaveRecord.getFine();
+                fine += leaveRecord.getFine();
                 leaveRecord.setStatus(2);
                 leaveRecord.setManagerId(managerId);
                 service.updateLeaveRecordsF(leaveRecord);
             }
-            totalSalary-=fine;
+            totalSalary -= fine;
             //封装为SalaryRecords对象，设置相应的数据
             SalaryRecords salaryRecords1 = new SalaryRecords();
             salaryRecords1.setWorkerId(workerId);

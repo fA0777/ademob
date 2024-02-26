@@ -11,17 +11,17 @@
 
 
         <el-form-item label="id" size="mini">
-            <el-input v-model="announcements.id" placeholder="id"></el-input>
+            <el-input placeholder="id" v-model="announcements.id"></el-input>
         </el-form-item>
         <el-form-item label="管理员id" size="mini">
-            <el-input v-model="announcements.managerId" placeholder="管理员id"></el-input>
+            <el-input placeholder="管理员id" v-model="announcements.managerId"></el-input>
         </el-form-item>
         <el-form-item label="公告内容" size="mini">
-            <el-input v-model="announcements.announcementContent" placeholder="公告内容"></el-input>
+            <el-input placeholder="公告内容" v-model="announcements.announcementContent"></el-input>
         </el-form-item>
 
         <el-form-item>
-            <el-button type="primary" @click="selectByPage">查询</el-button>
+            <el-button @click="selectByPage" type="primary">查询</el-button>
         </el-form-item>
     </el-form>
 
@@ -29,8 +29,8 @@
     <template>
         <el-table
                 :data="tableData"
-                style="width: 100%"
                 @selection-change="handleSelectionChange"
+                style="width: 100%"
         >
 
             <el-table-column
@@ -39,21 +39,21 @@
             </el-table-column>
 
             <el-table-column
-                    prop="id"
+                    align="center"
                     label="id"
-                    align="center"
+                    prop="id"
             >
             </el-table-column>
             <el-table-column
-                    prop="announcementContent"
+                    align="center"
                     label="公告内容"
-                    align="center"
+                    prop="announcementContent"
             >
             </el-table-column>
             <el-table-column
-                    prop="managerId"
-                    label="管理员id"
                     align="center"
+                    label="管理员id"
+                    prop="managerId"
             >
             </el-table-column>
 
@@ -64,7 +64,7 @@
 
 <script src="js/vue.js"></script>
 <script src="element-ui/lib/index.js"></script>
-<link rel="stylesheet" href="element-ui/lib/theme-chalk/index.css">
+<link href="element-ui/lib/theme-chalk/index.css" rel="stylesheet">
 
 <script src="js/axios-0.18.0.js"></script>
 <script>

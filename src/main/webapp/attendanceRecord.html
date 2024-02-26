@@ -20,57 +20,57 @@
 
 
         <el-form-item label="id" size="mini">
-            <el-input v-model="attendanceRecords.id" placeholder="id"></el-input>
+            <el-input placeholder="id" v-model="attendanceRecords.id"></el-input>
         </el-form-item>
 
         <el-form-item label="员工id" size="mini">
-            <el-input v-model="attendanceRecords.workerId" placeholder="员工id"></el-input>
+            <el-input placeholder="员工id" v-model="attendanceRecords.workerId"></el-input>
         </el-form-item>
         <el-form-item label="类型（1迟到 2早退 3缺勤）" size="mini">
-            <el-input v-model="attendanceRecords.type" placeholder="类型（1迟到 2早退 3缺勤）"></el-input>
+            <el-input placeholder="类型（1迟到 2早退 3缺勤）" v-model="attendanceRecords.type"></el-input>
         </el-form-item>
         <el-form-item label="年" size="mini">
-            <el-input v-model="attendanceRecords.year" placeholder="年"></el-input>
+            <el-input placeholder="年" v-model="attendanceRecords.year"></el-input>
         </el-form-item>
         <el-form-item label="月" size="mini">
-            <el-input v-model="attendanceRecords.month" placeholder="月"></el-input>
+            <el-input placeholder="月" v-model="attendanceRecords.month"></el-input>
         </el-form-item>
         <el-form-item label="日" size="mini">
-            <el-input v-model="attendanceRecords.day" placeholder="日"></el-input>
+            <el-input placeholder="日" v-model="attendanceRecords.day"></el-input>
         </el-form-item>
         <el-form-item label="时" size="mini">
-            <el-input v-model="attendanceRecords.hour" placeholder="时"></el-input>
+            <el-input placeholder="时" v-model="attendanceRecords.hour"></el-input>
         </el-form-item>
         <el-form-item label="分" size="mini">
-            <el-input v-model="attendanceRecords.minute" placeholder="分"></el-input>
+            <el-input placeholder="分" v-model="attendanceRecords.minute"></el-input>
         </el-form-item>
         <el-form-item label="罚款" size="mini">
-            <el-input v-model="attendanceRecords.fine" placeholder="罚款"></el-input>
+            <el-input placeholder="罚款" v-model="attendanceRecords.fine"></el-input>
         </el-form-item>
         <el-form-item label="管理员id" size="mini">
-            <el-input v-model="attendanceRecords.managerId" placeholder="管理员id"></el-input>
+            <el-input placeholder="管理员id" v-model="attendanceRecords.managerId"></el-input>
         </el-form-item>
 
         <el-form-item>
-            <el-button type="primary" @click="selectByPage">查询</el-button>
+            <el-button @click="selectByPage" type="primary">查询</el-button>
         </el-form-item>
     </el-form>
 
     <!--按钮-->
 
     <el-row>
-        <el-button type="danger" plain @click="deleteAttendanceRecords">删除</el-button>
-        <el-button type="primary" plain @click="addDialogVisible = true">添加</el-button>
+        <el-button @click="deleteAttendanceRecords" plain type="danger">删除</el-button>
+        <el-button @click="addDialogVisible = true" plain type="primary">添加</el-button>
     </el-row>
 
     <!--添加员工出勤记录对话框表单-->
     <el-dialog
-            title="添加员工出勤记录"
             :visible.sync="addDialogVisible"
+            title="添加员工出勤记录"
             width="40%"
     >
 
-        <el-form ref="form" :model="attendanceRecords" label-width="80px">
+        <el-form :model="attendanceRecords" label-width="80px" ref="form">
             <el-form-item label="员工id">
                 <el-input v-model="attendanceRecords.workerId"></el-input>
             </el-form-item>
@@ -99,7 +99,7 @@
             </el-form-item>
 
             <el-form-item>
-                <el-button type="primary" @click="addAttendanceRecord">提交</el-button>
+                <el-button @click="addAttendanceRecord" type="primary">提交</el-button>
                 <el-button @click="addDialogVisible = false">取消</el-button>
             </el-form-item>
         </el-form>
@@ -109,12 +109,12 @@
 
     <!--修改员工出勤记录对话框表单-->
     <el-dialog
-            title="修改员工出勤记录"
             :visible.sync="updateDialogVisible"
+            title="修改员工出勤记录"
             width="40%"
     >
 
-        <el-form ref="form" :model="attendanceRecords" label-width="80px">
+        <el-form :model="attendanceRecords" label-width="80px" ref="form">
             <el-form-item label="员工id">
                 <el-input v-model="attendanceRecords.workerId"></el-input>
             </el-form-item>
@@ -143,7 +143,7 @@
             </el-form-item>
 
             <el-form-item>
-                <el-button type="primary" @click="updateAttendanceRecord">提交</el-button>
+                <el-button @click="updateAttendanceRecord" type="primary">提交</el-button>
                 <el-button @click="updateDialogVisible = false">取消</el-button>
             </el-form-item>
         </el-form>
@@ -154,9 +154,9 @@
     <template>
         <el-table
                 :data="tableData"
-                style="width: 100%"
                 :row-class-name="tableRowClassName"
                 @selection-change="handleSelectionChange"
+                style="width: 100%"
         >
 
             <el-table-column
@@ -168,63 +168,63 @@
                     width="50">
             </el-table-column>
             <el-table-column
-                    prop="id"
+                    align="center"
                     label="id"
-                    align="center"
+                    prop="id"
             >
             </el-table-column>
             <el-table-column
-                    prop="workerId"
+                    align="center"
                     label="员工id"
-                    align="center"
+                    prop="workerId"
             >
             </el-table-column>
             <el-table-column
-                    prop="type"
                     align="center"
-                    label="类型">
+                    label="类型"
+                    prop="type">
             </el-table-column>
             <el-table-column
-                    prop="year"
                     align="center"
-                    label="年">
+                    label="年"
+                    prop="year">
             </el-table-column>
             <el-table-column
-                    prop="month"
                     align="center"
-                    label="月">
+                    label="月"
+                    prop="month">
             </el-table-column>
             <el-table-column
-                    prop="day"
                     align="center"
-                    label="日">
+                    label="日"
+                    prop="day">
             </el-table-column>
             <el-table-column
-                    prop="hour"
                     align="center"
-                    label="时">
+                    label="时"
+                    prop="hour">
             </el-table-column>
             <el-table-column
-                    prop="minute"
                     align="center"
-                    label="分">
+                    label="分"
+                    prop="minute">
             </el-table-column>
             <el-table-column
-                    prop="fine"
                     align="center"
-                    label="罚款">
+                    label="罚款"
+                    prop="fine">
             </el-table-column>
             <el-table-column
-                    prop="managerId"
                     align="center"
-                    label="管理员id">
+                    label="管理员id"
+                    prop="managerId">
             </el-table-column>
 
             <el-table-column
                     align="center"
                     label="操作">
                 <template slot-scope="scope">
-                    <el-button type="primary" @click="handleEdit(scope.$index, scope.row);updateDialogVisible =true">
+                    <el-button @click="handleEdit(scope.$index, scope.row);updateDialogVisible =true" type="primary">
                         修改
                     </el-button>
                 </template>
@@ -233,19 +233,19 @@
     </template>
     <!--分页工具条-->
     <el-pagination
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
             :current-page="currentPage"
-            :page-sizes="[5, 10, 15, 20]"
             :page-size="5"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="totalCount">
+            :page-sizes="[5, 10, 15, 20]"
+            :total="totalCount"
+            @current-change="handleCurrentChange"
+            @size-change="handleSizeChange"
+            layout="total, sizes, prev, pager, next, jumper">
     </el-pagination>
 
 </div>
 <script src="js/vue.js"></script>
 <script src="element-ui/lib/index.js"></script>
-<link rel="stylesheet" href="element-ui/lib/theme-chalk/index.css">
+<link href="element-ui/lib/theme-chalk/index.css" rel="stylesheet">
 
 <script src="js/axios-0.18.0.js"></script>
 
@@ -271,11 +271,11 @@
                 })
             },
             //添加员工出勤记录
-            addAttendanceRecord(){
+            addAttendanceRecord() {
                 axios({
                     method: "post",
                     url: "http://localhost:8080/ademob/managers/addAttendanceRecord",
-                    data:this.attendanceRecords
+                    data: this.attendanceRecords
                 }).then(resp => {
                     if ("success" == resp.data) {
                         //添加成功
@@ -292,7 +292,7 @@
                 })
             },
             //删除员工出勤记录
-            deleteAttendanceRecords(){
+            deleteAttendanceRecords() {
                 //弹出确认删除的提示框
                 this.$confirm('此操作将删除该数据, 是否继续?', '提示', {
                     confirmButtonText: '确定',
@@ -335,13 +335,13 @@
                 });
             },
             //修改员工出勤记录
-            updateAttendanceRecord(){
+            updateAttendanceRecord() {
                 axios({
-                    method:"post",
-                    url:"http://localhost:8080/ademob/managers/updateAttendanceRecord",
-                    data:this.attendanceRecords
-                }).then(resp=>{
-                    if("success"==resp.data){
+                    method: "post",
+                    url: "http://localhost:8080/ademob/managers/updateAttendanceRecord",
+                    data: this.attendanceRecords
+                }).then(resp => {
+                    if ("success" == resp.data) {
                         //修改成功
                         //关闭窗口
                         this.updateDialogVisible = false;
@@ -401,13 +401,13 @@
                     workerId: "",
                     type: "",
                     year: "",
-                    month:"",
-                    day:"",
-                    hour:"",
-                    minute:"",
+                    month: "",
+                    day: "",
+                    hour: "",
+                    minute: "",
                     fine: "",
-                    status:"",
-                    managerId:""
+                    status: "",
+                    managerId: ""
                 },
                 //表格数据
                 tableData: [{
@@ -415,13 +415,13 @@
                     workerId: 1,
                     type: "1",
                     year: "1",
-                    month:"1",
-                    day:"1",
-                    hour:"1",
-                    minute:"1",
+                    month: "1",
+                    day: "1",
+                    hour: "1",
+                    minute: "1",
                     fine: "1",
-                    status:"1",
-                    managerId:"1"
+                    status: "1",
+                    managerId: "1"
                 }]
             }
         }

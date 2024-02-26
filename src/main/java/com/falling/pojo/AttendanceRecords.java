@@ -1,9 +1,6 @@
 package com.falling.pojo;
 
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-
 //出勤记录实体类
 public class AttendanceRecords {
     //id

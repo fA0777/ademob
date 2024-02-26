@@ -12,51 +12,52 @@
 
 
         <el-form-item label="id" size="mini">
-            <el-input v-model="trainingActivitiesRecords.id" placeholder="id"></el-input>
+            <el-input placeholder="id" v-model="trainingActivitiesRecords.id"></el-input>
         </el-form-item>
 
         <el-form-item label="培训活动id" size="mini">
-            <el-input v-model="trainingActivitiesRecords.trainingActivityId" placeholder="培训活动id"></el-input>
+            <el-input placeholder="培训活动id" v-model="trainingActivitiesRecords.trainingActivityId"></el-input>
         </el-form-item>
 
         <el-form-item label="员工id" size="mini">
-            <el-input v-model="trainingActivitiesRecords.workerId" placeholder="员工id"></el-input>
+            <el-input placeholder="员工id" v-model="trainingActivitiesRecords.workerId"></el-input>
         </el-form-item>
 
         <el-form-item label="培训成绩" size="mini">
-            <el-input v-model="trainingActivitiesRecords.score" placeholder="培训成绩"></el-input>
+            <el-input placeholder="培训成绩" v-model="trainingActivitiesRecords.score"></el-input>
         </el-form-item>
 
         <el-form-item label="奖金" size="mini">
-            <el-input v-model="trainingActivitiesRecords.bonus" placeholder="奖金"></el-input>
+            <el-input placeholder="奖金" v-model="trainingActivitiesRecords.bonus"></el-input>
         </el-form-item>
         <el-form-item label="进程（0未审批，1审批通过培训中，2审批不通过，3审批通过且培训完成，4奖金已发放）" size="mini">
-            <el-input v-model="trainingActivitiesRecords.process" placeholder="进程（0未审批，1审批通过培训中，2审批不通过，3审批通过且培训完成，4奖金已发放）"></el-input>
+            <el-input placeholder="进程（0未审批，1审批通过培训中，2审批不通过，3审批通过且培训完成，4奖金已发放）"
+                      v-model="trainingActivitiesRecords.process"></el-input>
         </el-form-item>
         <el-form-item label="管理员id" size="mini">
-            <el-input v-model="trainingActivitiesRecords.managerId" placeholder="管理员id"></el-input>
+            <el-input placeholder="管理员id" v-model="trainingActivitiesRecords.managerId"></el-input>
         </el-form-item>
 
         <el-form-item>
-            <el-button type="primary" @click="selectByPage">查询</el-button>
+            <el-button @click="selectByPage" type="primary">查询</el-button>
         </el-form-item>
     </el-form>
 
     <!--按钮-->
 
     <el-row>
-        <el-button type="danger" plain @click="deleteTrainingActivitiesRecords">删除</el-button>
-        <el-button type="primary" plain @click="addDialogVisible = true">新增</el-button>
+        <el-button @click="deleteTrainingActivitiesRecords" plain type="danger">删除</el-button>
+        <el-button @click="addDialogVisible = true" plain type="primary">新增</el-button>
     </el-row>
 
     <!--添加数据对话框表单-->
     <el-dialog
-            title="添加"
             :visible.sync="addDialogVisible"
+            title="添加"
             width="40%"
     >
 
-        <el-form ref="form" :model="trainingActivitiesRecords" label-width="85px">
+        <el-form :model="trainingActivitiesRecords" label-width="85px" ref="form">
             <el-form-item label="培训活动id">
                 <el-input v-model="trainingActivitiesRecords.trainingActivityId"></el-input>
             </el-form-item>
@@ -74,7 +75,7 @@
             </el-form-item>
 
             <el-form-item>
-                <el-button type="primary" @click="addTrainingActivitiesRecords">提交</el-button>
+                <el-button @click="addTrainingActivitiesRecords" type="primary">提交</el-button>
                 <el-button @click="addDialogVisible = false">取消</el-button>
             </el-form-item>
         </el-form>
@@ -83,13 +84,13 @@
 
     <!--修改培训活动员工记录对话框表单-->
     <el-dialog
-            title="修改培训活动员工记录"
             :visible.sync="updateDialogVisible"
+            title="修改培训活动员工记录"
             width="40%"
     >
 
-        <el-form ref="form" :model="trainingActivitiesRecords" label-width="80px">
- <el-table-column
+        <el-form :model="trainingActivitiesRecords" label-width="80px" ref="form">
+            <el-table-column
                     type="selection"
                     width="55">
             </el-table-column>
@@ -110,7 +111,7 @@
                 <el-input v-model="trainingActivitiesRecords.process"></el-input>
             </el-form-item>
             <el-form-item>
-                <el-button type="primary" @click="updateTrainingActivitiesRecords">提交</el-button>
+                <el-button @click="updateTrainingActivitiesRecords" type="primary">提交</el-button>
                 <el-button @click="updateDialogVisible = false">取消</el-button>
             </el-form-item>
         </el-form>
@@ -122,8 +123,8 @@
     <template>
         <el-table
                 :data="tableData"
-                style="width: 100%"
                 @selection-change="handleSelectionChange"
+                style="width: 100%"
         >
             <el-table-column
                     type="selection"
@@ -135,45 +136,45 @@
             </el-table-column>
 
             <el-table-column
-                    prop="id"
+                    align="center"
                     label="id"
-                    align="center"
+                    prop="id"
             >
             </el-table-column>
             <el-table-column
-                    prop="trainingActivityId"
+                    align="center"
                     label="培训活动id"
-                    align="center"
+                    prop="trainingActivityId"
             >
             </el-table-column>
             <el-table-column
-                    prop="workerId"
+                    align="center"
                     label="员工id"
-                    align="center"
+                    prop="workerId"
             >
             </el-table-column>
             <el-table-column
-                    prop="score"
+                    align="center"
                     label="培训成绩"
-                    align="center"
+                    prop="score"
             >
             </el-table-column>
             <el-table-column
-                    prop="bonus"
+                    align="center"
                     label="奖金"
-                    align="center"
+                    prop="bonus"
             >
             </el-table-column>
             <el-table-column
-                    prop="process"
+                    align="center"
                     label="进程"
-                    align="center"
+                    prop="process"
             >
             </el-table-column>
             <el-table-column
-                    prop="managerId"
-                    label="管理员id"
                     align="center"
+                    label="管理员id"
+                    prop="managerId"
             >
             </el-table-column>
 
@@ -184,7 +185,7 @@
 
 
                 <template slot-scope="scope">
-                    <el-button type="primary" @click="handleEdit(scope.$index, scope.row);updateDialogVisible =true">
+                    <el-button @click="handleEdit(scope.$index, scope.row);updateDialogVisible =true" type="primary">
                         修改
                     </el-button>
                 </template>
@@ -196,7 +197,7 @@
 
 <script src="js/vue.js"></script>
 <script src="element-ui/lib/index.js"></script>
-<link rel="stylesheet" href="element-ui/lib/theme-chalk/index.css">
+<link href="element-ui/lib/theme-chalk/index.css" rel="stylesheet">
 
 <script src="js/axios-0.18.0.js"></script>
 <script>
@@ -279,13 +280,13 @@
                 })
 
             },
-            updateTrainingActivitiesRecords(){
+            updateTrainingActivitiesRecords() {
                 axios({
-                    method:"post",
-                    url:"http://localhost:8080/ademob/managers/updateTrainingActivitiesRecords",
-                    data:this.trainingActivitiesRecords
-                }).then(resp=>{
-                    if("success"==resp.data){
+                    method: "post",
+                    url: "http://localhost:8080/ademob/managers/updateTrainingActivitiesRecords",
+                    data: this.trainingActivitiesRecords
+                }).then(resp => {
+                    if ("success" == resp.data) {
                         //修改成功
                         //关闭窗口
                         this.updateDialogVisible = false;
@@ -346,7 +347,7 @@
                     workerId: "",
                     score: "",
                     bonus: "",
-                    process:"",
+                    process: "",
                     status: "",
                     managerId: ""
                 },
@@ -357,7 +358,7 @@
                     workerId: "1",
                     score: "1",
                     bonus: "1",
-                    process:"1",
+                    process: "1",
                     status: "1",
                     managerId: "1"
                 }]

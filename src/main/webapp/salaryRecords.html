@@ -11,52 +11,52 @@
 
 
         <el-form-item label="id" size="mini">
-            <el-input v-model="salaryRecords.id" placeholder="id"></el-input>
+            <el-input placeholder="id" v-model="salaryRecords.id"></el-input>
         </el-form-item>
         <el-form-item label="员工id" size="mini">
-            <el-input v-model="salaryRecords.workerId" placeholder="员工id"></el-input>
+            <el-input placeholder="员工id" v-model="salaryRecords.workerId"></el-input>
         </el-form-item>
         <el-form-item label="年" size="mini">
-            <el-input v-model="salaryRecords.year" placeholder="年"></el-input>
+            <el-input placeholder="年" v-model="salaryRecords.year"></el-input>
         </el-form-item>
         <el-form-item label="月" size="mini">
-            <el-input v-model="salaryRecords.month" placeholder="月"></el-input>
+            <el-input placeholder="月" v-model="salaryRecords.month"></el-input>
         </el-form-item>
         <el-form-item label="底薪" size="mini">
-            <el-input v-model="salaryRecords.basicSalary" placeholder="底薪"></el-input>
+            <el-input placeholder="底薪" v-model="salaryRecords.basicSalary"></el-input>
         </el-form-item>
         <el-form-item label="奖金" size="mini">
-            <el-input v-model="salaryRecords.bonus" placeholder="奖金"></el-input>
+            <el-input placeholder="奖金" v-model="salaryRecords.bonus"></el-input>
         </el-form-item>
         <el-form-item label="罚款" size="mini">
-            <el-input v-model="salaryRecords.fine" placeholder="罚款"></el-input>
+            <el-input placeholder="罚款" v-model="salaryRecords.fine"></el-input>
         </el-form-item>
         <el-form-item label="总工资" size="mini">
-            <el-input v-model="salaryRecords.totalSalary" placeholder="总工资"></el-input>
+            <el-input placeholder="总工资" v-model="salaryRecords.totalSalary"></el-input>
         </el-form-item>
         <el-form-item label="管理员id" size="mini">
-            <el-input v-model="salaryRecords.managerId" placeholder="管理员id"></el-input>
+            <el-input placeholder="管理员id" v-model="salaryRecords.managerId"></el-input>
         </el-form-item>
 
         <el-form-item>
-            <el-button type="primary" @click="selectByPage">查询</el-button>
+            <el-button @click="selectByPage" type="primary">查询</el-button>
         </el-form-item>
     </el-form>
 
     <!--按钮-->
 
     <el-row>
-        <el-button type="primary" plain @click="addDialogVisible = true">发工资</el-button>
+        <el-button @click="addDialogVisible = true" plain type="primary">发工资</el-button>
     </el-row>
 
     <!--发工资对话框表单-->
     <el-dialog
-            title="发工资"
             :visible.sync="addDialogVisible"
+            title="发工资"
             width="40%"
     >
 
-        <el-form ref="form" :model="salaryRecords" label-width="80px">
+        <el-form :model="salaryRecords" label-width="80px" ref="form">
             <el-form-item label="年">
                 <el-input v-model="salaryRecords.year"></el-input>
             </el-form-item>
@@ -65,7 +65,7 @@
             </el-form-item>
 
             <el-form-item>
-                <el-button type="primary" @click="addSalaryRecords">提交</el-button>
+                <el-button @click="addSalaryRecords" type="primary">提交</el-button>
                 <el-button @click="addDialogVisible = false">取消</el-button>
             </el-form-item>
         </el-form>
@@ -76,8 +76,8 @@
     <template>
         <el-table
                 :data="tableData"
-                style="width: 100%"
                 :row-class-name="tableRowClassName"
+                style="width: 100%"
         >
 
             <el-table-column
@@ -85,69 +85,69 @@
                     width="50">
             </el-table-column>
             <el-table-column
-                    prop="id"
+                    align="center"
                     label="id"
-                    align="center"
+                    prop="id"
             >
             </el-table-column>
             <el-table-column
-                    prop="workerId"
+                    align="center"
                     label="员工id"
-                    align="center"
+                    prop="workerId"
             >
             </el-table-column>
             <el-table-column
-                    prop="year"
                     align="center"
-                    label="年">
+                    label="年"
+                    prop="year">
             </el-table-column>
             <el-table-column
-                    prop="month"
                     align="center"
-                    label="月">
+                    label="月"
+                    prop="month">
             </el-table-column>
             <el-table-column
-                    prop="basicSalary"
                     align="center"
-                    label="底薪">
+                    label="底薪"
+                    prop="basicSalary">
             </el-table-column>
             <el-table-column
-                    prop="bonus"
                     align="center"
-                    label="奖金">
+                    label="奖金"
+                    prop="bonus">
             </el-table-column>
             <el-table-column
-                    prop="fine"
                     align="center"
-                    label="罚款">
+                    label="罚款"
+                    prop="fine">
             </el-table-column>
             <el-table-column
-                    prop="totalSalary"
                     align="center"
-                    label="总工资">
+                    label="总工资"
+                    prop="totalSalary">
             </el-table-column>
             <el-table-column
-                    prop="managerId"
                     align="center"
-                    label="管理员id">
+                    label="管理员id"
+                    prop="managerId">
             </el-table-column>
         </el-table>
     </template>
     <!--分页工具条-->
     <el-pagination
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
             :current-page="currentPage"
-            :page-sizes="[5, 10, 15, 20]"
             :page-size="5"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="totalCount">
+            :page-sizes="[5, 10, 15, 20]"
+            :total="totalCount"
+            @current-change="handleCurrentChange"
+            @size-change="handleSizeChange"
+            layout="total, sizes, prev, pager, next, jumper">
     </el-pagination>
 
 </div>
 <script src="js/vue.js"></script>
 <script src="element-ui/lib/index.js"></script>
-<link rel="stylesheet" href="element-ui/lib/theme-chalk/index.css">
+<link href="element-ui/lib/theme-chalk/index.css" rel="stylesheet">
 
 <script src="js/axios-0.18.0.js"></script>
 
@@ -173,11 +173,11 @@
                 })
             },
             //发工资
-            addSalaryRecords(){
+            addSalaryRecords() {
                 axios({
                     method: "post",
                     url: "http://localhost:8080/ademob/managers/addSalaryRecords",
-                    data:this.salaryRecords
+                    data: this.salaryRecords
                 }).then(resp => {
                     if ("success" == resp.data) {
                         //添加成功
@@ -228,26 +228,26 @@
                     id: "",
                     workerId: "",
                     year: "",
-                    month:"",
-                    basicSalary:"",
-                    bonus:"",
+                    month: "",
+                    basicSalary: "",
+                    bonus: "",
                     fine: "",
-                    totalSalary:"",
-                    status:"",
-                    managerId:""
+                    totalSalary: "",
+                    status: "",
+                    managerId: ""
                 },
                 //表格数据
                 tableData: [{
                     id: 1,
                     workerId: 1,
                     year: "1",
-                    month:"1",
-                    basicSalary:"1",
-                    bonus:"1",
+                    month: "1",
+                    basicSalary: "1",
+                    bonus: "1",
                     fine: "1",
-                    totalSalary:"1",
-                    status:"1",
-                    managerId:"1"
+                    totalSalary: "1",
+                    status: "1",
+                    managerId: "1"
                 }]
             }
         }

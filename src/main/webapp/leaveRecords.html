@@ -20,74 +20,74 @@
 
 
         <el-form-item label="id" size="mini">
-            <el-input v-model="leaveRecords.id" placeholder="id"></el-input>
+            <el-input placeholder="id" v-model="leaveRecords.id"></el-input>
         </el-form-item>
 
         <el-form-item label="员工id" size="mini">
-            <el-input v-model="leaveRecords.workerId" placeholder="员工id"></el-input>
+            <el-input placeholder="员工id" v-model="leaveRecords.workerId"></el-input>
         </el-form-item>
         <el-form-item label="请假类型（1病假、2事假、3婚假、4丧假、5产假）" size="mini">
-            <el-input v-model="leaveRecords.leaveType" placeholder="请假类型（1病假、2事假、3婚假、4丧假、5产假）"></el-input>
+            <el-input placeholder="请假类型（1病假、2事假、3婚假、4丧假、5产假）" v-model="leaveRecords.leaveType"></el-input>
         </el-form-item>
         <el-form-item label="开始时间（年）" size="mini">
-            <el-input v-model="leaveRecords.byear" placeholder="开始时间（年）"></el-input>
+            <el-input placeholder="开始时间（年）" v-model="leaveRecords.byear"></el-input>
         </el-form-item>
         <el-form-item label="开始时间（月）" size="mini">
-            <el-input v-model="leaveRecords.bmonth" placeholder="开始时间（月）"></el-input>
+            <el-input placeholder="开始时间（月）" v-model="leaveRecords.bmonth"></el-input>
         </el-form-item>
         <el-form-item label="开始时间（日）" size="mini">
-            <el-input v-model="leaveRecords.bday" placeholder="开始时间（日）"></el-input>
+            <el-input placeholder="开始时间（日）" v-model="leaveRecords.bday"></el-input>
         </el-form-item>
         <el-form-item label="开始时间（时）" size="mini">
-            <el-input v-model="leaveRecords.bhour" placeholder="开始时间（时）"></el-input>
+            <el-input placeholder="开始时间（时）" v-model="leaveRecords.bhour"></el-input>
         </el-form-item>
         <el-form-item label="开始时间（分）" size="mini">
-            <el-input v-model="leaveRecords.bminute" placeholder="开始时间（分）"></el-input>
+            <el-input placeholder="开始时间（分）" v-model="leaveRecords.bminute"></el-input>
         </el-form-item>
         <el-form-item label="结束时间（年）" size="mini">
-            <el-input v-model="leaveRecords.eyear" placeholder="结束时间（年）"></el-input>
+            <el-input placeholder="结束时间（年）" v-model="leaveRecords.eyear"></el-input>
         </el-form-item>
         <el-form-item label="结束时间（月）" size="mini">
-            <el-input v-model="leaveRecords.emonth" placeholder="结束时间（月）"></el-input>
+            <el-input placeholder="结束时间（月）" v-model="leaveRecords.emonth"></el-input>
         </el-form-item>
         <el-form-item label="结束时间（日）" size="mini">
-            <el-input v-model="leaveRecords.eday" placeholder="结束时间（日）"></el-input>
+            <el-input placeholder="结束时间（日）" v-model="leaveRecords.eday"></el-input>
         </el-form-item>
         <el-form-item label="结束时间（时）" size="mini">
-            <el-input v-model="leaveRecords.ehour" placeholder="结束时间（时）"></el-input>
+            <el-input placeholder="结束时间（时）" v-model="leaveRecords.ehour"></el-input>
         </el-form-item>
         <el-form-item label="结束时间（分）" size="mini">
-            <el-input v-model="leaveRecords.eminute" placeholder="结束时间（分）"></el-input>
+            <el-input placeholder="结束时间（分）" v-model="leaveRecords.eminute"></el-input>
         </el-form-item>
         <el-form-item label="罚款" size="mini">
-            <el-input v-model="leaveRecords.fine" placeholder="罚款"></el-input>
+            <el-input placeholder="罚款" v-model="leaveRecords.fine"></el-input>
         </el-form-item>
         <el-form-item label="是否批准（0未审批，1批准，2不批准）" size="mini">
-            <el-input v-model="leaveRecords.approval" placeholder="是否批准（0未审批，1批准，2不批准）"></el-input>
+            <el-input placeholder="是否批准（0未审批，1批准，2不批准）" v-model="leaveRecords.approval"></el-input>
         </el-form-item>
         <el-form-item label="管理员id" size="mini">
-            <el-input v-model="leaveRecords.managerId" placeholder="管理员id"></el-input>
+            <el-input placeholder="管理员id" v-model="leaveRecords.managerId"></el-input>
         </el-form-item>
 
         <el-form-item>
-            <el-button type="primary" @click="selectByPage">查询</el-button>
+            <el-button @click="selectByPage" type="primary">查询</el-button>
         </el-form-item>
     </el-form>
 
     <!--按钮-->
 
     <el-row>
-        <el-button type="danger" plain @click="deleteLeaveRecords">删除</el-button>
+        <el-button @click="deleteLeaveRecords" plain type="danger">删除</el-button>
     </el-row>
 
     <!--修改数据对话框表单-->
     <el-dialog
-            title="修改"
             :visible.sync="updateDialogVisible"
+            title="修改"
             width="40%"
     >
 
-        <el-form ref="form" :model="leaveRecords" label-width="80px">
+        <el-form :model="leaveRecords" label-width="80px" ref="form">
             <el-form-item label="罚款">
                 <el-input v-model="leaveRecords.fine"></el-input>
             </el-form-item>
@@ -96,7 +96,7 @@
             </el-form-item>
 
             <el-form-item>
-                <el-button type="primary" @click="updateLeaveRecords">提交</el-button>
+                <el-button @click="updateLeaveRecords" type="primary">提交</el-button>
                 <el-button @click="updateDialogVisible = false">取消</el-button>
             </el-form-item>
         </el-form>
@@ -106,9 +106,9 @@
     <template>
         <el-table
                 :data="tableData"
-                style="width: 100%"
                 :row-class-name="tableRowClassName"
                 @selection-change="handleSelectionChange"
+                style="width: 100%"
         >
             <el-table-column
                     type="selection"
@@ -119,73 +119,73 @@
                     width="50">
             </el-table-column>
             <el-table-column
-                    prop="id"
+                    align="center"
                     label="id"
-                    align="center"
+                    prop="id"
             >
             </el-table-column>
             <el-table-column
-                    prop="workerId"
+                    align="center"
                     label="员工id"
-                    align="center"
+                    prop="workerId"
             >
             </el-table-column>
             <el-table-column
-                    prop="leaveType"
                     align="center"
-                    label="请假类型">
+                    label="请假类型"
+                    prop="leaveType">
             </el-table-column>
             <el-table-column
-                    prop="byear"
                     align="center"
-                    label="开始时间（年）">
+                    label="开始时间（年）"
+                    prop="byear">
             </el-table-column>
             <el-table-column
-                    prop="bmonth"
                     align="center"
-                    label="开始时间（月）">
+                    label="开始时间（月）"
+                    prop="bmonth">
             </el-table-column>
             <el-table-column
-                    prop="bday"
                     align="center"
-                    label="开始时间（日）">
+                    label="开始时间（日）"
+                    prop="bday">
             </el-table-column>
             <el-table-column
-                    prop="eyear"
                     align="center"
-                    label="结束时间（年）">
+                    label="结束时间（年）"
+                    prop="eyear">
             </el-table-column>
             <el-table-column
-                    prop="emonth"
                     align="center"
-                    label="结束时间（月）">
+                    label="结束时间（月）"
+                    prop="emonth">
             </el-table-column>
             <el-table-column
-                    prop="eday"
                     align="center"
-                    label="结束时间（日）">
+                    label="结束时间（日）"
+                    prop="eday">
             </el-table-column>
             <el-table-column
-                    prop="fine"
                     align="center"
-                    label="罚款">
+                    label="罚款"
+                    prop="fine">
             </el-table-column>
             <el-table-column
-                    prop="approval"
                     align="center"
-                    label="是否批准">
+                    label="是否批准"
+                    prop="approval">
             </el-table-column>
             <el-table-column
-                    prop="managerId"
                     align="center"
-                    label="管理员id">
+                    label="管理员id"
+                    prop="managerId">
             </el-table-column>
 
             <el-table-column
                     align="center"
                     label="操作">
                 <template slot-scope="scope">
-                    <el-button type="primary" @click="handleEdit(scope.$index, scope.row);updateDialogVisible =true">
+                    <el-button @click="handleEdit(scope.$index, scope.row);updateDialogVisible =true" type="primary">
                         修改
                     </el-button>
                 </template>
@@ -195,20 +195,20 @@
 
     <!--分页工具条-->
     <el-pagination
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
             :current-page="currentPage"
-            :page-sizes="[5, 10, 15, 20]"
             :page-size="5"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="totalCount">
+            :page-sizes="[5, 10, 15, 20]"
+            :total="totalCount"
+            @current-change="handleCurrentChange"
+            @size-change="handleSizeChange"
+            layout="total, sizes, prev, pager, next, jumper">
     </el-pagination>
 
 </div>
 
 <script src="js/vue.js"></script>
 <script src="element-ui/lib/index.js"></script>
-<link rel="stylesheet" href="element-ui/lib/theme-chalk/index.css">
+<link href="element-ui/lib/theme-chalk/index.css" rel="stylesheet">
 
 <script src="js/axios-0.18.0.js"></script>
 <script>
@@ -333,15 +333,15 @@
                     workerId: "",
                     leaveType: "",
                     byear: "",
-                    bmonth:"",
-                    bday:"",
-                    bhour:"",
-                    bminute:"",
+                    bmonth: "",
+                    bday: "",
+                    bhour: "",
+                    bminute: "",
                     eyear: "",
-                    emonth:"",
-                    eday:"",
-                    ehour:"",
-                    eminute:"",
+                    emonth: "",
+                    eday: "",
+                    ehour: "",
+                    eminute: "",
                     fine: "",
                     approval: "",
                     status: "",
@@ -353,15 +353,15 @@
                     workerId: "1",
                     leaveType: "1",
                     byear: "1",
-                    bmonth:"1",
-                    bday:"1",
-                    bhour:"1",
-                    bminute:"1",
+                    bmonth: "1",
+                    bday: "1",
+                    bhour: "1",
+                    bminute: "1",
                     eyear: "1",
-                    emonth:"1",
-                    eday:"1",
-                    ehour:"1",
-                    eminute:"1",
+                    emonth: "1",
+                    eday: "1",
+                    ehour: "1",
+                    eminute: "1",
                     fine: "1",
                     approval: "1",
                     status: "1",

@@ -42,10 +42,10 @@ public class ManagersServiceImpl implements ManagersService {
     }
 
     @Override
-    public void deleteWorkersK(int[] ids,int managerId) {
+    public void deleteWorkersK(int[] ids, int managerId) {
         SqlSession sqlSession = factory.openSession();
         ManagersMapper mapper = sqlSession.getMapper(ManagersMapper.class);
-        mapper.deleteWorkersK(ids,managerId);
+        mapper.deleteWorkersK(ids, managerId);
         sqlSession.commit();
         sqlSession.close();
         return;
@@ -55,7 +55,7 @@ public class ManagersServiceImpl implements ManagersService {
     public void deleteAttendanceRecordsK(int[] workersIds, int managerId) {
         SqlSession sqlSession = factory.openSession();
         ManagersMapper mapper = sqlSession.getMapper(ManagersMapper.class);
-        mapper.deleteAttendanceRecordsK(workersIds,managerId);
+        mapper.deleteAttendanceRecordsK(workersIds, managerId);
         sqlSession.commit();
         sqlSession.close();
         return;
@@ -65,7 +65,7 @@ public class ManagersServiceImpl implements ManagersService {
     public void deleteLeaveRecordsK(int[] workersIds, int managerId) {
         SqlSession sqlSession = factory.openSession();
         ManagersMapper mapper = sqlSession.getMapper(ManagersMapper.class);
-        mapper.deleteLeaveRecordsK(workersIds,managerId);
+        mapper.deleteLeaveRecordsK(workersIds, managerId);
         sqlSession.commit();
         sqlSession.close();
         return;
@@ -75,7 +75,7 @@ public class ManagersServiceImpl implements ManagersService {
     public void deleteResignationsK(int[] workersIds, int managerId) {
         SqlSession sqlSession = factory.openSession();
         ManagersMapper mapper = sqlSession.getMapper(ManagersMapper.class);
-        mapper.deleteResignationsK(workersIds,managerId);
+        mapper.deleteResignationsK(workersIds, managerId);
         sqlSession.commit();
         sqlSession.close();
         return;
@@ -85,7 +85,7 @@ public class ManagersServiceImpl implements ManagersService {
     public void deleteSalaryRecordsK(int[] workersIds, int managerId) {
         SqlSession sqlSession = factory.openSession();
         ManagersMapper mapper = sqlSession.getMapper(ManagersMapper.class);
-        mapper.deleteSalaryRecordsK(workersIds,managerId);
+        mapper.deleteSalaryRecordsK(workersIds, managerId);
         sqlSession.commit();
         sqlSession.close();
         return;
@@ -95,7 +95,7 @@ public class ManagersServiceImpl implements ManagersService {
     public void deleteTrainingActivitiesRecordsK(int[] workersIds, int managerId) {
         SqlSession sqlSession = factory.openSession();
         ManagersMapper mapper = sqlSession.getMapper(ManagersMapper.class);
-        mapper.deleteTrainingActivitiesRecordsK(workersIds,managerId);
+        mapper.deleteTrainingActivitiesRecordsK(workersIds, managerId);
         sqlSession.commit();
         sqlSession.close();
         return;
@@ -116,17 +116,17 @@ public class ManagersServiceImpl implements ManagersService {
         SqlSession sqlSession = factory.openSession();
         ManagersMapper mapper = sqlSession.getMapper(ManagersMapper.class);
         //计算开始索引=（当前页码-1）*每页显示的条数
-        int begin = (currentPage-1)*pageSize;
+        int begin = (currentPage - 1) * pageSize;
         //计算查询条目数
-        int size=pageSize;
+        int size = pageSize;
         //处理worker条件数据，模糊表达式
         String name = worker.getName();
-        if (name!=null&&name.length()>0){
-            worker.setName("%"+name+"%");
+        if (name != null && name.length() > 0) {
+            worker.setName("%" + name + "%");
         }
         String trueName = worker.getTrueName();
-        if (trueName!=null&&trueName.length()>0){
-            worker.setTrueName("%"+trueName+"%");
+        if (trueName != null && trueName.length() > 0) {
+            worker.setTrueName("%" + trueName + "%");
         }
         //调用方法查询当前页数据
         List<Workers> rows = mapper.selectByPageAndCondition(begin, size, worker);
@@ -152,10 +152,10 @@ public class ManagersServiceImpl implements ManagersService {
     }
 
     @Override
-    public void deleteAttendanceRecords(int[] ids,int managerId) {
+    public void deleteAttendanceRecords(int[] ids, int managerId) {
         SqlSession sqlSession = factory.openSession();
         ManagersMapper mapper = sqlSession.getMapper(ManagersMapper.class);
-        mapper.deleteAttendanceRecords(ids,managerId);
+        mapper.deleteAttendanceRecords(ids, managerId);
         sqlSession.commit();
         sqlSession.close();
         return;
@@ -176,9 +176,9 @@ public class ManagersServiceImpl implements ManagersService {
         SqlSession sqlSession = factory.openSession();
         ManagersMapper mapper = sqlSession.getMapper(ManagersMapper.class);
         //计算开始索引=（当前页码-1）*每页显示的条数
-        int begin = (currentPage-1)*pageSize;
+        int begin = (currentPage - 1) * pageSize;
         //计算查询条目数
-        int size=pageSize;
+        int size = pageSize;
         //调用方法查询当前页数据
         List<AttendanceRecords> rows = mapper.selectByPageAndCondition2(begin, size, attendanceRecord);
         //查询总记录数
@@ -217,9 +217,9 @@ public class ManagersServiceImpl implements ManagersService {
         SqlSession sqlSession = factory.openSession();
         ManagersMapper mapper = sqlSession.getMapper(ManagersMapper.class);
         //计算开始索引=（当前页码-1）*每页显示的条数
-        int begin = (currentPage-1)*pageSize;
+        int begin = (currentPage - 1) * pageSize;
         //计算查询条目数
-        int size=pageSize;
+        int size = pageSize;
         //调用方法查询当前页数据
         List<LeaveRecords> rows = mapper.selectByPageAndCondition3(begin, size, leaveRecords);
         //查询总记录数
@@ -237,7 +237,7 @@ public class ManagersServiceImpl implements ManagersService {
     public void deleteResignations(int[] ids, int managerId) {
         SqlSession sqlSession = factory.openSession();
         ManagersMapper mapper = sqlSession.getMapper(ManagersMapper.class);
-        mapper.deleteResignations(ids,managerId);
+        mapper.deleteResignations(ids, managerId);
         sqlSession.commit();
         sqlSession.close();
         return;
@@ -258,13 +258,13 @@ public class ManagersServiceImpl implements ManagersService {
         SqlSession sqlSession = factory.openSession();
         ManagersMapper mapper = sqlSession.getMapper(ManagersMapper.class);
         //计算开始索引=（当前页码-1）*每页显示的条数
-        int begin = (currentPage-1)*pageSize;
+        int begin = (currentPage - 1) * pageSize;
         //计算查询条目数
-        int size=pageSize;
+        int size = pageSize;
         //处理Resignations条件数据，模糊表达式
         String reason = resignations.getReason();
-        if (reason!=null&&reason.length()>0){
-           resignations.setReason("%"+reason+"%");
+        if (reason != null && reason.length() > 0) {
+            resignations.setReason("%" + reason + "%");
         }
         //调用方法查询当前页数据
         List<Resignations> rows = mapper.selectByPageAndCondition4(begin, size, resignations);
@@ -290,10 +290,10 @@ public class ManagersServiceImpl implements ManagersService {
     }
 
     @Override
-    public void deleteTrainingActivities(int[] ids,int managerId) {
+    public void deleteTrainingActivities(int[] ids, int managerId) {
         SqlSession sqlSession = factory.openSession();
         ManagersMapper mapper = sqlSession.getMapper(ManagersMapper.class);
-        mapper.deleteTrainingActivities(ids,managerId);
+        mapper.deleteTrainingActivities(ids, managerId);
         sqlSession.commit();
         sqlSession.close();
         return;
@@ -304,13 +304,13 @@ public class ManagersServiceImpl implements ManagersService {
         SqlSession sqlSession = factory.openSession();
         ManagersMapper mapper = sqlSession.getMapper(ManagersMapper.class);
         //计算开始索引=（当前页码-1）*每页显示的条数
-        int begin = (currentPage-1)*pageSize;
+        int begin = (currentPage - 1) * pageSize;
         //计算查询条目数
-        int size=pageSize;
+        int size = pageSize;
         //处理TrainingActivities条件数据，模糊表达式
         String trainingContent = trainingActivities.getTrainingContent();
-        if (trainingContent!=null&&trainingContent.length()>0){
-            trainingActivities.setTrainingContent("%"+trainingContent+"%");
+        if (trainingContent != null && trainingContent.length() > 0) {
+            trainingActivities.setTrainingContent("%" + trainingContent + "%");
         }
         //调用方法查询当前页数据
         List<TrainingActivities> rows = mapper.selectByPageAndCondition5(begin, size, trainingActivities);
@@ -346,10 +346,10 @@ public class ManagersServiceImpl implements ManagersService {
     }
 
     @Override
-    public void deleteTrainingActivitiesRecords(int[] ids,int managerId) {
+    public void deleteTrainingActivitiesRecords(int[] ids, int managerId) {
         SqlSession sqlSession = factory.openSession();
         ManagersMapper mapper = sqlSession.getMapper(ManagersMapper.class);
-        mapper.deleteTrainingActivitiesRecords(ids,managerId);
+        mapper.deleteTrainingActivitiesRecords(ids, managerId);
         sqlSession.commit();
         sqlSession.close();
         return;
@@ -360,9 +360,9 @@ public class ManagersServiceImpl implements ManagersService {
         SqlSession sqlSession = factory.openSession();
         ManagersMapper mapper = sqlSession.getMapper(ManagersMapper.class);
         //计算开始索引=（当前页码-1）*每页显示的条数
-        int begin = (currentPage-1)*pageSize;
+        int begin = (currentPage - 1) * pageSize;
         //计算查询条目数
-        int size=pageSize;
+        int size = pageSize;
         //调用方法查询当前页数据
         List<TrainingActivitiesRecords> rows = mapper.selectByPageAndCondition6(begin, size, trainingActivitiesRecords);
         //查询总记录数
@@ -397,10 +397,10 @@ public class ManagersServiceImpl implements ManagersService {
     }
 
     @Override
-    public void deleteAnnouncements(int[] ids,int managerId) {
+    public void deleteAnnouncements(int[] ids, int managerId) {
         SqlSession sqlSession = factory.openSession();
         ManagersMapper mapper = sqlSession.getMapper(ManagersMapper.class);
-        mapper.deleteAnnouncements(ids,managerId);
+        mapper.deleteAnnouncements(ids, managerId);
         sqlSession.commit();
         sqlSession.close();
         return;
@@ -421,13 +421,13 @@ public class ManagersServiceImpl implements ManagersService {
         SqlSession sqlSession = factory.openSession();
         ManagersMapper mapper = sqlSession.getMapper(ManagersMapper.class);
         //计算开始索引=（当前页码-1）*每页显示的条数
-        int begin = (currentPage-1)*pageSize;
+        int begin = (currentPage - 1) * pageSize;
         //计算查询条目数
-        int size=pageSize;
+        int size = pageSize;
         //处理announcements条件数据，模糊表达式
         String announcementContent = announcements.getAnnouncementContent();
-        if (announcementContent!=null&&announcementContent.length()>0){
-            announcements.setAnnouncementContent("%"+announcementContent+"%");
+        if (announcementContent != null && announcementContent.length() > 0) {
+            announcements.setAnnouncementContent("%" + announcementContent + "%");
         }
         //调用方法查询当前页数据
         List<Announcements> rows = mapper.selectByPageAndCondition7(begin, size, announcements);
@@ -519,15 +519,15 @@ public class ManagersServiceImpl implements ManagersService {
     }
 
     @Override
-    public PageBean<SalaryRecords> selectByPageAndCondition8(int currentPage, int pageSize,SalaryRecords salaryRecords) {
+    public PageBean<SalaryRecords> selectByPageAndCondition8(int currentPage, int pageSize, SalaryRecords salaryRecords) {
         SqlSession sqlSession = factory.openSession();
         ManagersMapper mapper = sqlSession.getMapper(ManagersMapper.class);
         //计算开始索引=（当前页码-1）*每页显示的条数
-        int begin = (currentPage-1)*pageSize;
+        int begin = (currentPage - 1) * pageSize;
         //计算查询条目数
-        int size=pageSize;
+        int size = pageSize;
         //调用方法查询当前页数据
-        List<SalaryRecords> rows= mapper.selectByPageAndCondition8(begin, size, salaryRecords);
+        List<SalaryRecords> rows = mapper.selectByPageAndCondition8(begin, size, salaryRecords);
         //查询总记录数
         int totalCount = mapper.selectTotalCountByCondition8(salaryRecords);
         //封装为PageBean对象

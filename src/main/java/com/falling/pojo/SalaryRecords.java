@@ -1,4 +1,5 @@
 package com.falling.pojo;
+
 //工资记录实体类
 public class SalaryRecords {
     //id

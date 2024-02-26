@@ -11,35 +11,35 @@
 
 
         <el-form-item label="id" size="mini">
-            <el-input v-model="attendanceRecords.id" placeholder="id"></el-input>
+            <el-input placeholder="id" v-model="attendanceRecords.id"></el-input>
         </el-form-item>
         <el-form-item label="类型（1迟到 2早退 3缺勤）" size="mini">
-            <el-input v-model="attendanceRecords.type" placeholder="类型（1迟到 2早退 3缺勤）"></el-input>
+            <el-input placeholder="类型（1迟到 2早退 3缺勤）" v-model="attendanceRecords.type"></el-input>
         </el-form-item>
         <el-form-item label="年" size="mini">
-            <el-input v-model="attendanceRecords.year" placeholder="年"></el-input>
+            <el-input placeholder="年" v-model="attendanceRecords.year"></el-input>
         </el-form-item>
         <el-form-item label="月" size="mini">
-            <el-input v-model="attendanceRecords.month" placeholder="月"></el-input>
+            <el-input placeholder="月" v-model="attendanceRecords.month"></el-input>
         </el-form-item>
         <el-form-item label="日" size="mini">
-            <el-input v-model="attendanceRecords.day" placeholder="日"></el-input>
+            <el-input placeholder="日" v-model="attendanceRecords.day"></el-input>
         </el-form-item>
         <el-form-item label="时" size="mini">
-            <el-input v-model="attendanceRecords.hour" placeholder="时"></el-input>
+            <el-input placeholder="时" v-model="attendanceRecords.hour"></el-input>
         </el-form-item>
         <el-form-item label="分" size="mini">
-            <el-input v-model="attendanceRecords.minute" placeholder="分"></el-input>
+            <el-input placeholder="分" v-model="attendanceRecords.minute"></el-input>
         </el-form-item>
         <el-form-item label="罚款" size="mini">
-            <el-input v-model="attendanceRecords.fine" placeholder="罚款"></el-input>
+            <el-input placeholder="罚款" v-model="attendanceRecords.fine"></el-input>
         </el-form-item>
         <el-form-item label="管理员id" size="mini">
-            <el-input v-model="attendanceRecords.managerId" placeholder="管理员id"></el-input>
+            <el-input placeholder="管理员id" v-model="attendanceRecords.managerId"></el-input>
         </el-form-item>
 
         <el-form-item>
-            <el-button type="primary" @click="selectByPage">查询</el-button>
+            <el-button @click="selectByPage" type="primary">查询</el-button>
         </el-form-item>
     </el-form>
 
@@ -47,8 +47,8 @@
     <template>
         <el-table
                 :data="tableData"
-                style="width: 100%"
                 :row-class-name="tableRowClassName"
+                style="width: 100%"
         >
 
             <el-table-column
@@ -56,149 +56,149 @@
                     width="50">
             </el-table-column>
             <el-table-column
-                    prop="id"
-                    label="id"
                     align="center"
+                    label="id"
+                    prop="id"
             >
             </el-table-column>
             <el-table-column
-                    prop="type"
                     align="center"
-                    label="类型">
+                    label="类型"
+                    prop="type">
             </el-table-column>
             <el-table-column
-                    prop="year"
                     align="center"
-                    label="年">
+                    label="年"
+                    prop="year">
             </el-table-column>
             <el-table-column
-                    prop="month"
                     align="center"
-                    label="月">
+                    label="月"
+                    prop="month">
             </el-table-column>
             <el-table-column
-                    prop="day"
                     align="center"
-                    label="日">
+                    label="日"
+                    prop="day">
             </el-table-column>
             <el-table-column
-                    prop="hour"
                     align="center"
-                    label="时">
+                    label="时"
+                    prop="hour">
             </el-table-column>
             <el-table-column
-                    prop="minute"
                     align="center"
-                    label="分">
+                    label="分"
+                    prop="minute">
             </el-table-column>
             <el-table-column
-                    prop="fine"
                     align="center"
-                    label="罚款">
+                    label="罚款"
+                    prop="fine">
             </el-table-column>
             <el-table-column
-                    prop="managerId"
                     align="center"
-                    label="管理员id">
+                    label="管理员id"
+                    prop="managerId">
             </el-table-column>
         </el-table>
     </template>
 
     <!--分页工具条-->
     <el-pagination
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
             :current-page="currentPage"
-            :page-sizes="[5, 10, 15, 20]"
             :page-size="5"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="totalCount">
+            :page-sizes="[5, 10, 15, 20]"
+            :total="totalCount"
+            @current-change="handleCurrentChange"
+            @size-change="handleSizeChange"
+            layout="total, sizes, prev, pager, next, jumper">
     </el-pagination>
 
 </div>
 
 <script src="js/vue.js"></script>
 <script src="element-ui/lib/index.js"></script>
-<link rel="stylesheet" href="element-ui/lib/theme-chalk/index.css">
+<link href="element-ui/lib/theme-chalk/index.css" rel="stylesheet">
 
 <script src="js/axios-0.18.0.js"></script>
 <script>
-  new Vue({
-    el: "#app",
-      mounted() {
-          this.selectByPage()
-      },
-      methods: {
-          //查询分页数据的方法
-          selectByPage() {
-              axios({
-                  method: "post",
-                  url: "http://localhost:8080/ademob/workers/selectByPageAndCondition?currentPage=" + this.currentPage + "&pageSize=" + this.pageSize,
-                  data: this.attendanceRecords
-              }).then(resp => {
-                  //设置表格数据
-                  this.tableData = resp.data.rows;
-                  //设置总记录数
-                  this.totalCount = resp.data.totalCount
-              })
-          },
-        //分页
-        handleSizeChange(val) {
-            //重新设置每页展示条数
-            this.pageSize = val;
-            //重新查询当前页码数据
-            this.selectByPage();
+    new Vue({
+        el: "#app",
+        mounted() {
+            this.selectByPage()
         },
-        handleCurrentChange(val) {
-            //重新设置当前页码
-            this.currentPage = val;
-            //重新查询当前页码数据
-            this.selectByPage();
+        methods: {
+            //查询分页数据的方法
+            selectByPage() {
+                axios({
+                    method: "post",
+                    url: "http://localhost:8080/ademob/workers/selectByPageAndCondition?currentPage=" + this.currentPage + "&pageSize=" + this.pageSize,
+                    data: this.attendanceRecords
+                }).then(resp => {
+                    //设置表格数据
+                    this.tableData = resp.data.rows;
+                    //设置总记录数
+                    this.totalCount = resp.data.totalCount
+                })
+            },
+            //分页
+            handleSizeChange(val) {
+                //重新设置每页展示条数
+                this.pageSize = val;
+                //重新查询当前页码数据
+                this.selectByPage();
+            },
+            handleCurrentChange(val) {
+                //重新设置当前页码
+                this.currentPage = val;
+                //重新查询当前页码数据
+                this.selectByPage();
+            },
+            handleEdit(index, row) {
+                console.log(index, row)
+                //row是该行tableData对应的一行
+                this.attendanceRecords = row
+            }
         },
-        handleEdit(index, row) {
-            console.log(index, row)
-            //row是该行tableData对应的一行
-            this.attendanceRecords = row
+        data() {
+            return { //每页显示条数
+                pageSize: 5,
+                //总记录数
+                totalCount: 100,
+                // 当前页码
+                currentPage: 1,
+                //出勤记录模型数据
+                attendanceRecords: {
+                    id: "",
+                    workerId: "",
+                    type: "",
+                    year: "",
+                    month: "",
+                    day: "",
+                    hour: "",
+                    minute: "",
+                    fine: "",
+                    status: "",
+                    managerId: ""
+                },
+                //表格数据
+                tableData: [{
+                    id: 1,
+                    workerId: 1,
+                    type: "1",
+                    year: "1",
+                    month: "1",
+                    day: "1",
+                    hour: "1",
+                    minute: "1",
+                    fine: "1",
+                    status: "1",
+                    managerId: "1"
+                }]
+            }
         }
-    },
-    data() {
-      return { //每页显示条数
-          pageSize: 5,
-          //总记录数
-          totalCount: 100,
-          // 当前页码
-          currentPage: 1,
-          //出勤记录模型数据
-          attendanceRecords: {
-              id: "",
-              workerId: "",
-              type: "",
-              year: "",
-              month:"",
-              day:"",
-              hour:"",
-              minute:"",
-              fine: "",
-              status:"",
-              managerId:""
-          },
-          //表格数据
-          tableData: [{
-              id: 1,
-              workerId: 1,
-              type: "1",
-              year: "1",
-              month:"1",
-              day:"1",
-              hour:"1",
-              minute:"1",
-              fine: "1",
-              status:"1",
-              managerId:"1"
-          }]
-      }
-    }
-  })
+    })
 </script>
 </body>
 </html>

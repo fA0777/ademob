@@ -21,16 +21,16 @@ public class workersLoginFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws ServletException, IOException {
-        HttpServletRequest req= (HttpServletRequest) request;
+        HttpServletRequest req = (HttpServletRequest) request;
         //判断用户访问的是否是与登录与注册相关的资源
-        String[]urls={"/workersLogin.jsp","/imgs/","/css/","/workers/selectWorker"};
+        String[] urls = {"/workersLogin.jsp", "/imgs/", "/css/", "/workers/selectWorker"};
 
         //获取当前访问的资源路径
         String url = req.getRequestURL().toString();
 
         //循环判断
         for (String s : urls) {
-            if (url.contains(s)){
+            if (url.contains(s)) {
                 //找到了，放行
                 chain.doFilter(request, response);
                 return;
@@ -41,13 +41,13 @@ public class workersLoginFilter implements Filter {
         Object worker = session.getAttribute("worker");
 
         //判断user是否为null
-        if (worker!=null){
+        if (worker != null) {
             //session中有user，登录过了。放行
             chain.doFilter(request, response);
-        }else{
+        } else {
             //没有登录。跳转到登录页面
-            req.setAttribute("login_msg","您尚未登录");
-            req.getRequestDispatcher("/workersLogin.jsp").forward(req,response);
+            req.setAttribute("login_msg", "您尚未登录");
+            req.getRequestDispatcher("/workersLogin.jsp").forward(req, response);
         }
 
     }

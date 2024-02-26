@@ -5,20 +5,21 @@ import com.falling.pojo.*;
 import com.falling.service.WorkersService;
 import com.falling.service.impl.WorkersServiceImpl;
 
-import javax.servlet.MultipartConfigElement;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.*;
-import java.time.LocalDate;
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 @WebServlet("/workers/*")
 public class WorkersServlet extends BaseServlet {
+    Workers workers;
     //创建service
     private WorkersService service = new WorkersServiceImpl();
-    Workers workers;
 
     /**
      * 根据用户名和密码查询
@@ -45,7 +46,7 @@ public class WorkersServlet extends BaseServlet {
             request.getRequestDispatcher("/workersLogin.jsp").forward(request, response);
         } else {
             //不为null，存在，校验密码是否正确
-            if (_worker.getPassword().equals(password)){
+            if (_worker.getPassword().equals(password)) {
                 //密码正确
                 workers = _worker;
                 HttpSession session = request.getSession();
@@ -53,7 +54,7 @@ public class WorkersServlet extends BaseServlet {
                 //重定向
                 String contextPath = request.getContextPath();
                 response.sendRedirect(contextPath + "/workers.html");
-            }else{
+            } else {
                 //密码错误
                 //存储错误信息到request
                 request.setAttribute("login_msg", "用户名或密码错误");
@@ -84,13 +85,13 @@ public class WorkersServlet extends BaseServlet {
         workers.setManagerId(0);
         //校验是否存在用户名相同的其他用户，若已存在，输出提示，修改失败
         Workers workers1 = service.selectWorker(workers.getName());
-        if (workers1.getId().equals(workers.getId())){
+        if (workers1.getId().equals(workers.getId())) {
             //不存在，可修改
             //调用service方法
             service.updateBasicInformation(workers);
             //响应成功的标识
             response.getWriter().write("success");
-        }else {
+        } else {
             //存在，不可修改
             response.getWriter().write("fail");
         }
@@ -436,8 +437,8 @@ public class WorkersServlet extends BaseServlet {
         resignations.setWorkerId(workers.getId());
         resignations.setStatus(1);
         //判断该员工是否存在未审批的离职申请，若存在，则不得再申请
-        Resignations _resignations = service.selectResignations2(workers.getId(), 0,1);
-        if (_resignations==null) {
+        Resignations _resignations = service.selectResignations2(workers.getId(), 0, 1);
+        if (_resignations == null) {
             //不存在，可申请
             //调用service方法
             service.addResignations(resignations);
@@ -487,20 +488,20 @@ public class WorkersServlet extends BaseServlet {
         String s = profilePhoto.replaceAll("fakepath", "img");
         String s1 = s.replaceAll("C", "D");
         String s2 = s1.substring(7);
-        FileInputStream fis=new FileInputStream(s1);
-        FileOutputStream fos=new FileOutputStream("src\\main\\webapp\\img\\"+s2);
+        FileInputStream fis = new FileInputStream(s1);
+        FileOutputStream fos = new FileOutputStream("src\\main\\webapp\\img\\" + s2);
         int len;
-        byte [] bytes=new byte[1024*1024*5];
-        while ((len =fis.read(bytes)) != -1){
-            fos.write(bytes,0,len);
+        byte[] bytes = new byte[1024 * 1024 * 5];
+        while ((len = fis.read(bytes)) != -1) {
+            fos.write(bytes, 0, len);
         }
         fos.close();
         fis.close();
-        workers.setProfilePhoto("img\\"+s2);
+        workers.setProfilePhoto("img\\" + s2);
         //调用service方法
         service.uploadProfilePhoto(workers);
         //响应成功的标识
         response.getWriter().write("success");
     }
 
-    }
+}

@@ -9,6 +9,7 @@ public interface WorkersMapper {
 
     /**
      * 根据用户名查询
+     *
      * @param name
      * @return
      */
@@ -18,6 +19,7 @@ public interface WorkersMapper {
 
     /**
      * 修改个人基本信息
+     *
      * @param worker
      */
     @Update("update ademob.workers set name=#{name},manager_id=#{managerId} where id=#{id}")
@@ -26,6 +28,7 @@ public interface WorkersMapper {
 
     /**
      * 修改密码
+     *
      * @param worker
      */
     @Update("update ademob.workers set password=#{password},manager_id=#{managerId} where id=#{id}")
@@ -34,6 +37,7 @@ public interface WorkersMapper {
 
     /**
      * 更换头像
+     *
      * @param worker
      */
     @Update("update ademob.workers set profile_photo=#{profilePhoto},manager_id=#{managerId} where id=#{id}")
@@ -43,6 +47,7 @@ public interface WorkersMapper {
 
     /**
      * 查询每页显示的出勤记录
+     *
      * @param begin
      * @param size
      * @param attendanceRecord
@@ -52,12 +57,14 @@ public interface WorkersMapper {
 
     /**
      * 分页条件查询，查询总记录数
+     *
      * @return
      */
     int selectTotalCountByCondition(@Param("attendanceRecord") AttendanceRecords attendanceRecord);
 
     /**
      * 添加请假申请
+     *
      * @param leaveRecords
      */
     @Insert("insert into ademob.leave_records value (null,#{workerId},#{leaveType},#{byear},#{bmonth},#{bday},#{bhour},#{bminute},#{eyear},#{emonth},#{eday},#{ehour},#{eminute},#{fine},#{approval},#{status},#{managerId})")
@@ -65,6 +72,7 @@ public interface WorkersMapper {
 
     /**
      * 查询每页显示的请假申请
+     *
      * @param begin
      * @param size
      * @param leaveRecords
@@ -74,12 +82,14 @@ public interface WorkersMapper {
 
     /**
      * 分页条件查询，查询总记录数
+     *
      * @return
      */
     int selectTotalCountByCondition2(@Param("leaveRecords") LeaveRecords leaveRecords);
 
     /**
      * 修改请假申请
+     *
      * @param leaveRecords
      */
     @Update("update ademob.leave_records set leave_type=#{leaveType},byear=#{byear},bmonth=#{bmonth},bday=#{bday},bhour=#{bhour},bminute=#{bminute},eyear=#{eyear},emonth=#{emonth},eday=#{eday},ehour=#{ehour},eminute=#{eminute} where id=#{id}")
@@ -88,6 +98,7 @@ public interface WorkersMapper {
 
     /**
      * 根据id查询请假申请
+     *
      * @param id
      * @return
      */
@@ -97,23 +108,26 @@ public interface WorkersMapper {
 
     /**
      * 删除请假申请
+     *
      * @param ids
      */
     void deleteLeaveRecords(@Param("ids") int[] ids);
 
     /**
      * 根据员工id，培训活动id查询培训活动记录
+     *
      * @param trainingActivityId
      * @param workerId
      * @return
      */
     @Select("select * from training_activities_records where training_activity_id=#{trainingActivityId} and worker_id=#{workerId}")
     @ResultMap("trainingActivitiesRecordsResultMap")
-    TrainingActivitiesRecords selectTrainingActivitiesRecords(@Param("trainingActivityId") Integer trainingActivityId,@Param("workerId") Integer workerId);
+    TrainingActivitiesRecords selectTrainingActivitiesRecords(@Param("trainingActivityId") Integer trainingActivityId, @Param("workerId") Integer workerId);
 
 
     /**
      * 添加培训活动记录
+     *
      * @param trainingActivitiesRecords
      */
     @Insert("insert into ademob.training_activities_records value (null,#{trainingActivityId},#{workerId},#{score},#{bonus},#{process},#{status},#{managerId})")
@@ -121,6 +135,7 @@ public interface WorkersMapper {
 
     /**
      * 查询每页显示的培训活动
+     *
      * @param begin
      * @param size
      * @param trainingActivities
@@ -130,13 +145,15 @@ public interface WorkersMapper {
 
     /**
      * 分页条件查询，查询总记录数
+     *
      * @return
      */
-    int selectTotalCountByCondition3( @Param("trainingActivities") TrainingActivities trainingActivities);
+    int selectTotalCountByCondition3(@Param("trainingActivities") TrainingActivities trainingActivities);
 
 
     /**
      * 查询每页显示的培训活动记录
+     *
      * @param begin
      * @param size
      * @param trainingActivitiesRecords
@@ -146,12 +163,14 @@ public interface WorkersMapper {
 
     /**
      * 分页条件查询，查询总记录数
+     *
      * @return
      */
     int selectTotalCountByCondition4(@Param("trainingActivitiesRecords") TrainingActivitiesRecords trainingActivitiesRecords);
 
     /**
      * 删除培训活动记录
+     *
      * @param ids
      */
     void deleteTrainingActivitiesRecords(@Param("ids") int[] ids);
@@ -159,6 +178,7 @@ public interface WorkersMapper {
 
     /**
      * 根据id查询培训活动记录
+     *
      * @param id
      * @return
      */
@@ -168,6 +188,7 @@ public interface WorkersMapper {
 
     /**
      * 查询每页显示的公告
+     *
      * @param begin
      * @param size
      * @param announcements
@@ -177,12 +198,14 @@ public interface WorkersMapper {
 
     /**
      * 分页条件查询，查询总记录数
+     *
      * @return
      */
     int selectTotalCountByCondition5(@Param("announcements") Announcements announcements);
 
     /**
      * 查询每页显示的离职申请
+     *
      * @param begin
      * @param size
      * @param resignations
@@ -192,12 +215,14 @@ public interface WorkersMapper {
 
     /**
      * 分页条件查询，查询总记录数
+     *
      * @return
      */
-    int selectTotalCountByCondition6( @Param("resignations") Resignations resignations);
+    int selectTotalCountByCondition6(@Param("resignations") Resignations resignations);
 
     /**
-     *  修改离职申请
+     * 修改离职申请
+     *
      * @param resignations
      */
 
@@ -207,12 +232,14 @@ public interface WorkersMapper {
 
     /**
      * 删除离职申请
+     *
      * @param ids
      */
     void deleteResignations(@Param("ids") int[] ids);
 
     /**
      * 根据id查询离职申请
+     *
      * @param id
      * @return
      */
@@ -223,17 +250,19 @@ public interface WorkersMapper {
 
     /**
      * 根据员工id，审批状态查询培训活动记录
+     *
      * @param workerId
      * @param approval
      * @return
      */
     @Select("select * from resignations where worker_id=#{workerId} and approval=#{approval} and status={status}")
     @ResultMap("resignationsResultMap")
-    Resignations selectResignations2(@Param("workerId") Integer workerId,@Param("approval") Integer approval,@Param("status") Integer status);
+    Resignations selectResignations2(@Param("workerId") Integer workerId, @Param("approval") Integer approval, @Param("status") Integer status);
 
 
     /**
      * 添加离职申请
+     *
      * @param resignations
      */
     @Insert("insert into ademob.resignations value (null,#{workerId},#{reason},#{approval},#{status},#{managerId})")
@@ -241,6 +270,7 @@ public interface WorkersMapper {
 
     /**
      * 查询每页显示的工资记录
+     *
      * @param begin
      * @param size
      * @param salaryRecords
@@ -250,7 +280,8 @@ public interface WorkersMapper {
 
     /**
      * 分页条件查询，查询总记录数
+     *
      * @return
      */
-    int selectTotalCountByCondition7( @Param("salaryRecords") SalaryRecords salaryRecords);
+    int selectTotalCountByCondition7(@Param("salaryRecords") SalaryRecords salaryRecords);
 }

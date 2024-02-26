@@ -20,54 +20,54 @@
 
 
         <el-form-item label="id" size="mini">
-            <el-input v-model="worker.id" placeholder="id"></el-input>
+            <el-input placeholder="id" v-model="worker.id"></el-input>
         </el-form-item>
 
         <el-form-item label="用户名" size="mini">
-            <el-input v-model="worker.name" placeholder="用户名"></el-input>
+            <el-input placeholder="用户名" v-model="worker.name"></el-input>
         </el-form-item>
         <el-form-item label="姓名" size="mini">
-            <el-input v-model="worker.trueName" placeholder="姓名"></el-input>
+            <el-input placeholder="姓名" v-model="worker.trueName"></el-input>
         </el-form-item>
         <el-form-item label="上班时间（时）" size="mini">
-            <el-input v-model="worker.clockInHour" placeholder="上班时间（时）"></el-input>
+            <el-input placeholder="上班时间（时）" v-model="worker.clockInHour"></el-input>
         </el-form-item>
         <el-form-item label="上班时间（分）" size="mini">
-            <el-input v-model="worker.clockInMinute" placeholder="上班时间（分）"></el-input>
+            <el-input placeholder="上班时间（分）" v-model="worker.clockInMinute"></el-input>
         </el-form-item>
         <el-form-item label="下班时间（时）" size="mini">
-            <el-input v-model="worker.clockOutHour" placeholder="下班时间（时）"></el-input>
+            <el-input placeholder="下班时间（时）" v-model="worker.clockOutHour"></el-input>
         </el-form-item>
         <el-form-item label="下班时间（分）" size="mini">
-            <el-input v-model="worker.clockOutMinute" placeholder="下班时间（分）"></el-input>
+            <el-input placeholder="下班时间（分）" v-model="worker.clockOutMinute"></el-input>
         </el-form-item>
         <el-form-item label="底薪" size="mini">
-            <el-input v-model="worker.basicSalary" placeholder="底薪"></el-input>
+            <el-input placeholder="底薪" v-model="worker.basicSalary"></el-input>
         </el-form-item>
         <el-form-item label="管理员id" size="mini">
-            <el-input v-model="worker.managerId" placeholder="管理员id"></el-input>
+            <el-input placeholder="管理员id" v-model="worker.managerId"></el-input>
         </el-form-item>
 
         <el-form-item>
-            <el-button type="primary" @click="selectByPage">查询</el-button>
+            <el-button @click="selectByPage" type="primary">查询</el-button>
         </el-form-item>
     </el-form>
 
     <!--按钮-->
 
     <el-row>
-        <el-button type="danger" plain @click="deleteWorkers">删除</el-button>
-        <el-button type="primary" plain @click="addDialogVisible = true">新增</el-button>
+        <el-button @click="deleteWorkers" plain type="danger">删除</el-button>
+        <el-button @click="addDialogVisible = true" plain type="primary">新增</el-button>
     </el-row>
 
     <!--添加员工对话框表单-->
     <el-dialog
-            title="添加员工"
             :visible.sync="addDialogVisible"
+            title="添加员工"
             width="40%"
     >
 
-        <el-form ref="form" :model="worker" label-width="80px">
+        <el-form :model="worker" label-width="80px" ref="form">
             <el-form-item label="用户名">
                 <el-input v-model="worker.name"></el-input>
             </el-form-item>
@@ -94,9 +94,8 @@
             </el-form-item>
 
 
-
             <el-form-item>
-                <el-button type="primary" @click="addWorker">提交</el-button>
+                <el-button @click="addWorker" type="primary">提交</el-button>
                 <el-button @click="addDialogVisible = false">取消</el-button>
             </el-form-item>
         </el-form>
@@ -105,12 +104,12 @@
 
     <!--修改数据对话框表单-->
     <el-dialog
-            title="修改"
             :visible.sync="updateDialogVisible"
+            title="修改"
             width="40%"
     >
 
-        <el-form ref="form" :model="worker" label-width="80px">
+        <el-form :model="worker" label-width="80px" ref="form">
             <el-form-item label="用户名">
                 <el-input v-model="worker.name"></el-input>
             </el-form-item>
@@ -140,7 +139,7 @@
 
 
             <el-form-item>
-                <el-button type="primary" @click="updateWorker">提交</el-button>
+                <el-button @click="updateWorker" type="primary">提交</el-button>
                 <el-button @click="updateDialogVisible = false">取消</el-button>
             </el-form-item>
         </el-form>
@@ -150,9 +149,9 @@
     <template>
         <el-table
                 :data="tableData"
-                style="width: 100%"
                 :row-class-name="tableRowClassName"
                 @selection-change="handleSelectionChange"
+                style="width: 100%"
         >
             <el-table-column
                     type="selection"
@@ -163,64 +162,66 @@
                     width="50">
             </el-table-column>
             <el-table-column
-                    prop="id"
+                    align="center"
                     label="id"
-                    align="center"
+                    prop="id"
             >
             </el-table-column>
             <el-table-column
-                    prop="name"
+                    align="center"
                     label="用户名"
-                    align="center"
+                    prop="name"
             >
             </el-table-column>
             <el-table-column
-                    prop="password"
+                    align="center"
                     label="密码"
-                    align="center"
+                    prop="password"
             >
             </el-table-column>
             <el-table-column
-                    prop="trueName"
                     align="center"
-                    label="姓名">
+                    label="姓名"
+                    prop="trueName">
             </el-table-column>
             <el-table-column
-                    prop="clockInHour"
                     align="center"
-                    label="上班时间（时）">
+                    label="上班时间（时）"
+                    prop="clockInHour">
             </el-table-column>
             <el-table-column
-                    prop="clockInMinute"
                     align="center"
-                    label="上班时间（分）">
+                    label="上班时间（分）"
+                    prop="clockInMinute">
             </el-table-column>
             <el-table-column
-                    prop="clockOutHour"
                     align="center"
-                    label="下班时间（时）">
+                    label="下班时间（时）"
+                    prop="clockOutHour">
             </el-table-column>
             <el-table-column
-                    prop="clockOutMinute"
                     align="center"
-                    label="下班时间（分）">
+                    label="下班时间（分）"
+                    prop="clockOutMinute">
             </el-table-column>
             <el-table-column
-                    prop="basicSalary"
                     align="center"
-                    label="底薪">
+                    label="底薪"
+                    prop="basicSalary">
             </el-table-column>
             <el-table-column
-                    prop="managerId"
                     align="center"
-                    label="管理员id">
+                    label="管理员id"
+                    prop="managerId">
             </el-table-column>
 
             <el-table-column
                     align="center"
                     label="操作">
                 <template slot-scope="scope">
-                    <el-button type="primary" @click="handleEdit(scope.$index, scope.row);updateDialogVisible =true">修改</el-button>
+                    <el-button @click="handleEdit(scope.$index, scope.row);updateDialogVisible =true" type="primary">
+                        修改
+                    </el-button>
                 </template>
 
 
@@ -230,19 +231,19 @@
     </template>
     <!--分页工具条-->
     <el-pagination
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
             :current-page="currentPage"
-            :page-sizes="[5, 10, 15, 20]"
             :page-size="5"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="totalCount">
+            :page-sizes="[5, 10, 15, 20]"
+            :total="totalCount"
+            @current-change="handleCurrentChange"
+            @size-change="handleSizeChange"
+            layout="total, sizes, prev, pager, next, jumper">
     </el-pagination>
 
 </div>
 <script src="js/vue.js"></script>
 <script src="element-ui/lib/index.js"></script>
-<link rel="stylesheet" href="element-ui/lib/theme-chalk/index.css">
+<link href="element-ui/lib/theme-chalk/index.css" rel="stylesheet">
 
 <script src="js/axios-0.18.0.js"></script>
 
@@ -292,13 +293,13 @@
                 })
             },
             //修改员工信息
-            updateWorker(){
+            updateWorker() {
                 axios({
-                    method:"post",
-                    url:"http://localhost:8080/ademob/managers/updateWorker",
-                    data:this.worker
-                }).then(resp=>{
-                    if("success"==resp.data){
+                    method: "post",
+                    url: "http://localhost:8080/ademob/managers/updateWorker",
+                    data: this.worker
+                }).then(resp => {
+                    if ("success" == resp.data) {
                         //修改成功
                         //关闭窗口
                         this.updateDialogVisible = false;
@@ -309,12 +310,12 @@
                             message: '恭喜你，修改成功',
                             type: 'success'
                         });
-                    }else if ("fail" == resp.data) {
+                    } else if ("fail" == resp.data) {
                         this.$message.error('用户名已存在，请重新输入');
                     }
                 })
             },
-            deleteWorkers(){
+            deleteWorkers() {
                 //弹出确认删除的提示框
                 this.$confirm('此操作将开除该员工, 是否继续?', '提示', {
                     confirmButtonText: '确定',
@@ -401,9 +402,9 @@
                     clockOutHour: "",
                     clockOutHourMinute: "",
                     profilePhoto: "",
-                    basicSalary:"",
-                    status:"",
-                    managerId:""
+                    basicSalary: "",
+                    status: "",
+                    managerId: ""
                 },
                 //表格数据
                 tableData: [{
@@ -416,9 +417,9 @@
                     clockOutHour: 1,
                     clockOutMinute: 1,
                     profilePhoto: "1",
-                    basicSalary:"1",
-                    status:"1",
-                    managerId:"1"
+                    basicSalary: "1",
+                    status: "1",
+                    managerId: "1"
                 }]
             }
         }
