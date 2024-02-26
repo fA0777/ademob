@@ -28,8 +28,18 @@ public interface WorkersMapper {
      * 修改密码
      * @param worker
      */
-    @Update("update ademob.workers set password=#{password} where id=#{id}")
+    @Update("update ademob.workers set password=#{password},manager_id=#{managerId} where id=#{id}")
     void updatePassword(Workers worker);
+
+
+    /**
+     * 更换头像
+     * @param worker
+     */
+    @Update("update ademob.workers set profile_photo=#{profilePhoto},manager_id=#{managerId} where id=#{id}")
+    @ResultMap("workersResultMap")
+    void uploadProfilePhoto(Workers worker);
+
 
     /**
      * 查询每页显示的出勤记录

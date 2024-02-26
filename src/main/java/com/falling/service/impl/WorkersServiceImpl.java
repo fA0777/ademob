@@ -49,6 +49,16 @@ public class WorkersServiceImpl implements WorkersService {
     }
 
     @Override
+    public void uploadProfilePhoto(Workers workers) {
+        SqlSession sqlSession = factory.openSession();
+        WorkersMapper mapper = sqlSession.getMapper(WorkersMapper.class);
+        mapper.uploadProfilePhoto(workers);
+        sqlSession.commit();
+        sqlSession.close();
+        return;
+    }
+
+    @Override
     public PageBean<AttendanceRecords> selectByPageAndCondition(int currentPage, int pageSize, AttendanceRecords attendanceRecord) {
         SqlSession sqlSession = factory.openSession();
         WorkersMapper mapper = sqlSession.getMapper(WorkersMapper.class);

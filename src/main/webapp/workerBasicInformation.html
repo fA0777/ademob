@@ -94,23 +94,43 @@
 
     </el-dialog>
 
-    <!--修改头像对话框表单-->
     <el-dialog
-            title="修改头像"
+            title="更换头像"
             :visible.sync="updateDialogVisible3"
             width="40%"
     >
-        <el-upload
-                class="avatar-uploader"
-                action="http://localhost:8080/Login/upload" 
-<!--                上传的地址，即是后台保存文件的接口-->
-                :show-file-list="false"
-                :on-success="handleAvatarSuccess"
-                :before-upload="beforeAvatarUpload">
-            <img v-if="imageUrl" :src="imageUrl" class="avatar">
-            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-        </el-upload>
+
+        <el-form ref="form" :model="worker" label-width="80px">
+
+            <el-form-item label="上传头像">
+                <el-input accept="image/*" type="file" name="image" v-model="worker.profilePhoto"></el-input>
+            </el-form-item>
+
+            <el-form-item>
+                <el-button type="primary" @click="updateProfilePhoto">提交</el-button>
+                <el-button @click="updateDialogVisible3 = false">取消</el-button>
+            </el-form-item>
+        </el-form>
+
     </el-dialog>
+
+<!--    &lt;!&ndash;修改头像对话框表单&ndash;&gt;-->
+<!--    <el-dialog-->
+<!--            title="修改头像"-->
+<!--            :visible.sync="updateDialogVisible3"-->
+<!--            width="40%"-->
+<!--    >-->
+<!--        <el-upload-->
+<!--                class="avatar-uploader"-->
+<!--                action="http://localhost:8080/ademob/workers/uploadProfilePhoto"-->
+<!--                :show-file-list="false"-->
+<!--                :on-success="handleAvatarSuccess"-->
+<!--                :before-upload="beforeAvatarUpload">-->
+<!--            <img v-if="imageUrl" :src="imageUrl" class="avatar">-->
+<!--            <i v-else class="el-icon-plus avatar-uploader-icon"></i>-->
+<!--        </el-upload>-->
+<!--    </el-dialog>-->
+
 </div>
 
 <script src="js/vue.js"></script>
@@ -125,6 +145,26 @@
             this.getWorker();
         },
         methods: {
+            updateProfilePhoto(){
+                axios({
+                    method:"post",
+                    url:"http://localhost:8080/ademob/workers/uploadProfilePhoto",
+                    data:this.worker
+                }).then(resp=>{
+                    if("success"==resp.data){
+                        //修改成功
+                        //关闭窗口
+                        this.updateDialogVisible3 = false;
+                        //重新查询数据
+                        this.getWorker();
+                        //弹出提示，添加成功
+                        this.$message({
+                            message: '恭喜你，修改成功',
+                            type: 'success'
+                        });
+                    }
+                })
+            },
             getWorker(){
                 axios({
                     method:"get",

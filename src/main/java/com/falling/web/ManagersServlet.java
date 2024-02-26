@@ -22,7 +22,6 @@ public class ManagersServlet extends BaseServlet {
     //创建service
     ManagersService service = new ManagersServiceImpl();
 
-
     //根据用户名和密码查询
     public void selectManager(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //接收数据

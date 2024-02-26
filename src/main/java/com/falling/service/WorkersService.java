@@ -25,6 +25,12 @@ public interface WorkersService {
     void updatePassword(Workers workers);
 
     /**
+     * 更换头像
+     * @param workers
+     */
+    void uploadProfilePhoto(Workers workers);
+
+    /**
      * 分页条件查询（出勤记录）
      * @param currentPage
      * @param pageSize

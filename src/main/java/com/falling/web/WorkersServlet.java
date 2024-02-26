@@ -5,13 +5,13 @@ import com.falling.pojo.*;
 import com.falling.service.WorkersService;
 import com.falling.service.impl.WorkersServiceImpl;
 
+import javax.servlet.MultipartConfigElement;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.BufferedReader;
-import java.io.IOException;
+import java.io.*;
 import java.time.LocalDate;
 
 @WebServlet("/workers/*")
@@ -474,4 +474,33 @@ public class WorkersServlet extends BaseServlet {
         response.setContentType("text/json;charset=utf-8");
         response.getWriter().write(jsonString);
     }
-}
+
+    public void uploadProfilePhoto(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        //接收数据
+        BufferedReader br = request.getReader();
+        //获取json字符串
+        String params = br.readLine();
+        //将json字符串转成Workers对象
+        workers = JSON.parseObject(params, Workers.class);
+        workers.setManagerId(0);
+        String profilePhoto = workers.getProfilePhoto();
+        String s = profilePhoto.replaceAll("fakepath", "img");
+        String s1 = s.replaceAll("C", "D");
+        String s2 = s1.substring(7);
+        FileInputStream fis=new FileInputStream(s1);
+        FileOutputStream fos=new FileOutputStream("src\\main\\webapp\\img\\"+s2);
+        int len;
+        byte [] bytes=new byte[1024*1024*5];
+        while ((len =fis.read(bytes)) != -1){
+            fos.write(bytes,0,len);
+        }
+        fos.close();
+        fis.close();
+        workers.setProfilePhoto("img\\"+s2);
+        //调用service方法
+        service.uploadProfilePhoto(workers);
+        //响应成功的标识
+        response.getWriter().write("success");
+    }
+
+    }
