@@ -11,13 +11,23 @@ public class TrainingActivitiesRecords {
     private Double score;
     //奖金
     private Double bonus;
-    //状态：初始值为0，审批通过培训中1（未设定奖金），培训完成2（设定了奖金，未发放），奖金已发放到当月工资中3，删除4
+    //审批结果：0未审批，1审批通过培训中（未设定奖金），2审批不通过，3审批通过且培训完成（设定了奖金，未发放），4奖金已发放到当月工资中
+    private Integer process;
+    //状态：1启用，2软删除
     private Integer status;
     //管理员id
     private Integer managerId;
 
     public Integer getId() {
         return id;
+    }
+
+    public Integer getProcess() {
+        return process;
+    }
+
+    public void setProcess(Integer process) {
+        this.process = process;
     }
 
     public void setId(Integer id) {

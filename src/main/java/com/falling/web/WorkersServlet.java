@@ -33,7 +33,7 @@ public class WorkersServlet extends BaseServlet {
         String name = request.getParameter("name");
         String password = request.getParameter("password");
         //调用service完成查询
-        Workers _worker = service.selectWorker(name, password);
+        Workers _worker = service.selectWorker(name);
         //判断worker是否为null
         boolean flag = _worker == null;
         if (flag) {
@@ -44,13 +44,24 @@ public class WorkersServlet extends BaseServlet {
             //跳转到login.jsp，携带错误信息提示
             request.getRequestDispatcher("/workersLogin.jsp").forward(request, response);
         } else {
-            //不为null，存在，可登录
-            workers = _worker;
-            HttpSession session = request.getSession();
-            session.setAttribute("worker", workers);
-            //重定向
-            String contextPath = request.getContextPath();
-            response.sendRedirect(contextPath + "/workers.html");
+            //不为null，存在，校验密码是否正确
+            if (_worker.getPassword().equals(password)){
+                //密码正确
+                workers = _worker;
+                HttpSession session = request.getSession();
+                session.setAttribute("worker", workers);
+                //重定向
+                String contextPath = request.getContextPath();
+                response.sendRedirect(contextPath + "/workers.html");
+            }else{
+                //密码错误
+                //存储错误信息到request
+                request.setAttribute("login_msg", "用户名或密码错误");
+
+                //跳转到login.jsp，携带错误信息提示
+                request.getRequestDispatcher("/workersLogin.jsp").forward(request, response);
+            }
+
         }
     }
 
@@ -70,10 +81,20 @@ public class WorkersServlet extends BaseServlet {
         String params = br.readLine();
         //将json字符串转成Workers对象
         workers = JSON.parseObject(params, Workers.class);
-        //调用service方法
-        service.updateBasicInformation(workers);
-        //响应成功的标识
-        response.getWriter().write("success");
+        workers.setManagerId(0);
+        //校验是否存在用户名相同的其他用户，若已存在，输出提示，修改失败
+        Workers workers1 = service.selectWorker(workers.getName());
+        if (workers1.getId().equals(workers.getId())){
+            //不存在，可修改
+            //调用service方法
+            service.updateBasicInformation(workers);
+            //响应成功的标识
+            response.getWriter().write("success");
+        }else {
+            //存在，不可修改
+            response.getWriter().write("fail");
+        }
+
     }
 
     public void updatePassword(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -111,6 +132,7 @@ public class WorkersServlet extends BaseServlet {
         //将json字符串转成AttendanceRecords对象
         AttendanceRecords attendanceRecord = JSON.parseObject(params, AttendanceRecords.class);
         attendanceRecord.setWorkerId(workers.getId());
+        attendanceRecord.setStatus(1);
         //将数据转为int类型
         int currentPage = Integer.parseInt(_currentPage);
         int pageSize = Integer.parseInt(_pageSize);
@@ -133,6 +155,7 @@ public class WorkersServlet extends BaseServlet {
         LeaveRecords leaveRecords = JSON.parseObject(params, LeaveRecords.class);
         leaveRecords.setWorkerId(workers.getId());
         leaveRecords.setApproval(0);
+        leaveRecords.setStatus(1);
         //调用service方法
         service.addLeaveRecords(leaveRecords);
         //响应成功的标识
@@ -151,6 +174,7 @@ public class WorkersServlet extends BaseServlet {
         //将json字符串转成LeaveRecords对象
         LeaveRecords leaveRecords = JSON.parseObject(params, LeaveRecords.class);
         leaveRecords.setWorkerId(workers.getId());
+        leaveRecords.setStatus(1);
         //将数据转为int类型
         int currentPage = Integer.parseInt(_currentPage);
         int pageSize = Integer.parseInt(_pageSize);
@@ -217,6 +241,7 @@ public class WorkersServlet extends BaseServlet {
         String params = br.readLine();
         //将json字符串转成TrainingActivities对象
         TrainingActivities trainingActivities = JSON.parseObject(params, TrainingActivities.class);
+        trainingActivities.setStatus(1);
         //将数据转为int类型
         int currentPage = Integer.parseInt(_currentPage);
         int pageSize = Integer.parseInt(_pageSize);
@@ -245,7 +270,8 @@ public class WorkersServlet extends BaseServlet {
             trainingActivitiesRecords.setTrainingActivityId(trainingActivities.getId());
             trainingActivitiesRecords.setManagerId(trainingActivities.getManagerId());
             trainingActivitiesRecords.setWorkerId(workers.getId());
-            trainingActivitiesRecords.setStatus(0);
+            trainingActivitiesRecords.setProcess(0);
+            trainingActivitiesRecords.setStatus(1);
             //调用service方法
             service.addTrainingActivitiesRecords(trainingActivitiesRecords);
             //响应成功的标识
@@ -268,6 +294,7 @@ public class WorkersServlet extends BaseServlet {
         //将json字符串转成TrainingActivitiesRecords对象
         TrainingActivitiesRecords trainingActivitiesRecords = JSON.parseObject(params, TrainingActivitiesRecords.class);
         trainingActivitiesRecords.setWorkerId(workers.getId());
+        trainingActivitiesRecords.setStatus(1);
         //将数据转为int类型
         int currentPage = Integer.parseInt(_currentPage);
         int pageSize = Integer.parseInt(_pageSize);
@@ -341,6 +368,7 @@ public class WorkersServlet extends BaseServlet {
         //将json字符串转成Resignations对象
         Resignations resignations = JSON.parseObject(params, Resignations.class);
         resignations.setWorkerId(workers.getId());
+        resignations.setStatus(1);
         //将数据转为int类型
         int currentPage = Integer.parseInt(_currentPage);
         int pageSize = Integer.parseInt(_pageSize);
@@ -406,8 +434,9 @@ public class WorkersServlet extends BaseServlet {
         Resignations resignations = JSON.parseObject(params, Resignations.class);
         resignations.setApproval(0);
         resignations.setWorkerId(workers.getId());
+        resignations.setStatus(1);
         //判断该员工是否存在未审批的离职申请，若存在，则不得再申请
-        Resignations _resignations = service.selectResignations2(workers.getId(), 0);
+        Resignations _resignations = service.selectResignations2(workers.getId(), 0,1);
         if (_resignations==null) {
             //不存在，可申请
             //调用service方法
@@ -418,6 +447,31 @@ public class WorkersServlet extends BaseServlet {
             //已审批
             response.getWriter().write("fail");
         }
+    }
 
+    public void selectByPageAndCondition7(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        //接收参数：当前页码，每页展示条数
+        String _currentPage = request.getParameter("currentPage");
+        String _pageSize = request.getParameter("pageSize");
+        //获取查询条件对象
+        //接受查询条件数据
+        BufferedReader br = request.getReader();
+        //获取json字符串
+        String params = br.readLine();
+        //将json字符串转成SalaryRecords对象
+        SalaryRecords salaryRecords = JSON.parseObject(params, SalaryRecords.class);
+        salaryRecords.setWorkerId(workers.getId());
+        salaryRecords.setStatus(1);
+        //将数据转为int类型
+        int currentPage = Integer.parseInt(_currentPage);
+        int pageSize = Integer.parseInt(_pageSize);
+        //调用service进行查询
+        PageBean<SalaryRecords> pageBean = service.selectByPageAndCondition7(currentPage, pageSize, salaryRecords);
+        //把pageBean对象转为json
+        String jsonString = JSON.toJSONString(pageBean);
+        //写数据
+        //列表数据，存在中文，要设置
+        response.setContentType("text/json;charset=utf-8");
+        response.getWriter().write(jsonString);
     }
 }

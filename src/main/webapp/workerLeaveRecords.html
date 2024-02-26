@@ -6,31 +6,55 @@
 </head>
 <body>
 <div id="app">
-    <!--搜索表单-->
-    <el-form :inline="true" :model="leaveRecords" class="demo-form-inline">
+        <!--搜索表单-->
+        <el-form :inline="true" :model="leaveRecords" class="demo-form-inline">
 
 
-        <el-form-item label="id" size="mini">
-            <el-input v-model="leaveRecords.id" placeholder="id"></el-input>
-        </el-form-item>
-        <el-form-item label="请假类型" size="mini">
-            <el-input v-model="leaveRecords.leaveType" placeholder="请假类型"></el-input>
-        </el-form-item>
-        <el-form-item label="开始时间" size="mini">
-            <el-input v-model="leaveRecords.beginTime" placeholder="开始时间"></el-input>
-        </el-form-item>
-        <el-form-item label="结束时间" size="mini">
-            <el-input v-model="leaveRecords.endTime" placeholder="结束时间"></el-input>
-        </el-form-item>
-        <el-form-item label="罚款" size="mini">
-            <el-input v-model="leaveRecords.fine" placeholder="罚款"></el-input>
-        </el-form-item>
-        <el-form-item label="是否批准" size="mini">
-            <el-input v-model="leaveRecords.approval" placeholder="是否批准"></el-input>
-        </el-form-item>
-        <el-form-item label="管理员id" size="mini">
-            <el-input v-model="leaveRecords.managerId" placeholder="管理员id"></el-input>
-        </el-form-item>
+            <el-form-item label="id" size="mini">
+                <el-input v-model="leaveRecords.id" placeholder="id"></el-input>
+            </el-form-item>
+            <el-form-item label="请假类型（1病假、2事假、3婚假、4丧假、5产假）" size="mini">
+                <el-input v-model="leaveRecords.leaveType" placeholder="请假类型（1病假、2事假、3婚假、4丧假、5产假）"></el-input>
+            </el-form-item>
+            <el-form-item label="开始时间（年）" size="mini">
+                <el-input v-model="leaveRecords.byear" placeholder="开始时间（年）"></el-input>
+            </el-form-item>
+            <el-form-item label="开始时间（月）" size="mini">
+                <el-input v-model="leaveRecords.bmonth" placeholder="开始时间（月）"></el-input>
+            </el-form-item>
+            <el-form-item label="开始时间（日）" size="mini">
+                <el-input v-model="leaveRecords.bday" placeholder="开始时间（日）"></el-input>
+            </el-form-item>
+            <el-form-item label="开始时间（时）" size="mini">
+                <el-input v-model="leaveRecords.bhour" placeholder="开始时间（时）"></el-input>
+            </el-form-item>
+            <el-form-item label="开始时间（分）" size="mini">
+                <el-input v-model="leaveRecords.bminute" placeholder="开始时间（分）"></el-input>
+            </el-form-item>
+            <el-form-item label="结束时间（年）" size="mini">
+                <el-input v-model="leaveRecords.eyear" placeholder="结束时间（年）"></el-input>
+            </el-form-item>
+            <el-form-item label="结束时间（月）" size="mini">
+                <el-input v-model="leaveRecords.emonth" placeholder="结束时间（月）"></el-input>
+            </el-form-item>
+            <el-form-item label="结束时间（日）" size="mini">
+                <el-input v-model="leaveRecords.eday" placeholder="结束时间（日）"></el-input>
+            </el-form-item>
+            <el-form-item label="结束时间（时）" size="mini">
+                <el-input v-model="leaveRecords.ehour" placeholder="结束时间（时）"></el-input>
+            </el-form-item>
+            <el-form-item label="结束时间（分）" size="mini">
+                <el-input v-model="leaveRecords.eminute" placeholder="结束时间（分）"></el-input>
+            </el-form-item>
+            <el-form-item label="罚款" size="mini">
+                <el-input v-model="leaveRecords.fine" placeholder="罚款"></el-input>
+            </el-form-item>
+            <el-form-item label="是否批准（0未审批，1批准，2不批准）" size="mini">
+                <el-input v-model="leaveRecords.approval" placeholder="是否批准（0未审批，1批准，2不批准）"></el-input>
+            </el-form-item>
+            <el-form-item label="管理员id" size="mini">
+                <el-input v-model="leaveRecords.managerId" placeholder="管理员id"></el-input>
+            </el-form-item>
 
         <el-form-item>
             <el-button type="primary" @click="selectByPage">查询</el-button>
@@ -54,11 +78,35 @@
             <el-form-item label="请假类型">
                 <el-input v-model="leaveRecords.leaveType"></el-input>
             </el-form-item>
-            <el-form-item label="开始时间">
-                <el-input v-model="leaveRecords.beginTime"></el-input>
+            <el-form-item label="开始时间（年）" >
+                <el-input v-model="leaveRecords.byear"></el-input>
             </el-form-item>
-            <el-form-item label="结束时间">
-                <el-input v-model="leaveRecords.endTime"></el-input>
+            <el-form-item label="开始时间（月）" >
+                <el-input v-model="leaveRecords.bmonth"></el-input>
+            </el-form-item>
+            <el-form-item label="开始时间（日）" >
+                <el-input v-model="leaveRecords.bday"></el-input>
+            </el-form-item>
+            <el-form-item label="开始时间（时）" >
+                <el-input v-model="leaveRecords.bhour"></el-input>
+            </el-form-item>
+            <el-form-item label="开始时间（分）" >
+                <el-input v-model="leaveRecords.bminute"></el-input>
+            </el-form-item>
+            <el-form-item label="结束时间（年）" >
+                <el-input v-model="leaveRecords.eyear"></el-input>
+            </el-form-item>
+            <el-form-item label="结束时间（月）" >
+                <el-input v-model="leaveRecords.emonth"></el-input>
+            </el-form-item>
+            <el-form-item label="结束时间（日）" >
+                <el-input v-model="leaveRecords.eday"></el-input>
+            </el-form-item>
+            <el-form-item label="结束时间（时）" >
+                <el-input v-model="leaveRecords.ehour"></el-input>
+            </el-form-item>
+            <el-form-item label="结束时间（分）" >
+                <el-input v-model="leaveRecords.eminute" ></el-input>
             </el-form-item>
             <el-form-item>
                 <el-button type="primary" @click="addLeaveRecords">提交</el-button>
@@ -79,73 +127,119 @@
             <el-form-item label="请假类型">
                 <el-input v-model="leaveRecords.leaveType"></el-input>
             </el-form-item>
-            <el-form-item label="开始时间">
-                <el-input v-model="leaveRecords.beginTime"></el-input>
+            <el-form-item label="开始时间（年）" >
+                <el-input v-model="leaveRecords.byear"></el-input>
             </el-form-item>
-            <el-form-item label="结束时间">
-                <el-input v-model="leaveRecords.endTime"></el-input>
+            <el-form-item label="开始时间（月）" >
+                <el-input v-model="leaveRecords.bmonth"></el-input>
+            </el-form-item>
+            <el-form-item label="开始时间（日）" >
+                <el-input v-model="leaveRecords.bday"></el-input>
+            </el-form-item>
+            <el-form-item label="开始时间（时）" >
+                <el-input v-model="leaveRecords.bhour"></el-input>
+            </el-form-item>
+            <el-form-item label="开始时间（分）" >
+                <el-input v-model="leaveRecords.bminute"></el-input>
+            </el-form-item>
+            <el-form-item label="结束时间（年）" >
+                <el-input v-model="leaveRecords.eyear"></el-input>
+            </el-form-item>
+            <el-form-item label="结束时间（月）" >
+                <el-input v-model="leaveRecords.emonth"></el-input>
+            </el-form-item>
+            <el-form-item label="结束时间（日）" >
+                <el-input v-model="leaveRecords.eday"></el-input>
+            </el-form-item>
+            <el-form-item label="结束时间（时）" >
+                <el-input v-model="leaveRecords.ehour"></el-input>
+            </el-form-item>
+            <el-form-item label="结束时间（分）" >
+                <el-input v-model="leaveRecords.eminute" ></el-input>
             </el-form-item>
             <el-form-item>
-                <el-button type="primary" @click="updateLeaveRecords">提交</el-button>
-                <el-button @click="updateDialogVisible = false">取消</el-button>
+                <el-button type="primary" @click="addLeaveRecords">提交</el-button>
+                <el-button @click="addDialogVisible = false">取消</el-button>
             </el-form-item>
         </el-form>
     </el-dialog>
 
-    <!--表格-->
-    <template>
-        <el-table
-                :data="tableData"
-                style="width: 100%"
-                :row-class-name="tableRowClassName"
-                @selection-change="handleSelectionChange"
-        >
-            <el-table-column
-                    type="selection"
-                    width="55">
-            </el-table-column>
-            <el-table-column
-                    type="index"
-                    width="50">
-            </el-table-column>
-            <el-table-column
-                    prop="id"
-                    label="id"
-                    align="center"
+        <!--表格-->
+        <template>
+            <el-table
+                    :data="tableData"
+                    style="width: 100%"
+                    :row-class-name="tableRowClassName"
+                    @selection-change="handleSelectionChange"
             >
-            </el-table-column>
-            <el-table-column
-                    prop="leaveType"
-                    align="center"
-                    label="请假类型">
-            </el-table-column>
-            <el-table-column
-                    prop="beginTime"
-                    align="center"
-                    label="开始时间">
-            </el-table-column>
-            <el-table-column
-                    prop="endTime"
-                    align="center"
-                    label="结束时间">
-            </el-table-column>
-            <el-table-column
-                    prop="fine"
-                    align="center"
-                    label="罚款">
-            </el-table-column>
-            <el-table-column
-                    prop="approval"
-                    align="center"
-                    label="是否批准">
-            </el-table-column>
-            <el-table-column
-                    prop="managerId"
-                    align="center"
-                    label="管理员id">
-            </el-table-column>
+                <el-table-column
+                        type="selection"
+                        width="55">
+                </el-table-column>
+                <el-table-column
+                        type="index"
+                        width="50">
+                </el-table-column>
+                <el-table-column
+                        prop="id"
+                        label="id"
+                        align="center"
+                >
+                </el-table-column>
 
-            <el-table-column
+                <el-table-column
+                        prop="leaveType"
+                        align="center"
+                        label="请假类型">
+                </el-table-column>
+                <el-table-column
+                        prop="byear"
+                        align="center"
+                        label="开始时间（年）">
+                </el-table-column>
+                <el-table-column
+                        prop="bmonth"
+                        align="center"
+                        label="开始时间（月）">
+                </el-table-column>
+                <el-table-column
+                        prop="bday"
+                        align="center"
+                        label="开始时间（日）">
+                </el-table-column>
+                <el-table-column
+                        prop="eyear"
+                        align="center"
+                        label="结束时间（年）">
+                </el-table-column>
+                <el-table-column
+                        prop="emonth"
+                        align="center"
+                        label="结束时间（月）">
+                </el-table-column>
+                <el-table-column
+                        prop="eday"
+                        align="center"
+                        label="结束时间（日）">
+                </el-table-column>
+                <el-table-column
+                        prop="fine"
+                        align="center"
+                        label="罚款">
+                </el-table-column>
+                <el-table-column
+                        prop="approval"
+                        align="center"
+                        label="是否批准">
+                </el-table-column>
+                <el-table-column
+                        prop="managerId"
+                        align="center"
+                        label="管理员id">
+                </el-table-column>
+
+
+                <el-table-column
                     align="center"
                     label="操作">
                 <template slot-scope="scope">
@@ -322,23 +416,41 @@
                 //请假申请模型数据
                 leaveRecords: {
                     id: "",
-                    workerId: "",
+                    leaveRecordsId: "",
                     leaveType: "",
-                    beginTime: "",
-                    endTime: "",
+                    byear: "",
+                    bmonth:"",
+                    bday:"",
+                    bhour:"",
+                    bminute:"",
+                    eyear: "",
+                    emonth:"",
+                    eday:"",
+                    ehour:"",
+                    eminute:"",
                     fine: "",
                     approval: "",
+                    status: "",
                     managerId: ""
                 },
                 //表格数据
                 tableData: [{
                     id: "1",
-                    workerId: "1",
+                    leaveRecordsId: "1",
                     leaveType: "1",
-                    beginTime: "1",
-                    endTime: "1",
+                    byear: "1",
+                    bmonth:"1",
+                    bday:"1",
+                    bhour:"1",
+                    bminute:"1",
+                    eyear: "1",
+                    emonth:"1",
+                    eday:"1",
+                    ehour:"1",
+                    eminute:"1",
                     fine: "1",
                     approval: "1",
+                    status: "1",
                     managerId: "1"
                 }]
             }

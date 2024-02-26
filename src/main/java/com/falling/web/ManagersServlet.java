@@ -14,10 +14,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @WebServlet("/managers/*")
 public class ManagersServlet extends BaseServlet {
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     Managers manager;
     //创建service
     ManagersService service = new ManagersServiceImpl();
@@ -57,25 +57,39 @@ public class ManagersServlet extends BaseServlet {
         String params = br.readLine();
         //将json字符串转成Worker对象
         Workers worker = JSON.parseObject(params, Workers.class);
-        worker.setProfilePhoto("https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png");
-        //调用service方法
-        service.addWorker(worker);
-        //响应成功的标识
-        response.getWriter().write("success");
+        //校验用户名是否已存在，若已存在，输出提示，添加员工失败
+        Workers workers=service.selectWorker(worker.getName());
+        if (workers==null){
+            //用户名不存在，可添加
+            worker.setProfilePhoto("https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png");
+            worker.setStatus(1);
+            worker.setManagerId(manager.getId());
+            //调用service方法
+            service.addWorker(worker);
+            //响应成功的标识
+            response.getWriter().write("success");
+        }else {
+            //用户名存在，不可添加
+            response.getWriter().write("fail");
+        }
+
     }
 
     public void deleteWorkers(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //接收数据
         BufferedReader br = request.getReader();
         //获取json字符串
-        String s = br.readLine();
-        String[] s1 = s.split(" ");
-        int[] ids = new int[s1.length];
-        for (int i = 0; i < s1.length; i++) {
-            ids[i] = Integer.parseInt(s1[i]);
-        }
-        //调用service方法
-        service.deleteWorkers(ids);
+        String params = br.readLine();
+        //将json字符串转成int类型数组
+        int[] workersIds = JSON.parseObject(params, int[].class);
+        Integer managerId = manager.getId();
+        //将该员工相关的数据都软删除
+        service.deleteAttendanceRecordsK(workersIds,managerId);
+        service.deleteLeaveRecordsK(workersIds,managerId);
+        service.deleteResignationsK(workersIds,managerId);
+        service.deleteSalaryRecordsK(workersIds,managerId);
+        service.deleteTrainingActivitiesRecordsK(workersIds,managerId);
+        service.deleteWorkersK(workersIds,managerId);
         //响应成功的标识
         response.getWriter().write("success");
     }
@@ -87,10 +101,22 @@ public class ManagersServlet extends BaseServlet {
         String params = br.readLine();
         //将json字符串转成Worker对象
         Workers worker = JSON.parseObject(params, Workers.class);
-        //调用service方法
-        service.updateWorker(worker);
-        //响应成功的标识
-        response.getWriter().write("success");
+        worker.setManagerId(0);
+
+        //校验是否存在用户名相同的其他用户，若已存在，输出提示，修改失败
+        Workers workers=service.selectWorker(worker.getName());
+        if (workers.getId().equals(worker.getId())){
+            //不存在，可修改
+            //调用service方法
+            service.updateWorker(worker);
+            //响应成功的标识
+            response.getWriter().write("success");
+        }else {
+            //存在，不可修改
+            response.getWriter().write("fail");
+        }
+
+
     }
 
     public void selectByPageAndCondition(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -105,6 +131,7 @@ public class ManagersServlet extends BaseServlet {
         String params = br.readLine();
         //将json字符串转成worker对象
         Workers worker = JSON.parseObject(params, Workers.class);
+        worker.setStatus(1);
         //将数据转为int类型
         int currentPage = Integer.parseInt(_currentPage);
         int pageSize = Integer.parseInt(_pageSize);
@@ -120,27 +147,13 @@ public class ManagersServlet extends BaseServlet {
 
     public void addAttendanceRecord(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //接收数据
-        String workerId = request.getParameter("workerId");
-        String arriveLate = request.getParameter("arriveLate");
-        String leaveEarly = request.getParameter("leaveEarly");
-        String absence = request.getParameter("absence");
-        String fine = request.getParameter("fine");
-        //封装为attendanceRecord对象
-        AttendanceRecords attendanceRecord=new AttendanceRecords();
-        attendanceRecord.setWorkerId(Integer.parseInt(workerId));
-        if (arriveLate!=null&&arriveLate!=""){
-            LocalDateTime _arriveLate = LocalDateTime.parse(arriveLate, formatter);
-            attendanceRecord.setArriveLate(_arriveLate);
-        }
-        if (leaveEarly!=null&&leaveEarly!=""){
-            LocalDateTime _leaveEarly = LocalDateTime.parse(leaveEarly, formatter);
-            attendanceRecord.setArriveLate(_leaveEarly);
-        }
-        if (absence!=null&&absence!=""){
-            LocalDateTime _absence = LocalDateTime.parse(absence, formatter);
-            attendanceRecord.setAbsence(_absence);
-        }
-        attendanceRecord.setFine(Integer.parseInt(fine));
+        BufferedReader br = request.getReader();
+        //获取json字符串
+        String params = br.readLine();
+        //将json字符串转成AttendanceRecords对象
+        AttendanceRecords attendanceRecord = JSON.parseObject(params, AttendanceRecords.class);
+        attendanceRecord.setStatus(1);
+        attendanceRecord.setManagerId(manager.getId());
         //调用service方法
         service.addAttendanceRecord(attendanceRecord);
         //响应成功的标识
@@ -148,17 +161,15 @@ public class ManagersServlet extends BaseServlet {
     }
 
     public void deleteAttendanceRecords(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        //接收数据
+        //接受id数组
         BufferedReader br = request.getReader();
         //获取json字符串
-        String s = br.readLine();
-        String[] s1 = s.split(" ");
-        int[] ids = new int[s1.length];
-        for (int i = 0; i < s1.length; i++) {
-            ids[i] = Integer.parseInt(s1[i]);
-        }
+        String params = br.readLine();
+        //将json字符串转成int类型数组
+        int[] ids = JSON.parseObject(params, int[].class);
+        Integer managerId = manager.getId();
         //调用service方法
-        service.deleteAttendanceRecords(ids);
+        service.deleteAttendanceRecords(ids,managerId);
         //响应成功的标识
         response.getWriter().write("success");
     }
@@ -170,6 +181,7 @@ public class ManagersServlet extends BaseServlet {
         String params = br.readLine();
         //将json字符串转成AttendanceRecords对象
         AttendanceRecords attendanceRecord = JSON.parseObject(params, AttendanceRecords.class);
+        attendanceRecord.setManagerId(manager.getId());
         //调用service方法
         service.updateAttendanceRecord(attendanceRecord);
         //响应成功的标识
@@ -188,6 +200,7 @@ public class ManagersServlet extends BaseServlet {
         String params = br.readLine();
         //将json字符串转成AttendanceRecords对象
         AttendanceRecords attendanceRecord = JSON.parseObject(params, AttendanceRecords.class);
+        attendanceRecord.setStatus(1);
         //将数据转为int类型
         int currentPage = Integer.parseInt(_currentPage);
         int pageSize = Integer.parseInt(_pageSize);
@@ -213,6 +226,7 @@ public class ManagersServlet extends BaseServlet {
         String params = br.readLine();
         //将json字符串转成LeaveRecords对象
         LeaveRecords leaveRecords = JSON.parseObject(params, LeaveRecords.class);
+        leaveRecords.setStatus(1);
         //将数据转为int类型
         int currentPage = Integer.parseInt(_currentPage);
         int pageSize = Integer.parseInt(_pageSize);
@@ -238,6 +252,7 @@ public class ManagersServlet extends BaseServlet {
         String params = br.readLine();
         //将json字符串转成Resignations对象
         Resignations resignations = JSON.parseObject(params, Resignations.class);
+        resignations.setStatus(1);
         //将数据转为int类型
         int currentPage = Integer.parseInt(_currentPage);
         int pageSize = Integer.parseInt(_pageSize);
@@ -249,6 +264,19 @@ public class ManagersServlet extends BaseServlet {
         //列表数据，存在中文，要设置
         response.setContentType("text/json;charset=utf-8");
         response.getWriter().write(jsonString);
+    }
+    public void deleteLeaveRecords(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        //接受id数组
+        BufferedReader br = request.getReader();
+        //获取json字符串
+        String params = br.readLine();
+        //将json字符串转成int类型数组
+        int[] ids = JSON.parseObject(params, int[].class);
+        Integer managerId = manager.getId();
+        //调用service方法
+        service.deleteLeaveRecords(ids,managerId);
+        //响应成功的标识
+        response.getWriter().write("success");
     }
 
     public void updateLeaveRecords(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -279,6 +307,20 @@ public class ManagersServlet extends BaseServlet {
         response.getWriter().write("success");
     }
 
+    public void deleteResignations(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        //接受id数组
+        BufferedReader br = request.getReader();
+        //获取json字符串
+        String params = br.readLine();
+        //将json字符串转成int类型数组
+        int[] ids = JSON.parseObject(params, int[].class);
+        Integer managerId = manager.getId();
+        //调用service方法
+        service.deleteResignations(ids,managerId);
+        //响应成功的标识
+        response.getWriter().write("success");
+    }
+
     public void addTrainingActivities(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //接收数据
         BufferedReader br = request.getReader();
@@ -286,6 +328,7 @@ public class ManagersServlet extends BaseServlet {
         String params = br.readLine();
         //将json字符串转成TrainingActivities对象
         TrainingActivities trainingActivities = JSON.parseObject(params, TrainingActivities.class);
+        trainingActivities.setStatus(1);
         trainingActivities.setManagerId(manager.getId());
         //调用service方法
         service.addTrainingActivities(trainingActivities);
@@ -294,17 +337,15 @@ public class ManagersServlet extends BaseServlet {
     }
 
     public void deleteTrainingActivities(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        //接收数据
+        //接受id数组
         BufferedReader br = request.getReader();
         //获取json字符串
-        String s = br.readLine();
-        String[] s1 = s.split(" ");
-        int[] ids = new int[s1.length];
-        for (int i = 0; i < s1.length; i++) {
-            ids[i] = Integer.parseInt(s1[i]);
-        }
+        String params = br.readLine();
+        //将json字符串转成int类型数组
+        int[] ids = JSON.parseObject(params, int[].class);
+        Integer managerId = manager.getId();
         //调用service方法
-        service.deleteTrainingActivities(ids);
+        service.deleteTrainingActivities(ids,managerId);
         //响应成功的标识
         response.getWriter().write("success");
     }
@@ -321,6 +362,7 @@ public class ManagersServlet extends BaseServlet {
         String params = br.readLine();
         //将json字符串转成TrainingActivities对象
         TrainingActivities trainingActivities = JSON.parseObject(params, TrainingActivities.class);
+        trainingActivities.setStatus(1);
         //将数据转为int类型
         int currentPage = Integer.parseInt(_currentPage);
         int pageSize = Integer.parseInt(_pageSize);
@@ -355,6 +397,7 @@ public class ManagersServlet extends BaseServlet {
         String params = br.readLine();
         //将json字符串转成TrainingActivitiesRecords对象
         TrainingActivitiesRecords trainingActivitiesRecords = JSON.parseObject(params, TrainingActivitiesRecords.class);
+        trainingActivitiesRecords.setStatus(1);
         trainingActivitiesRecords.setManagerId(manager.getId());
         //调用service方法
         service.addTrainingActivitiesRecords(trainingActivitiesRecords);
@@ -373,6 +416,7 @@ public class ManagersServlet extends BaseServlet {
         String params = br.readLine();
         //将json字符串转成TrainingActivities对象
         TrainingActivitiesRecords trainingActivitiesRecords = JSON.parseObject(params, TrainingActivitiesRecords.class);
+        trainingActivitiesRecords.setStatus(1);
         //将数据转为int类型
         int currentPage = Integer.parseInt(_currentPage);
         int pageSize = Integer.parseInt(_pageSize);
@@ -393,8 +437,9 @@ public class ManagersServlet extends BaseServlet {
         String params = br.readLine();
         //将json字符串转成int类型数组
         int[] ids = JSON.parseObject(params, int[].class);
+        Integer managerId = manager.getId();
         //调用service方法
-        service.deleteTrainingActivitiesRecords(ids);
+        service.deleteTrainingActivitiesRecords(ids,managerId);
         //响应成功的标识
         response.getWriter().write("success");
     }
@@ -420,6 +465,7 @@ public class ManagersServlet extends BaseServlet {
         String params = br.readLine();
         //将json字符串转成Announcements对象
         Announcements announcements = JSON.parseObject(params, Announcements.class);
+        announcements.setStatus(1);
         announcements.setManagerId(manager.getId());
         //调用service方法
         service.addAnnouncements(announcements);
@@ -434,8 +480,9 @@ public class ManagersServlet extends BaseServlet {
         String params = br.readLine();
         //将json字符串转成int类型数组
         int[] ids = JSON.parseObject(params, int[].class);
+        Integer managerId = manager.getId();
         //调用service方法
-        service.deleteAnnouncements(ids);
+        service.deleteAnnouncements(ids,managerId);
         //响应成功的标识
         response.getWriter().write("success");
     }
@@ -465,6 +512,7 @@ public class ManagersServlet extends BaseServlet {
         String params = br.readLine();
         //将json字符串转成Announcements对象
         Announcements announcements = JSON.parseObject(params, Announcements.class);
+        announcements.setStatus(1);
         //将数据转为int类型
         int currentPage = Integer.parseInt(_currentPage);
         int pageSize = Integer.parseInt(_pageSize);
@@ -477,5 +525,96 @@ public class ManagersServlet extends BaseServlet {
         response.setContentType("text/json;charset=utf-8");
         response.getWriter().write(jsonString);
     }
+
+    public void addSalaryRecords(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        //接收数据
+        BufferedReader br = request.getReader();
+        //获取json字符串
+        String params = br.readLine();
+        //将json字符串转成SalaryRecords对象,有年、月
+        SalaryRecords salaryRecords = JSON.parseObject(params, SalaryRecords.class);
+        Integer year = salaryRecords.getYear();
+        Integer month = salaryRecords.getMonth();
+        //从数据库中查询每个员工的id，底薪，奖金（培训活动）、罚款（出勤、请假），封装为SalaryRecords对象，设置相应的数据
+        Integer managerId = manager.getId();
+        List<Workers> workers = service.selectWorkersF();
+        for (Workers worker : workers) {
+            Double bonus=new Double(0);
+            Double fine=new Double(0);
+            Double totalSalary=new Double(0);
+            //获取员工id，底薪
+            Integer workerId = worker.getId();
+            Double basicSalary = worker.getBasicSalary();
+            totalSalary+=basicSalary;
+            //查询该员工的培训活动记录中process为3的数据，获取奖金数据，并将该条记录process设为4
+            List<TrainingActivitiesRecords> trainingActivitiesRecords = service.selectTrainingActivitiesRecordsF(workerId);
+            for (TrainingActivitiesRecords trainingActivitiesRecord : trainingActivitiesRecords) {
+                bonus+=trainingActivitiesRecord.getBonus();
+                trainingActivitiesRecord.setProcess(4);
+                trainingActivitiesRecord.setManagerId(managerId);
+                service.updateTrainingActivitiesRecordsF(trainingActivitiesRecord);
+            }
+            totalSalary+=bonus;
+            //改进：出勤和请假记录像培训活动记录一样，设process和status两个属性，这样才不会在结算工资时将相应数据都软删除了
+            //查询该员工的出勤记录中status为1的数据，获取罚款数据，并将该条记录status设为2
+            List<AttendanceRecords> attendanceRecords = service.selectAttendanceRecordsF(workerId);
+            for (AttendanceRecords attendanceRecord : attendanceRecords) {
+                fine+=attendanceRecord.getFine();
+                attendanceRecord.setStatus(2);
+                attendanceRecord.setManagerId(managerId);
+                service.updateAttendanceRecordsF(attendanceRecord);
+            }
+            //查询该员工的请假记录中status为1的数据，获取罚款数据，并将该条记录status设为2
+            List<LeaveRecords> leaveRecords = service.selectLeaveRecordsF(workerId);
+            for (LeaveRecords leaveRecord : leaveRecords) {
+                fine+=leaveRecord.getFine();
+                leaveRecord.setStatus(2);
+                leaveRecord.setManagerId(managerId);
+                service.updateLeaveRecordsF(leaveRecord);
+            }
+            totalSalary-=fine;
+            //封装为SalaryRecords对象，设置相应的数据
+            SalaryRecords salaryRecords1 = new SalaryRecords();
+            salaryRecords1.setWorkerId(workerId);
+            salaryRecords1.setYear(year);
+            salaryRecords1.setMonth(month);
+            salaryRecords1.setBasicSalary(basicSalary);
+            salaryRecords1.setBonus(bonus);
+            salaryRecords1.setFine(fine);
+            salaryRecords1.setTotalSalary(totalSalary);
+            salaryRecords1.setStatus(1);
+            salaryRecords1.setManagerId(managerId);
+            //存入数据库
+            service.addSalaryRecords(salaryRecords1);
+        }
+        //响应成功的标识
+        response.getWriter().write("success");
+    }
+
+    public void selectByPageAndCondition8(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        //接收参数：当前页码，每页展示条数
+        String _currentPage = request.getParameter("currentPage");
+        String _pageSize = request.getParameter("pageSize");
+        //获取查询条件对象
+        //接受查询条件数据
+        BufferedReader br = request.getReader();
+        //获取json字符串
+        String params = br.readLine();
+        //将json字符串转成SalaryRecords对象
+        SalaryRecords salaryRecords = JSON.parseObject(params, SalaryRecords.class);
+        salaryRecords.setStatus(1);
+        //将数据转为int类型
+        int currentPage = Integer.parseInt(_currentPage);
+        int pageSize = Integer.parseInt(_pageSize);
+        //调用service进行查询
+        PageBean<SalaryRecords> pageBean = service.selectByPageAndCondition8(currentPage, pageSize, salaryRecords);
+        //把pageBean对象转为json
+        String jsonString = JSON.toJSONString(pageBean);
+        //写数据
+        //列表数据，存在中文，要设置
+        response.setContentType("text/json;charset=utf-8");
+        response.getWriter().write(jsonString);
+    }
+
 
 }

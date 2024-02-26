@@ -22,7 +22,12 @@ public class Workers {
     private Integer clockOutMinute;
     //头像文件路径
     private String profilePhoto;
-    //加个底薪属性
+    //底薪
+    private Double basicSalary;
+    //状态：1启用 2软删除
+    private Integer status;
+    //管理员id
+    private Integer managerId;
 
     @Override
     public String toString() {
@@ -36,7 +41,34 @@ public class Workers {
                 ", clockOutHour=" + clockOutHour +
                 ", clockOutMinute=" + clockOutMinute +
                 ", profilePhoto='" + profilePhoto + '\'' +
+                ", basicSalary=" + basicSalary +
+                ", status=" + status +
+                ", managerId=" + managerId +
                 '}';
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    public Integer getManagerId() {
+        return managerId;
+    }
+
+    public void setManagerId(Integer managerId) {
+        this.managerId = managerId;
+    }
+
+    public Double getBasicSalary() {
+        return basicSalary;
+    }
+
+    public void setBasicSalary(Double basicSalary) {
+        this.basicSalary = basicSalary;
     }
 
     public Integer getId() {

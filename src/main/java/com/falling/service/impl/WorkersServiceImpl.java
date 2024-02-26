@@ -5,6 +5,7 @@ import com.falling.mapper.WorkersMapper;
 import com.falling.pojo.*;
 import com.falling.service.WorkersService;
 import com.falling.util.SqlSessionFactoryUtils;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 
@@ -15,13 +16,13 @@ public class WorkersServiceImpl implements WorkersService {
     SqlSessionFactory factory=SqlSessionFactoryUtils.getSqlSessionFactory();
 
     @Override
-    public Workers selectWorker(String name, String password) {
+    public Workers selectWorker(String name) {
         //获取SqlSession
         SqlSession sqlSession = factory.openSession();
         //获取WorkersMapper
         WorkersMapper mapper = sqlSession.getMapper(WorkersMapper.class);
         //调用方法
-        Workers worker = mapper.selectWorker(name, password);
+        Workers worker = mapper.selectWorker(name);
         //释放资源
         sqlSession.close();
         return worker;
@@ -186,15 +187,15 @@ public class WorkersServiceImpl implements WorkersService {
     @Override
     public PageBean<TrainingActivitiesRecords> selectByPageAndCondition4(int currentPage, int pageSize, TrainingActivitiesRecords trainingActivitiesRecords) {
         SqlSession sqlSession = factory.openSession();
-        ManagersMapper mapper = sqlSession.getMapper(ManagersMapper.class);
+        WorkersMapper mapper = sqlSession.getMapper(WorkersMapper.class);
         //计算开始索引=（当前页码-1）*每页显示的条数
         int begin = (currentPage-1)*pageSize;
         //计算查询条目数
         int size=pageSize;
         //调用方法查询当前页数据
-        List<TrainingActivitiesRecords> rows = mapper.selectByPageAndCondition6(begin, size, trainingActivitiesRecords);
+        List<TrainingActivitiesRecords> rows = mapper.selectByPageAndCondition4(begin, size, trainingActivitiesRecords);
         //查询总记录数
-        int totalCount = mapper.selectTotalCountByCondition6(trainingActivitiesRecords);
+        int totalCount = mapper.selectTotalCountByCondition4(trainingActivitiesRecords);
         //封装为PageBean对象
         PageBean<TrainingActivitiesRecords> pageBean = new PageBean<>();
         pageBean.setRows(rows);
@@ -219,7 +220,7 @@ public class WorkersServiceImpl implements WorkersService {
         SqlSession sqlSession = factory.openSession();
         WorkersMapper mapper = sqlSession.getMapper(WorkersMapper.class);
         TrainingActivitiesRecords trainingActivitiesRecords = mapper.selectTrainingActivitiesRecords2(id);
-        if (trainingActivitiesRecords.getStatus()==0){
+        if (trainingActivitiesRecords.getProcess()==0){
             //未审批，可删除
             return true;
         }else {
@@ -305,7 +306,7 @@ public class WorkersServiceImpl implements WorkersService {
         SqlSession sqlSession = factory.openSession();
         WorkersMapper mapper = sqlSession.getMapper(WorkersMapper.class);
         Resignations resignations = mapper.selectResignations(id);
-        if (resignations.getApproval()==0){
+        if (resignations.getApproval()==0 && resignations.getStatus()==1){
             //未审批，可删除
             return true;
         }else {
@@ -315,10 +316,10 @@ public class WorkersServiceImpl implements WorkersService {
     }
 
     @Override
-    public Resignations selectResignations2(Integer workerId,Integer approval){
+    public Resignations selectResignations2(Integer workerId,Integer approval,Integer status){
         SqlSession sqlSession = factory.openSession();
         WorkersMapper mapper = sqlSession.getMapper(WorkersMapper.class);
-        Resignations resignations = mapper.selectResignations2(workerId,approval);
+        Resignations resignations = mapper.selectResignations2(workerId,approval,status);
         return resignations;
     }
 
@@ -330,5 +331,26 @@ public class WorkersServiceImpl implements WorkersService {
         sqlSession.commit();
         sqlSession.close();
         return;
+    }
+
+    @Override
+    public PageBean<SalaryRecords> selectByPageAndCondition7(int currentPage, int pageSize, SalaryRecords salaryRecords) {
+        SqlSession sqlSession = factory.openSession();
+        WorkersMapper mapper = sqlSession.getMapper(WorkersMapper.class);
+        //计算开始索引=（当前页码-1）*每页显示的条数
+        int begin = (currentPage-1)*pageSize;
+        //计算查询条目数
+        int size=pageSize;
+        //调用方法查询当前页数据
+        List<SalaryRecords> rows = mapper.selectByPageAndCondition7(begin, size, salaryRecords);
+        //查询总记录数
+        int totalCount = mapper.selectTotalCountByCondition7(salaryRecords);
+        //封装为PageBean对象
+        PageBean<SalaryRecords> pageBean = new PageBean<>();
+        pageBean.setRows(rows);
+        pageBean.setTotalCount(totalCount);
+        //释放资源
+        sqlSession.close();
+        return pageBean;
     }
 }

@@ -13,17 +13,29 @@
         <el-form-item label="id" size="mini">
             <el-input v-model="attendanceRecords.id" placeholder="id"></el-input>
         </el-form-item>
-        <el-form-item label="迟到记录" size="mini">
-            <el-input v-model="attendanceRecords.arriveLate" placeholder="迟到记录"></el-input>
+        <el-form-item label="类型（1迟到 2早退 3缺勤）" size="mini">
+            <el-input v-model="attendanceRecords.type" placeholder="类型（1迟到 2早退 3缺勤）"></el-input>
         </el-form-item>
-        <el-form-item label="早退记录" size="mini">
-            <el-input v-model="attendanceRecords.leaveEarly" placeholder="早退记录"></el-input>
+        <el-form-item label="年" size="mini">
+            <el-input v-model="attendanceRecords.year" placeholder="年"></el-input>
         </el-form-item>
-        <el-form-item label="缺勤记录" size="mini">
-            <el-input v-model="attendanceRecords.absence" placeholder="缺勤记录"></el-input>
+        <el-form-item label="月" size="mini">
+            <el-input v-model="attendanceRecords.month" placeholder="月"></el-input>
+        </el-form-item>
+        <el-form-item label="日" size="mini">
+            <el-input v-model="attendanceRecords.day" placeholder="日"></el-input>
+        </el-form-item>
+        <el-form-item label="时" size="mini">
+            <el-input v-model="attendanceRecords.hour" placeholder="时"></el-input>
+        </el-form-item>
+        <el-form-item label="分" size="mini">
+            <el-input v-model="attendanceRecords.minute" placeholder="分"></el-input>
         </el-form-item>
         <el-form-item label="罚款" size="mini">
             <el-input v-model="attendanceRecords.fine" placeholder="罚款"></el-input>
+        </el-form-item>
+        <el-form-item label="管理员id" size="mini">
+            <el-input v-model="attendanceRecords.managerId" placeholder="管理员id"></el-input>
         </el-form-item>
 
         <el-form-item>
@@ -37,7 +49,6 @@
                 :data="tableData"
                 style="width: 100%"
                 :row-class-name="tableRowClassName"
-                @selection-change="handleSelectionChange"
         >
 
             <el-table-column
@@ -51,24 +62,44 @@
             >
             </el-table-column>
             <el-table-column
-                    prop="arriveLate"
+                    prop="type"
                     align="center"
-                    label="迟到记录">
+                    label="类型">
             </el-table-column>
             <el-table-column
-                    prop="leaveEarly"
+                    prop="year"
                     align="center"
-                    label="早退记录">
+                    label="年">
             </el-table-column>
             <el-table-column
-                    prop="absence"
+                    prop="month"
                     align="center"
-                    label="缺勤记录">
+                    label="月">
+            </el-table-column>
+            <el-table-column
+                    prop="day"
+                    align="center"
+                    label="日">
+            </el-table-column>
+            <el-table-column
+                    prop="hour"
+                    align="center"
+                    label="时">
+            </el-table-column>
+            <el-table-column
+                    prop="minute"
+                    align="center"
+                    label="分">
             </el-table-column>
             <el-table-column
                     prop="fine"
                     align="center"
                     label="罚款">
+            </el-table-column>
+            <el-table-column
+                    prop="managerId"
+                    align="center"
+                    label="管理员id">
             </el-table-column>
         </el-table>
     </template>
@@ -141,19 +172,29 @@
           attendanceRecords: {
               id: "",
               workerId: "",
-              arriveLate: "",
-              leaveEarly: "",
-              absence: "",
-              fine: ""
+              type: "",
+              year: "",
+              month:"",
+              day:"",
+              hour:"",
+              minute:"",
+              fine: "",
+              status:"",
+              managerId:""
           },
           //表格数据
           tableData: [{
               id: 1,
               workerId: 1,
-              arriveLate: "1",
-              leaveEarly: "1",
-              absence: "1",
-              fine: 1
+              type: "1",
+              year: "1",
+              month:"1",
+              day:"1",
+              hour:"1",
+              minute:"1",
+              fine: "1",
+              status:"1",
+              managerId:"1"
           }]
       }
     }

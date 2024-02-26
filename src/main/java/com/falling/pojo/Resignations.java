@@ -10,8 +10,18 @@ public class Resignations {
     private String reason;
     //是否批准: 0未审批，1不批准，2批准
     private Integer approval;
+    //状态:1启用 2软删除
+    private Integer status;
     //管理员id
     private Integer managerId;
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
 
     public Integer getId() {
         return id;

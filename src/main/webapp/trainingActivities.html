@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>showAndUpdateTrainingActivities</title>
+    <title>trainingActivities</title>
 
 </head>
 <body>
@@ -26,6 +26,34 @@
             <el-button type="primary" @click="selectByPage">查询</el-button>
         </el-form-item>
     </el-form>
+
+    <!--按钮-->
+    <el-row>
+        <el-button type="danger" plain @click="deleteTrainingActivities">删除</el-button>
+        <el-button type="primary" plain @click="addDialogVisible = true">新增</el-button>
+    </el-row>
+
+    <!--添加培训活动对话框表单-->
+    <el-dialog
+            title="添加培训活动"
+            :visible.sync="addDialogVisible"
+            width="40%"
+    >
+
+        <el-form ref="form" :model="trainingActivities" label-width="80px">
+            <el-form-item label="培训内容">
+                <el-input type="textarea" v-model="trainingActivities.trainingContent"></el-input>
+            </el-form-item>
+
+
+            <el-form-item>
+                <el-button type="primary" @click="addTrainingActivities">提交</el-button>
+                <el-button @click="addDialogVisible = false">取消</el-button>
+            </el-form-item>
+        </el-form>
+
+    </el-dialog>
+
 
     <!--修改培训活动对话框表单-->
     <el-dialog
@@ -55,8 +83,12 @@
         <el-table
                 :data="tableData"
                 style="width: 100%"
+                @selection-change="handleSelectionChange"
         >
-
+            <el-table-column
+                    type="selection"
+                    width="55">
+            </el-table-column>
             <el-table-column
                     type="index"
                     width="50">
@@ -118,6 +150,65 @@
                     this.totalCount = resp.data.totalCount
                 })
             },
+            //添加培训活动
+            addTrainingActivities(){
+                axios({
+                    method: "post",
+                    url: "http://localhost:8080/ademob/managers/addTrainingActivities",
+                    data: this.trainingActivities
+                }).then(resp => {
+                    if ("success" == resp.data) {
+                        //添加成功
+                        //关闭窗口
+                        this.addDialogVisible = false;
+                        //重新查询数据
+                        this.selectByPage();
+                        //弹出提示，添加成功
+                        this.$message({
+                            message: '恭喜你，添加成功',
+                            type: 'success'
+                        });
+                    }
+                })
+            },
+            //删除培训活动
+            deleteTrainingActivities(){
+                //弹出确认删除的提示框
+                this.$confirm('此操作将删除该数据, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    //点击确认
+                    //创建id数组，从this.multipleSelection中获取
+                    for (let i = 0; i < this.multipleSelection.length; i++) {
+                        let selectionElement = this.multipleSelection[i];
+                        this.selectedIds[i] = selectionElement.id;
+                    }
+                    axios({
+                        method: "post",
+                        url: "http://localhost:8080/ademob/managers/deleteTrainingActivities",
+                        data: this.selectedIds
+                    }).then(resp => {
+                        if ("success" == resp.data) {
+                            //删除成功
+                            //重新查询数据
+                            this.selectByPage();
+                            //弹出提示
+                            this.$message({
+                                message: '恭喜你，删除成功',
+                                type: 'success'
+                            });
+                        }
+                    })
+                }).catch(() => {
+                    //点击取消
+                    this.$message({
+                        type: 'info',
+                        message: '已取消删除'
+                    });
+                });
+            },
             updateTrainingActivities(){
                 axios({
                     method:"post",
@@ -137,6 +228,11 @@
                         });
                     }
                 })
+            },
+            // 复选框选中后执行的方法
+            handleSelectionChange(val) {
+                this.multipleSelection = val;
+                console.log(this.multipleSelection)
             },
             //分页
             handleSizeChange(val) {
@@ -159,7 +255,13 @@
         },
         data() {
             return {
-                //修改数据对话框是否展示的标记
+                //被选中的id数组
+                selectedIds: [],
+                // 复选框选中数据集合
+                multipleSelection: [],
+                // 添加数据对话框是否展示的标记
+                addDialogVisible: false,
+                // 修改数据对话框是否展示的标记
                 updateDialogVisible: false,
                 //每页显示条数
                 pageSize: 5,
@@ -171,12 +273,14 @@
                 trainingActivities: {
                     id: "",
                     trainingContent: "",
+                    status:"",
                     managerId: ""
                 },
                 //表格数据
                 tableData: [{
                     id: "1",
                     trainingContent: "1",
+                    status:"1",
                     managerId: "1"
                 }]
             }

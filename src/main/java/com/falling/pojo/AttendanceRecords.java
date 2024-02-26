@@ -1,6 +1,7 @@
 package com.falling.pojo;
 
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 //出勤记录实体类
@@ -9,14 +10,24 @@ public class AttendanceRecords {
     private Integer id;
     //员工id
     private Integer workerId;
-    //迟到
-    private LocalDateTime arriveLate;
-    //早退
-    private LocalDateTime leaveEarly;
-    //缺勤
-    private LocalDateTime absence;
+    //类型 1迟到 2早退 3缺勤
+    private Integer type;
+    //时间:年
+    private Integer year;
+    //时间：月
+    private Integer month;
+    //时间：日
+    private Integer day;
+    //时间：时
+    private Integer hour;
+    //时间：分
+    private Integer minute;
     //罚款
     private Integer fine;
+    //状态 1刚添加，未结算到工资记录中 2结算到本月的工资中了,将其软删除
+    private Integer status;
+    //管理员id
+    private Integer managerId;
 
     public Integer getId() {
         return id;
@@ -34,28 +45,52 @@ public class AttendanceRecords {
         this.workerId = workerId;
     }
 
-    public LocalDateTime getArriveLate() {
-        return arriveLate;
+    public Integer getType() {
+        return type;
     }
 
-    public void setArriveLate(LocalDateTime arriveLate) {
-        this.arriveLate = arriveLate;
+    public void setType(Integer type) {
+        this.type = type;
     }
 
-    public LocalDateTime getLeaveEarly() {
-        return leaveEarly;
+    public Integer getYear() {
+        return year;
     }
 
-    public void setLeaveEarly(LocalDateTime leaveEarly) {
-        this.leaveEarly = leaveEarly;
+    public void setYear(Integer year) {
+        this.year = year;
     }
 
-    public LocalDateTime getAbsence() {
-        return absence;
+    public Integer getMonth() {
+        return month;
     }
 
-    public void setAbsence(LocalDateTime absence) {
-        this.absence = absence;
+    public void setMonth(Integer month) {
+        this.month = month;
+    }
+
+    public Integer getDay() {
+        return day;
+    }
+
+    public void setDay(Integer day) {
+        this.day = day;
+    }
+
+    public Integer getHour() {
+        return hour;
+    }
+
+    public void setHour(Integer hour) {
+        this.hour = hour;
+    }
+
+    public Integer getMinute() {
+        return minute;
+    }
+
+    public void setMinute(Integer minute) {
+        this.minute = minute;
     }
 
     public Integer getFine() {
@@ -64,5 +99,21 @@ public class AttendanceRecords {
 
     public void setFine(Integer fine) {
         this.fine = fine;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    public Integer getManagerId() {
+        return managerId;
+    }
+
+    public void setManagerId(Integer managerId) {
+        this.managerId = managerId;
     }
 }

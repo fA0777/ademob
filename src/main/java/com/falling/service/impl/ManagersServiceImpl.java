@@ -33,10 +33,69 @@ public class ManagersServiceImpl implements ManagersService {
     }
 
     @Override
-    public void deleteWorkers(int[] ids) {
+    public Workers selectWorker(String name) {
         SqlSession sqlSession = factory.openSession();
         ManagersMapper mapper = sqlSession.getMapper(ManagersMapper.class);
-        mapper.deleteWorkers(ids);
+        Workers workers = mapper.selectWorker(name);
+        sqlSession.close();
+        return workers;
+    }
+
+    @Override
+    public void deleteWorkersK(int[] ids,int managerId) {
+        SqlSession sqlSession = factory.openSession();
+        ManagersMapper mapper = sqlSession.getMapper(ManagersMapper.class);
+        mapper.deleteWorkersK(ids,managerId);
+        sqlSession.commit();
+        sqlSession.close();
+        return;
+    }
+
+    @Override
+    public void deleteAttendanceRecordsK(int[] workersIds, int managerId) {
+        SqlSession sqlSession = factory.openSession();
+        ManagersMapper mapper = sqlSession.getMapper(ManagersMapper.class);
+        mapper.deleteAttendanceRecordsK(workersIds,managerId);
+        sqlSession.commit();
+        sqlSession.close();
+        return;
+    }
+
+    @Override
+    public void deleteLeaveRecordsK(int[] workersIds, int managerId) {
+        SqlSession sqlSession = factory.openSession();
+        ManagersMapper mapper = sqlSession.getMapper(ManagersMapper.class);
+        mapper.deleteLeaveRecordsK(workersIds,managerId);
+        sqlSession.commit();
+        sqlSession.close();
+        return;
+    }
+
+    @Override
+    public void deleteResignationsK(int[] workersIds, int managerId) {
+        SqlSession sqlSession = factory.openSession();
+        ManagersMapper mapper = sqlSession.getMapper(ManagersMapper.class);
+        mapper.deleteResignationsK(workersIds,managerId);
+        sqlSession.commit();
+        sqlSession.close();
+        return;
+    }
+
+    @Override
+    public void deleteSalaryRecordsK(int[] workersIds, int managerId) {
+        SqlSession sqlSession = factory.openSession();
+        ManagersMapper mapper = sqlSession.getMapper(ManagersMapper.class);
+        mapper.deleteSalaryRecordsK(workersIds,managerId);
+        sqlSession.commit();
+        sqlSession.close();
+        return;
+    }
+
+    @Override
+    public void deleteTrainingActivitiesRecordsK(int[] workersIds, int managerId) {
+        SqlSession sqlSession = factory.openSession();
+        ManagersMapper mapper = sqlSession.getMapper(ManagersMapper.class);
+        mapper.deleteTrainingActivitiesRecordsK(workersIds,managerId);
         sqlSession.commit();
         sqlSession.close();
         return;
@@ -93,10 +152,10 @@ public class ManagersServiceImpl implements ManagersService {
     }
 
     @Override
-    public void deleteAttendanceRecords(int[] ids) {
+    public void deleteAttendanceRecords(int[] ids,int managerId) {
         SqlSession sqlSession = factory.openSession();
         ManagersMapper mapper = sqlSession.getMapper(ManagersMapper.class);
-        mapper.deleteAttendanceRecords(ids);
+        mapper.deleteAttendanceRecords(ids,managerId);
         sqlSession.commit();
         sqlSession.close();
         return;
@@ -134,6 +193,16 @@ public class ManagersServiceImpl implements ManagersService {
     }
 
     @Override
+    public void deleteLeaveRecords(int[] ids, int managerId) {
+        SqlSession sqlSession = factory.openSession();
+        ManagersMapper mapper = sqlSession.getMapper(ManagersMapper.class);
+        mapper.deleteLeaveRecords(ids, managerId);
+        sqlSession.commit();
+        sqlSession.close();
+        return;
+    }
+
+    @Override
     public void updateLeaveRecord(LeaveRecords leaveRecords) {
         SqlSession sqlSession = factory.openSession();
         ManagersMapper mapper = sqlSession.getMapper(ManagersMapper.class);
@@ -162,6 +231,16 @@ public class ManagersServiceImpl implements ManagersService {
         //释放资源
         sqlSession.close();
         return pageBean;
+    }
+
+    @Override
+    public void deleteResignations(int[] ids, int managerId) {
+        SqlSession sqlSession = factory.openSession();
+        ManagersMapper mapper = sqlSession.getMapper(ManagersMapper.class);
+        mapper.deleteResignations(ids,managerId);
+        sqlSession.commit();
+        sqlSession.close();
+        return;
     }
 
     @Override
@@ -211,10 +290,10 @@ public class ManagersServiceImpl implements ManagersService {
     }
 
     @Override
-    public void deleteTrainingActivities(int[] ids) {
+    public void deleteTrainingActivities(int[] ids,int managerId) {
         SqlSession sqlSession = factory.openSession();
         ManagersMapper mapper = sqlSession.getMapper(ManagersMapper.class);
-        mapper.deleteTrainingActivities(ids);
+        mapper.deleteTrainingActivities(ids,managerId);
         sqlSession.commit();
         sqlSession.close();
         return;
@@ -267,10 +346,10 @@ public class ManagersServiceImpl implements ManagersService {
     }
 
     @Override
-    public void deleteTrainingActivitiesRecords(int[] ids) {
+    public void deleteTrainingActivitiesRecords(int[] ids,int managerId) {
         SqlSession sqlSession = factory.openSession();
         ManagersMapper mapper = sqlSession.getMapper(ManagersMapper.class);
-        mapper.deleteTrainingActivitiesRecords(ids);
+        mapper.deleteTrainingActivitiesRecords(ids,managerId);
         sqlSession.commit();
         sqlSession.close();
         return;
@@ -318,10 +397,10 @@ public class ManagersServiceImpl implements ManagersService {
     }
 
     @Override
-    public void deleteAnnouncements(int[] ids) {
+    public void deleteAnnouncements(int[] ids,int managerId) {
         SqlSession sqlSession = factory.openSession();
         ManagersMapper mapper = sqlSession.getMapper(ManagersMapper.class);
-        mapper.deleteAnnouncements(ids);
+        mapper.deleteAnnouncements(ids,managerId);
         sqlSession.commit();
         sqlSession.close();
         return;
@@ -356,6 +435,103 @@ public class ManagersServiceImpl implements ManagersService {
         int totalCount = mapper.selectTotalCountByCondition7(announcements);
         //封装为PageBean对象
         PageBean<Announcements> pageBean = new PageBean<>();
+        pageBean.setRows(rows);
+        pageBean.setTotalCount(totalCount);
+        //释放资源
+        sqlSession.close();
+        return pageBean;
+    }
+
+    @Override
+    public List<Workers> selectWorkersF() {
+        SqlSession sqlSession = factory.openSession();
+        ManagersMapper mapper = sqlSession.getMapper(ManagersMapper.class);
+        List<Workers> workers = mapper.selectWorkersF();
+        sqlSession.close();
+        return workers;
+    }
+
+    @Override
+    public List<TrainingActivitiesRecords> selectTrainingActivitiesRecordsF(int workerId) {
+        SqlSession sqlSession = factory.openSession();
+        ManagersMapper mapper = sqlSession.getMapper(ManagersMapper.class);
+        List<TrainingActivitiesRecords> trainingActivitiesRecords = mapper.selectTrainingActivitiesRecordsF(workerId);
+        sqlSession.close();
+        return trainingActivitiesRecords;
+    }
+
+    @Override
+    public void updateTrainingActivitiesRecordsF(TrainingActivitiesRecords trainingActivitiesRecords) {
+        SqlSession sqlSession = factory.openSession();
+        ManagersMapper mapper = sqlSession.getMapper(ManagersMapper.class);
+        mapper.updateTrainingActivitiesRecordsF(trainingActivitiesRecords);
+        sqlSession.commit();
+        sqlSession.close();
+        return;
+    }
+
+    @Override
+    public List<AttendanceRecords> selectAttendanceRecordsF(int workerId) {
+        SqlSession sqlSession = factory.openSession();
+        ManagersMapper mapper = sqlSession.getMapper(ManagersMapper.class);
+        List<AttendanceRecords> attendanceRecords = mapper.selectAttendanceRecordsF(workerId);
+        sqlSession.close();
+        return attendanceRecords;
+    }
+
+    @Override
+    public void updateAttendanceRecordsF(AttendanceRecords attendanceRecords) {
+        SqlSession sqlSession = factory.openSession();
+        ManagersMapper mapper = sqlSession.getMapper(ManagersMapper.class);
+        mapper.updateAttendanceRecordsF(attendanceRecords);
+        sqlSession.commit();
+        sqlSession.close();
+        return;
+    }
+
+    @Override
+    public List<LeaveRecords> selectLeaveRecordsF(int workerId) {
+        SqlSession sqlSession = factory.openSession();
+        ManagersMapper mapper = sqlSession.getMapper(ManagersMapper.class);
+        List<LeaveRecords> leaveRecords = mapper.selectLeaveRecordsF(workerId);
+        sqlSession.close();
+        return leaveRecords;
+    }
+
+    @Override
+    public void updateLeaveRecordsF(LeaveRecords leaveRecords) {
+        SqlSession sqlSession = factory.openSession();
+        ManagersMapper mapper = sqlSession.getMapper(ManagersMapper.class);
+        mapper.updateLeaveRecordsF(leaveRecords);
+        sqlSession.commit();
+        sqlSession.close();
+        return;
+    }
+
+    @Override
+    public void addSalaryRecords(SalaryRecords salaryRecords) {
+        SqlSession sqlSession = factory.openSession();
+        ManagersMapper mapper = sqlSession.getMapper(ManagersMapper.class);
+        mapper.addSalaryRecords(salaryRecords);
+        sqlSession.commit();
+        sqlSession.close();
+        return;
+    }
+
+    @Override
+    public PageBean<SalaryRecords> selectByPageAndCondition8(int currentPage, int pageSize,SalaryRecords salaryRecords) {
+        SqlSession sqlSession = factory.openSession();
+        ManagersMapper mapper = sqlSession.getMapper(ManagersMapper.class);
+        //计算开始索引=（当前页码-1）*每页显示的条数
+        int begin = (currentPage-1)*pageSize;
+        //计算查询条目数
+        int size=pageSize;
+        //调用方法查询当前页数据
+        List<SalaryRecords> rows= mapper.selectByPageAndCondition8(begin, size, salaryRecords);
+        //查询总记录数
+        int totalCount = mapper.selectTotalCountByCondition8(salaryRecords);
+        //封装为PageBean对象
+        PageBean<SalaryRecords> pageBean = new PageBean<>();
         pageBean.setRows(rows);
         pageBean.setTotalCount(totalCount);
         //释放资源

@@ -5,12 +5,11 @@ import com.falling.pojo.*;
 
 public interface WorkersService {
     /**
-     * 根据用户名和密码查询
+     * 根据用户名查询
      * @param name
-     * @param password
      * @return
      */
-    Workers selectWorker(String name, String password);
+    Workers selectWorker(String name);
 
     /**
      * 修改个人基本信息
@@ -158,12 +157,21 @@ public interface WorkersService {
      * @param approval
      * @return
      */
-    Resignations selectResignations2(Integer workerId,Integer approval);
+    Resignations selectResignations2(Integer workerId,Integer approval,Integer status);
 
     /**
      * 添加离职申请
      * @param resignations
      */
     void addResignations(Resignations resignations);
+
+    /**
+     * 分页条件查询（工资记录）
+     * @param currentPage
+     * @param pageSize
+     * @param salaryRecords
+     * @return
+     */
+    PageBean<SalaryRecords> selectByPageAndCondition7(int currentPage, int pageSize, SalaryRecords salaryRecords);
 
 }

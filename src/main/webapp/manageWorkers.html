@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>showAndUpdateWorkers</title>
+    <title>manageWorkers</title>
     <style>
         .el-table .warning-row {
             background: oldlace;
@@ -41,11 +41,67 @@
         <el-form-item label="下班时间（分）" size="mini">
             <el-input v-model="worker.clockOutMinute" placeholder="下班时间（分）"></el-input>
         </el-form-item>
+        <el-form-item label="底薪" size="mini">
+            <el-input v-model="worker.basicSalary" placeholder="底薪"></el-input>
+        </el-form-item>
+        <el-form-item label="管理员id" size="mini">
+            <el-input v-model="worker.managerId" placeholder="管理员id"></el-input>
+        </el-form-item>
 
         <el-form-item>
             <el-button type="primary" @click="selectByPage">查询</el-button>
         </el-form-item>
     </el-form>
+
+    <!--按钮-->
+
+    <el-row>
+        <el-button type="danger" plain @click="deleteWorkers">删除</el-button>
+        <el-button type="primary" plain @click="addDialogVisible = true">新增</el-button>
+    </el-row>
+
+    <!--添加员工对话框表单-->
+    <el-dialog
+            title="添加员工"
+            :visible.sync="addDialogVisible"
+            width="40%"
+    >
+
+        <el-form ref="form" :model="worker" label-width="80px">
+            <el-form-item label="用户名">
+                <el-input v-model="worker.name"></el-input>
+            </el-form-item>
+            <el-form-item label="密码">
+                <el-input v-model="worker.password"></el-input>
+            </el-form-item>
+            <el-form-item label="真实姓名">
+                <el-input v-model="worker.trueName"></el-input>
+            </el-form-item>
+            <el-form-item label="上班时间（时）">
+                <el-input v-model="worker.clockInHour"></el-input>
+            </el-form-item>
+            <el-form-item label="上班时间（分）">
+                <el-input v-model="worker.clockInMinute"></el-input>
+            </el-form-item>
+            <el-form-item label="下班时间（时）">
+                <el-input v-model="worker.clockOutHour"></el-input>
+            </el-form-item>
+            <el-form-item label="下班时间（分）">
+                <el-input v-model="worker.clockOutMinute"></el-input>
+            </el-form-item>
+            <el-form-item label="底薪">
+                <el-input v-model="worker.basicSalary"></el-input>
+            </el-form-item>
+
+
+
+            <el-form-item>
+                <el-button type="primary" @click="addWorker">提交</el-button>
+                <el-button @click="addDialogVisible = false">取消</el-button>
+            </el-form-item>
+        </el-form>
+
+    </el-dialog>
 
     <!--修改数据对话框表单-->
     <el-dialog
@@ -78,6 +134,9 @@
             <el-form-item label="下班时间（分）">
                 <el-input v-model="worker.clockOutMinute"></el-input>
             </el-form-item>
+            <el-form-item label="底薪">
+                <el-input v-model="worker.basicSalary"></el-input>
+            </el-form-item>
 
 
             <el-form-item>
@@ -95,7 +154,10 @@
                 :row-class-name="tableRowClassName"
                 @selection-change="handleSelectionChange"
         >
-
+            <el-table-column
+                    type="selection"
+                    width="55">
+            </el-table-column>
             <el-table-column
                     type="index"
                     width="50">
@@ -142,6 +204,16 @@
                     prop="clockOutMinute"
                     align="center"
                     label="下班时间（分）">
+            </el-table-column>
+            <el-table-column
+                    prop="basicSalary"
+                    align="center"
+                    label="底薪">
+            </el-table-column>
+            <el-table-column
+                    prop="managerId"
+                    align="center"
+                    label="管理员id">
             </el-table-column>
 
             <el-table-column
@@ -196,6 +268,29 @@
                     this.totalCount = resp.data.totalCount
                 })
             },
+            //添加员工
+            addWorker() {
+                axios({
+                    method: "post",
+                    url: "http://localhost:8080/ademob/managers/addWorker",
+                    data: this.worker
+                }).then(resp => {
+                    if ("success" == resp.data) {
+                        //添加成功
+                        //关闭窗口
+                        this.addDialogVisible = false;
+                        //重新查询数据
+                        this.selectByPage();
+                        //弹出提示，添加成功
+                        this.$message({
+                            message: '恭喜你，添加成功',
+                            type: 'success'
+                        });
+                    } else if ("fail" == resp.data) {
+                        this.$message.error('用户名已存在，请重新输入');
+                    }
+                })
+            },
             //修改员工信息
             updateWorker(){
                 axios({
@@ -214,10 +309,52 @@
                             message: '恭喜你，修改成功',
                             type: 'success'
                         });
+                    }else if ("fail" == resp.data) {
+                        this.$message.error('用户名已存在，请重新输入');
                     }
                 })
             },
-
+            deleteWorkers(){
+                //弹出确认删除的提示框
+                this.$confirm('此操作将开除该员工, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    //点击确认
+                    //创建id数组，从this.multipleSelection中获取
+                    for (let i = 0; i < this.multipleSelection.length; i++) {
+                        let selectionElement = this.multipleSelection[i];
+                        this.selectedIds[i] = selectionElement.id;
+                    }
+                    //发送ajax请求
+                    axios({
+                        method: "post",
+                        url: "http://localhost:8080/ademob/managers/deleteWorkers",
+                        data: this.selectedIds
+                    }).then(resp => {
+                        if ("success" == resp.data) {
+                            //删除成功
+                            //弹出提示
+                            this.$message({
+                                message: '恭喜你，删除成功',
+                                type: 'success'
+                            });
+                        }
+                    })
+                }).catch(() => {
+                    //点击取消
+                    this.$message({
+                        type: 'info',
+                        message: '已取消删除'
+                    });
+                });
+            },
+            // 复选框选中后执行的方法
+            handleSelectionChange(val) {
+                this.multipleSelection = val;
+                console.log(this.multipleSelection)
+            },
             //分页
             handleSizeChange(val) {
                 //重新设置每页展示条数
@@ -239,6 +376,12 @@
         },
         data() {
             return {
+                //被选中的id数组
+                selectedIds: [],
+                // 复选框选中数据集合
+                multipleSelection: [],
+                // 添加数据对话框是否展示的标记
+                addDialogVisible: false,
                 //修改数据对话框是否展示的标记
                 updateDialogVisible: false,
                 //每页显示条数
@@ -256,8 +399,11 @@
                     clockInHour: "",
                     clockInMinute: "",
                     clockOutHour: "",
-                    clockOutMinute: "",
-                    profilePhoto: ""
+                    clockOutHourMinute: "",
+                    profilePhoto: "",
+                    basicSalary:"",
+                    status:"",
+                    managerId:""
                 },
                 //表格数据
                 tableData: [{
@@ -269,6 +415,10 @@
                     clockInMinute: 1,
                     clockOutHour: 1,
                     clockOutMinute: 1,
+                    profilePhoto: "1",
+                    basicSalary:"1",
+                    status:"1",
+                    managerId:"1"
                 }]
             }
         }

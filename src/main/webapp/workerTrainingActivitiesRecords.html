@@ -13,20 +13,17 @@
         <el-form-item label="id" size="mini">
             <el-input v-model="trainingActivitiesRecords.id" placeholder="id"></el-input>
         </el-form-item>
-
         <el-form-item label="培训活动id" size="mini">
             <el-input v-model="trainingActivitiesRecords.trainingActivityId" placeholder="培训活动id"></el-input>
         </el-form-item>
-
         <el-form-item label="培训成绩" size="mini">
             <el-input v-model="trainingActivitiesRecords.score" placeholder="培训成绩"></el-input>
         </el-form-item>
-
         <el-form-item label="奖金" size="mini">
             <el-input v-model="trainingActivitiesRecords.bonus" placeholder="奖金"></el-input>
         </el-form-item>
-        <el-form-item label="状态" size="mini">
-            <el-input v-model="trainingActivitiesRecords.status" placeholder="状态"></el-input>
+        <el-form-item label="进程（0未审批，1审批通过培训中，2审批不通过，3审批通过且培训完成，4奖金已发放）" size="mini">
+            <el-input v-model="trainingActivitiesRecords.process" placeholder="进程（0未审批，1审批通过培训中，2审批不通过，3审批通过且培训完成，4奖金已发放）"></el-input>
         </el-form-item>
         <el-form-item label="管理员id" size="mini">
             <el-input v-model="trainingActivitiesRecords.managerId" placeholder="管理员id"></el-input>
@@ -85,8 +82,8 @@
             >
             </el-table-column>
             <el-table-column
-                    prop="status"
-                    label="状态"
+                    prop="process"
+                    label="进程"
                     align="center"
             >
             </el-table-column>
@@ -212,6 +209,7 @@
                     workerId: "",
                     score: "",
                     bonus: "",
+                    process:"",
                     status: "",
                     managerId: ""
                 },
@@ -222,6 +220,7 @@
                     workerId: "1",
                     score: "1",
                     bonus: "1",
+                    process:"1",
                     status: "1",
                     managerId: "1"
                 }]

@@ -15,6 +15,28 @@
 </head>
 <body>
 <div id="app">
+    <!--搜索表单-->
+    <el-form :inline="true" :model="resignations" class="demo-form-inline">
+
+
+        <el-form-item label="id" size="mini">
+            <el-input v-model="resignations.id" placeholder="id"></el-input>
+        </el-form-item>
+        <el-form-item label="离职理由" size="mini">
+            <el-input v-model="resignations.reason" placeholder="离职理由"></el-input>
+        </el-form-item>
+        <el-form-item label="是否批准（0未审批，1不批准，2批准）" size="mini">
+            <el-input v-model="resignations.approval" placeholder="是否批准（0未审批，1不批准，2批准）"></el-input>
+        </el-form-item>
+        <el-form-item label="管理员id" size="mini">
+            <el-input v-model="resignations.managerId" placeholder="管理员id"></el-input>
+        </el-form-item>
+
+        <el-form-item>
+            <el-button type="primary" @click="selectByPage">查询</el-button>
+        </el-form-item>
+    </el-form>
+
     <!--按钮-->
 
     <el-row>
@@ -280,6 +302,7 @@
                     workerId: "",
                     reason: "",
                     approval: "",
+                    status:"",
                     managerId: ""
                 },
                 //表格数据
@@ -288,6 +311,7 @@
                     workerId: "1",
                     reason: "1",
                     approval: "1",
+                    status:"1",
                     managerId: "1"
                 }]
             }

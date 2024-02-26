@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>leaveRecords</title>
+    <title>attendanceRecord</title>
     <style>
         .el-table .warning-row {
             background: oldlace;
@@ -16,57 +16,39 @@
 <body>
 <div id="app">
     <!--搜索表单-->
-    <el-form :inline="true" :model="leaveRecords" class="demo-form-inline">
+    <el-form :inline="true" :model="attendanceRecords" class="demo-form-inline">
 
 
         <el-form-item label="id" size="mini">
-            <el-input v-model="leaveRecords.id" placeholder="id"></el-input>
+            <el-input v-model="attendanceRecords.id" placeholder="id"></el-input>
         </el-form-item>
 
         <el-form-item label="员工id" size="mini">
-            <el-input v-model="leaveRecords.workerId" placeholder="员工id"></el-input>
+            <el-input v-model="attendanceRecords.workerId" placeholder="员工id"></el-input>
         </el-form-item>
-        <el-form-item label="请假类型（1病假、2事假、3婚假、4丧假、5产假）" size="mini">
-            <el-input v-model="leaveRecords.leaveType" placeholder="请假类型（1病假、2事假、3婚假、4丧假、5产假）"></el-input>
+        <el-form-item label="类型（1迟到 2早退 3缺勤）" size="mini">
+            <el-input v-model="attendanceRecords.type" placeholder="类型（1迟到 2早退 3缺勤）"></el-input>
         </el-form-item>
-        <el-form-item label="开始时间（年）" size="mini">
-            <el-input v-model="leaveRecords.byear" placeholder="开始时间（年）"></el-input>
+        <el-form-item label="年" size="mini">
+            <el-input v-model="attendanceRecords.year" placeholder="年"></el-input>
         </el-form-item>
-        <el-form-item label="开始时间（月）" size="mini">
-            <el-input v-model="leaveRecords.bmonth" placeholder="开始时间（月）"></el-input>
+        <el-form-item label="月" size="mini">
+            <el-input v-model="attendanceRecords.month" placeholder="月"></el-input>
         </el-form-item>
-        <el-form-item label="开始时间（日）" size="mini">
-            <el-input v-model="leaveRecords.bday" placeholder="开始时间（日）"></el-input>
+        <el-form-item label="日" size="mini">
+            <el-input v-model="attendanceRecords.day" placeholder="日"></el-input>
         </el-form-item>
-        <el-form-item label="开始时间（时）" size="mini">
-            <el-input v-model="leaveRecords.bhour" placeholder="开始时间（时）"></el-input>
+        <el-form-item label="时" size="mini">
+            <el-input v-model="attendanceRecords.hour" placeholder="时"></el-input>
         </el-form-item>
-        <el-form-item label="开始时间（分）" size="mini">
-            <el-input v-model="leaveRecords.bminute" placeholder="开始时间（分）"></el-input>
-        </el-form-item>
-        <el-form-item label="结束时间（年）" size="mini">
-            <el-input v-model="leaveRecords.eyear" placeholder="结束时间（年）"></el-input>
-        </el-form-item>
-        <el-form-item label="结束时间（月）" size="mini">
-            <el-input v-model="leaveRecords.emonth" placeholder="结束时间（月）"></el-input>
-        </el-form-item>
-        <el-form-item label="结束时间（日）" size="mini">
-            <el-input v-model="leaveRecords.eday" placeholder="结束时间（日）"></el-input>
-        </el-form-item>
-        <el-form-item label="结束时间（时）" size="mini">
-            <el-input v-model="leaveRecords.ehour" placeholder="结束时间（时）"></el-input>
-        </el-form-item>
-        <el-form-item label="结束时间（分）" size="mini">
-            <el-input v-model="leaveRecords.eminute" placeholder="结束时间（分）"></el-input>
+        <el-form-item label="分" size="mini">
+            <el-input v-model="attendanceRecords.minute" placeholder="分"></el-input>
         </el-form-item>
         <el-form-item label="罚款" size="mini">
-            <el-input v-model="leaveRecords.fine" placeholder="罚款"></el-input>
-        </el-form-item>
-        <el-form-item label="是否批准（0未审批，1批准，2不批准）" size="mini">
-            <el-input v-model="leaveRecords.approval" placeholder="是否批准（0未审批，1批准，2不批准）"></el-input>
+            <el-input v-model="attendanceRecords.fine" placeholder="罚款"></el-input>
         </el-form-item>
         <el-form-item label="管理员id" size="mini">
-            <el-input v-model="leaveRecords.managerId" placeholder="管理员id"></el-input>
+            <el-input v-model="attendanceRecords.managerId" placeholder="管理员id"></el-input>
         </el-form-item>
 
         <el-form-item>
@@ -77,29 +59,95 @@
     <!--按钮-->
 
     <el-row>
-        <el-button type="danger" plain @click="deleteLeaveRecords">删除</el-button>
+        <el-button type="danger" plain @click="deleteAttendanceRecords">删除</el-button>
+        <el-button type="primary" plain @click="addDialogVisible = true">添加</el-button>
     </el-row>
 
-    <!--修改数据对话框表单-->
+    <!--添加员工出勤记录对话框表单-->
     <el-dialog
-            title="修改"
+            title="添加员工出勤记录"
+            :visible.sync="addDialogVisible"
+            width="40%"
+    >
+
+        <el-form ref="form" :model="attendanceRecords" label-width="80px">
+            <el-form-item label="员工id">
+                <el-input v-model="attendanceRecords.workerId"></el-input>
+            </el-form-item>
+
+            <el-form-item label="类型">
+                <el-input v-model="attendanceRecords.type"></el-input>
+            </el-form-item>
+
+            <el-form-item label="年">
+                <el-input v-model="attendanceRecords.year"></el-input>
+            </el-form-item>
+            <el-form-item label="月">
+                <el-input v-model="attendanceRecords.month"></el-input>
+            </el-form-item>
+            <el-form-item label="日">
+                <el-input v-model="attendanceRecords.day"></el-input>
+            </el-form-item>
+            <el-form-item label="时">
+                <el-input v-model="attendanceRecords.hour"></el-input>
+            </el-form-item>
+            <el-form-item label="分">
+                <el-input v-model="attendanceRecords.minute"></el-input>
+            </el-form-item>
+            <el-form-item label="罚款">
+                <el-input v-model="attendanceRecords.fine"></el-input>
+            </el-form-item>
+
+            <el-form-item>
+                <el-button type="primary" @click="addAttendanceRecord">提交</el-button>
+                <el-button @click="addDialogVisible = false">取消</el-button>
+            </el-form-item>
+        </el-form>
+
+    </el-dialog>
+
+
+    <!--修改员工出勤记录对话框表单-->
+    <el-dialog
+            title="修改员工出勤记录"
             :visible.sync="updateDialogVisible"
             width="40%"
     >
 
-        <el-form ref="form" :model="leaveRecords" label-width="80px">
-            <el-form-item label="罚款">
-                <el-input v-model="leaveRecords.fine"></el-input>
+        <el-form ref="form" :model="attendanceRecords" label-width="80px">
+            <el-form-item label="员工id">
+                <el-input v-model="attendanceRecords.workerId"></el-input>
             </el-form-item>
-            <el-form-item label="是否批准">
-                <el-input v-model="leaveRecords.approval"></el-input>
+
+            <el-form-item label="类型">
+                <el-input v-model="attendanceRecords.type"></el-input>
+            </el-form-item>
+
+            <el-form-item label="年">
+                <el-input v-model="attendanceRecords.year"></el-input>
+            </el-form-item>
+            <el-form-item label="月">
+                <el-input v-model="attendanceRecords.month"></el-input>
+            </el-form-item>
+            <el-form-item label="日">
+                <el-input v-model="attendanceRecords.day"></el-input>
+            </el-form-item>
+            <el-form-item label="时">
+                <el-input v-model="attendanceRecords.hour"></el-input>
+            </el-form-item>
+            <el-form-item label="分">
+                <el-input v-model="attendanceRecords.minute"></el-input>
+            </el-form-item>
+            <el-form-item label="罚款">
+                <el-input v-model="attendanceRecords.fine"></el-input>
             </el-form-item>
 
             <el-form-item>
-                <el-button type="primary" @click="updateLeaveRecords">提交</el-button>
+                <el-button type="primary" @click="updateAttendanceRecord">提交</el-button>
                 <el-button @click="updateDialogVisible = false">取消</el-button>
             </el-form-item>
         </el-form>
+
     </el-dialog>
 
     <!--表格-->
@@ -110,6 +158,7 @@
                 :row-class-name="tableRowClassName"
                 @selection-change="handleSelectionChange"
         >
+
             <el-table-column
                     type="selection"
                     width="55">
@@ -131,49 +180,39 @@
             >
             </el-table-column>
             <el-table-column
-                    prop="leaveType"
+                    prop="type"
                     align="center"
-                    label="请假类型">
+                    label="类型">
             </el-table-column>
             <el-table-column
-                    prop="byear"
+                    prop="year"
                     align="center"
-                    label="开始时间（年）">
+                    label="年">
             </el-table-column>
             <el-table-column
-                    prop="bmonth"
+                    prop="month"
                     align="center"
-                    label="开始时间（月）">
+                    label="月">
             </el-table-column>
             <el-table-column
-                    prop="bday"
+                    prop="day"
                     align="center"
-                    label="开始时间（日）">
+                    label="日">
             </el-table-column>
             <el-table-column
-                    prop="eyear"
+                    prop="hour"
                     align="center"
-                    label="结束时间（年）">
+                    label="时">
             </el-table-column>
             <el-table-column
-                    prop="emonth"
+                    prop="minute"
                     align="center"
-                    label="结束时间（月）">
-            </el-table-column>
-            <el-table-column
-                    prop="eday"
-                    align="center"
-                    label="结束时间（日）">
+                    label="分">
             </el-table-column>
             <el-table-column
                     prop="fine"
                     align="center"
                     label="罚款">
-            </el-table-column>
-            <el-table-column
-                    prop="approval"
-                    align="center"
-                    label="是否批准">
             </el-table-column>
             <el-table-column
                     prop="managerId"
@@ -192,7 +231,6 @@
             </el-table-column>
         </el-table>
     </template>
-
     <!--分页工具条-->
     <el-pagination
             @size-change="handleSizeChange"
@@ -205,15 +243,16 @@
     </el-pagination>
 
 </div>
-
 <script src="js/vue.js"></script>
 <script src="element-ui/lib/index.js"></script>
 <link rel="stylesheet" href="element-ui/lib/theme-chalk/index.css">
 
 <script src="js/axios-0.18.0.js"></script>
+
 <script>
     new Vue({
         el: "#app",
+
         mounted() {
             this.selectByPage()
         },
@@ -222,8 +261,8 @@
             selectByPage() {
                 axios({
                     method: "post",
-                    url: "http://localhost:8080/ademob/managers/selectByPageAndCondition3?currentPage=" + this.currentPage + "&pageSize=" + this.pageSize,
-                    data: this.leaveRecords
+                    url: "http://localhost:8080/ademob/managers/selectByPageAndCondition2?currentPage=" + this.currentPage + "&pageSize=" + this.pageSize,
+                    data: this.attendanceRecords
                 }).then(resp => {
                     //设置表格数据
                     this.tableData = resp.data.rows;
@@ -231,13 +270,78 @@
                     this.totalCount = resp.data.totalCount
                 })
             },
-            updateLeaveRecords() {
+            //添加员工出勤记录
+            addAttendanceRecord(){
                 axios({
                     method: "post",
-                    url: "http://localhost:8080/ademob/managers/updateLeaveRecords",
-                    data: this.leaveRecords
+                    url: "http://localhost:8080/ademob/managers/addAttendanceRecord",
+                    data:this.attendanceRecords
                 }).then(resp => {
                     if ("success" == resp.data) {
+                        //添加成功
+                        //关闭窗口
+                        this.addDialogVisible = false;
+                        //重新查询数据
+                        this.selectByPage();
+                        //弹出提示，添加成功
+                        this.$message({
+                            message: '恭喜你，添加成功',
+                            type: 'success'
+                        });
+                    }
+                })
+            },
+            //删除员工出勤记录
+            deleteAttendanceRecords(){
+                //弹出确认删除的提示框
+                this.$confirm('此操作将删除该数据, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    //创建id数组，从this.multipleSelection中获取
+                    for (let i = 0; i < this.multipleSelection.length; i++) {
+                        let selectionElement = this.multipleSelection[i];
+                        this.selectedIds[i] = selectionElement.id;
+                    }
+                    //点击确认
+                    axios({
+                        method: "post",
+                        url: "http://localhost:8080/ademob/managers/deleteAttendanceRecords",
+                        data: this.selectedIds
+                    }).then(resp => {
+
+                        if ("success" == resp.data) {
+                            //删除成功
+                            //弹出提示
+                            this.$message({
+                                message: '恭喜你，删除成功',
+                                type: 'success'
+                            });
+                            //重新查询数据
+                            this.selectByPage();
+                        }
+                        //关闭窗口
+                        this.deleteDialogVisible = false;
+                    })
+                }).catch(() => {
+                    //点击取消
+                    this.$message({
+                        type: 'info',
+                        message: '已取消删除'
+                    });
+                    //关闭窗口
+                    this.deleteDialogVisible = false;
+                });
+            },
+            //修改员工出勤记录
+            updateAttendanceRecord(){
+                axios({
+                    method:"post",
+                    url:"http://localhost:8080/ademob/managers/updateAttendanceRecord",
+                    data:this.attendanceRecords
+                }).then(resp=>{
+                    if("success"==resp.data){
                         //修改成功
                         //关闭窗口
                         this.updateDialogVisible = false;
@@ -249,44 +353,6 @@
                             type: 'success'
                         });
                     }
-                })
-            },
-            deleteLeaveRecords() {
-                //弹出确认删除的提示框
-                this.$confirm('此操作将删除该数据, 是否继续?', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    type: 'warning'
-                }).then(() => {
-                    //点击确认
-                    //创建id数组，从this.multipleSelection中获取
-                    for (let i = 0; i < this.multipleSelection.length; i++) {
-                        let selectionElement = this.multipleSelection[i];
-                        this.selectedIds[i] = selectionElement.id;
-                    }
-                    //发送ajax请求
-                    axios({
-                        method: "post",
-                        url: "http://localhost:8080/ademob/managers/deleteLeaveRecords",
-                        data: this.selectedIds
-                    }).then(resp => {
-                        if ("success" == resp.data) {
-                            //删除成功
-                            //重新查询数据
-                            this.selectByPage();
-                            //弹出提示
-                            this.$message({
-                                message: '恭喜你，删除成功',
-                                type: 'success'
-                            });
-                        }
-                    }).catch(() => {
-                        //点击取消
-                        this.$message({
-                            type: 'info',
-                            message: '已取消删除'
-                        });
-                    });
                 })
             },
             // 复选框选中后执行的方法
@@ -310,11 +376,13 @@
             handleEdit(index, row) {
                 console.log(index, row)
                 //row是该行tableData对应的一行
-                this.leaveRecords = row
+                this.attendanceRecords = row
             }
         },
         data() {
             return {
+                // 添加数据对话框是否展示的标记
+                addDialogVisible: false,
                 // 修改数据对话框是否展示的标记
                 updateDialogVisible: false,
                 //被选中的id数组
@@ -327,49 +395,38 @@
                 totalCount: 100,
                 // 当前页码
                 currentPage: 1,
-                //请假申请模型数据
-                leaveRecords: {
+                //出勤记录模型数据
+                attendanceRecords: {
                     id: "",
                     workerId: "",
-                    leaveType: "",
-                    byear: "",
-                    bmonth:"",
-                    bday:"",
-                    bhour:"",
-                    bminute:"",
-                    eyear: "",
-                    emonth:"",
-                    eday:"",
-                    ehour:"",
-                    eminute:"",
+                    type: "",
+                    year: "",
+                    month:"",
+                    day:"",
+                    hour:"",
+                    minute:"",
                     fine: "",
-                    approval: "",
-                    status: "",
-                    managerId: ""
+                    status:"",
+                    managerId:""
                 },
                 //表格数据
                 tableData: [{
-                    id: "1",
-                    workerId: "1",
-                    leaveType: "1",
-                    byear: "1",
-                    bmonth:"1",
-                    bday:"1",
-                    bhour:"1",
-                    bminute:"1",
-                    eyear: "1",
-                    emonth:"1",
-                    eday:"1",
-                    ehour:"1",
-                    eminute:"1",
+                    id: 1,
+                    workerId: 1,
+                    type: "1",
+                    year: "1",
+                    month:"1",
+                    day:"1",
+                    hour:"1",
+                    minute:"1",
                     fine: "1",
-                    approval: "1",
-                    status: "1",
-                    managerId: "1"
+                    status:"1",
+                    managerId:"1"
                 }]
             }
         }
     })
+
 </script>
 </body>
 </html>

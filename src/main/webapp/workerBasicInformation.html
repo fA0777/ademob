@@ -37,6 +37,7 @@
     <h3>真实姓名:{{worker.trueName}}</h3>
     <h3>上班时间:{{worker.clockInHour}}:{{worker.clockInMinute}}</h3>
     <h3>下班时间:{{worker.clockOutHour}}:{{worker.clockOutMinute}}</h3>
+    <h3>底薪:{{worker.basicSalary}}</h3>
     <h3>头像:<div class="block"><el-avatar :size="50" :src="worker.profilePhoto"></el-avatar></div></h3>
     <el-row>
         <el-button type="primary" plain @click="updateDialogVisible = true">修改个人基本信息</el-button>
@@ -45,9 +46,9 @@
     </el-row>
     <a href="javascript:location.href='workers/logout'">重新登录</a>
 
-    <!--修改个人基本信息对话框表单-->
+    <!--修改用户名-->
     <el-dialog
-            title="修改个人基本信息"
+            title="修改用户名"
             :visible.sync="updateDialogVisible"
             width="40%"
     >
@@ -56,22 +57,6 @@
             <el-form-item label="用户名">
                 <el-input v-model="worker.name"></el-input>
             </el-form-item>
-            <el-form-item label="真实姓名">
-                <el-input v-model="worker.trueName"></el-input>
-            </el-form-item>
-            <el-form-item label="上班时间（时）">
-                <el-input v-model="worker.clockInHour"></el-input>
-            </el-form-item>
-            <el-form-item label="上班时间（分）">
-                <el-input v-model="worker.clockInMinute"></el-input>
-            </el-form-item>
-            <el-form-item label="下班时间（时）">
-                <el-input v-model="worker.clockOutHour"></el-input>
-            </el-form-item>
-            <el-form-item label="下班时间（分）">
-                <el-input v-model="worker.clockOutMinute"></el-input>
-            </el-form-item>
-
 
             <el-form-item>
                 <el-button type="primary" @click="updateBasicInformation">提交</el-button>
@@ -109,22 +94,23 @@
 
     </el-dialog>
 
-<!--    &lt;!&ndash;修改头像对话框表单&ndash;&gt;-->
-<!--    <el-dialog-->
-<!--            title="修改头像"-->
-<!--            :visible.sync="updateDialogVisible3"-->
-<!--            width="40%"-->
-<!--    >-->
-<!--        <el-upload-->
-<!--                class="avatar-uploader"-->
-<!--                action="https://jsonplaceholder.typicode.com/posts/"-->
-<!--                :show-file-list="false"-->
-<!--                :on-success="handleAvatarSuccess"-->
-<!--                :before-upload="beforeAvatarUpload">-->
-<!--            <img v-if="imageUrl" :src="imageUrl" class="avatar">-->
-<!--            <i v-else class="el-icon-plus avatar-uploader-icon"></i>-->
-<!--        </el-upload>-->
-<!--    </el-dialog>-->
+    <!--修改头像对话框表单-->
+    <el-dialog
+            title="修改头像"
+            :visible.sync="updateDialogVisible3"
+            width="40%"
+    >
+        <el-upload
+                class="avatar-uploader"
+                action="http://localhost:8080/Login/upload" 
+<!--                上传的地址，即是后台保存文件的接口-->
+                :show-file-list="false"
+                :on-success="handleAvatarSuccess"
+                :before-upload="beforeAvatarUpload">
+            <img v-if="imageUrl" :src="imageUrl" class="avatar">
+            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+        </el-upload>
+    </el-dialog>
 </div>
 
 <script src="js/vue.js"></script>
@@ -164,12 +150,21 @@
                             message: '恭喜你，修改成功',
                             type: 'success'
                         });
+                    }else if ("fail" == resp.data) {
+                        this.$message.error('用户名已存在，请重新输入');
                     }
                 })
             },
             updatePassword(){
                 if (this.worker.password!= this.password0){
                     this.$message.error('原密码有误');
+                    return;
+                }
+                var reg=/^\w{6,12}$/
+                let b = reg.test(this.worker.password1);
+                if (b==false){
+                    //不符合要求
+                    this.$message.error('密码应为6-12位字母、数字、下划线的组合');
                     return;
                 }
                 if (this.password1==null||this.password1==""){
@@ -242,7 +237,10 @@
                     clockInMinute: "",
                     clockOutHour: "",
                     clockOutHourMinute: "",
-                    profilePhoto: ""
+                    profilePhoto: "",
+                    basicSalary:"",
+                    status:"",
+                    managerId:""
                 },
                 password0:"",
                 password1:"",

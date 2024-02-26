@@ -8,20 +8,19 @@ import java.util.List;
 public interface WorkersMapper {
 
     /**
-     * 根据用户名和密码查询
+     * 根据用户名查询
      * @param name
-     * @param password
      * @return
      */
-    @Select("select * from ademob.workers where name=#{name} and password=#{password}")
+    @Select("select * from ademob.workers where name=#{name}")
     @ResultMap("workersResultMap")
-    Workers selectWorker(@Param("name") String name, @Param("password") String password);
+    Workers selectWorker(@Param("name") String name);
 
     /**
      * 修改个人基本信息
      * @param worker
      */
-    @Update("update ademob.workers set name=#{name},true_name=#{trueName},clock_in_hour=#{clockInHour},clock_in_minute=#{clockInMinute},clock_out_hour=#{clockOutHour},clock_out_minute=#{clockOutMinute} where id=#{id}")
+    @Update("update ademob.workers set name=#{name},manager_id=#{managerId} where id=#{id}")
     @ResultMap("workersResultMap")
     void updateBasicInformation(Workers worker);
 
@@ -51,7 +50,7 @@ public interface WorkersMapper {
      * 添加请假申请
      * @param leaveRecords
      */
-    @Insert("insert into ademob.leave_records value (null,#{workerId},#{leaveType},#{beginTime},#{endTime},#{fine},#{approval},#{managerId})")
+    @Insert("insert into ademob.leave_records value (null,#{workerId},#{leaveType},#{byear},#{bmonth},#{bday},#{bhour},#{bminute},#{eyear},#{emonth},#{eday},#{ehour},#{eminute},#{fine},#{approval},#{status},#{managerId})")
     void addLeaveRecords(LeaveRecords leaveRecords);
 
     /**
@@ -73,7 +72,7 @@ public interface WorkersMapper {
      * 修改请假申请
      * @param leaveRecords
      */
-    @Update("update ademob.leave_records set leave_type=#{leaveType},begin_time=#{beginTime},end_time=#{endTime} where id=#{id}")
+    @Update("update ademob.leave_records set leave_type=#{leaveType},byear=#{byear},bmonth=#{bmonth},bday=#{bday},bhour=#{bhour},bminute=#{bminute},eyear=#{eyear},emonth=#{emonth},eday=#{eday},ehour=#{ehour},eminute=#{eminute} where id=#{id}")
     @ResultMap("leaveRecordsResultMap")
     void updateLeaveRecords(LeaveRecords leaveRecords);
 
@@ -107,7 +106,7 @@ public interface WorkersMapper {
      * 添加培训活动记录
      * @param trainingActivitiesRecords
      */
-    @Insert("insert into ademob.training_activities_records value (null,#{trainingActivityId},#{workerId},#{score},#{bonus},#{status},#{managerId})")
+    @Insert("insert into ademob.training_activities_records value (null,#{trainingActivityId},#{workerId},#{score},#{bonus},#{process},#{status},#{managerId})")
     void addTrainingActivitiesRecords(TrainingActivitiesRecords trainingActivitiesRecords);
 
     /**
@@ -218,15 +217,30 @@ public interface WorkersMapper {
      * @param approval
      * @return
      */
-    @Select("select * from resignations where worker_id=#{workerId} and approval=#{approval}")
+    @Select("select * from resignations where worker_id=#{workerId} and approval=#{approval} and status={status}")
     @ResultMap("resignationsResultMap")
-    Resignations selectResignations2(@Param("workerId") Integer workerId,@Param("approval") Integer approval);
+    Resignations selectResignations2(@Param("workerId") Integer workerId,@Param("approval") Integer approval,@Param("status") Integer status);
 
 
     /**
      * 添加离职申请
      * @param resignations
      */
-    @Insert("insert into ademob.resignations value (null,#{workerId},#{reason},#{approval},#{managerId})")
+    @Insert("insert into ademob.resignations value (null,#{workerId},#{reason},#{approval},#{status},#{managerId})")
     void addResignations(Resignations resignations);
+
+    /**
+     * 查询每页显示的工资记录
+     * @param begin
+     * @param size
+     * @param salaryRecords
+     * @return
+     */
+    List<SalaryRecords> selectByPageAndCondition7(@Param("begin") int begin, @Param("size") int size, @Param("salaryRecords") SalaryRecords salaryRecords);
+
+    /**
+     * 分页条件查询，查询总记录数
+     * @return
+     */
+    int selectTotalCountByCondition7( @Param("salaryRecords") SalaryRecords salaryRecords);
 }
