@@ -29,6 +29,6 @@
         <input type="submit" id="submit" value="登录">
         <input type="reset" id="reset" value="重置"> <a href="workersLogin.jsp">员工登录</a>
         <br>
-        <div id="err_msg" style="color: red">${login_msg}</div>
+        <div id="err_msg" style="color: red">${login_msg}${register_msg}</div>
     </form>
 </div>

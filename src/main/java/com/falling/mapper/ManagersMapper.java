@@ -9,20 +9,18 @@ public interface ManagersMapper {
 
     /**
      * 根据用户名和密码查询
-     *
      * @param name
-     * @param password
      * @return
      */
-    @Select("select * from ademob.managers where name=#{name} and password=#{password}")
-    Managers selectManager(@Param("name") String name, @Param("password") String password);
+    @Select("select * from ademob.managers where name=#{name}")
+    Managers selectManager(String name);
 
     /**
      * 添加员工
      *
      * @param worker
      */
-    @Insert("insert into ademob.workers value (null,#{name},#{password},#{trueName},#{clockInHour},#{clockInMinute},#{clockOutHour},#{clockOutMinute},#{profilePhoto},#{basicSalary},#{status},#{managerId})")
+    @Insert("insert into ademob.workers value (null,#{name},#{salt},#{password},#{trueName},#{clockIn},#{clockOut},#{profilePhoto},#{basicSalary},#{status},#{managerId})")
     void addWorker(Workers worker);
 
     /**
@@ -81,7 +79,7 @@ public interface ManagersMapper {
      *
      * @param worker
      */
-    @Update("update ademob.workers set name=#{name},password=#{password},true_name=#{trueName},clock_in_hour=#{clockInHour},clock_in_minute=#{clockInMinute},clock_out_hour=#{clockOutHour},clock_out_minute=#{clockOutMinute},basic_salary=#{basicSalary},manager_id=#{managerId} where id=#{id}")
+    @Update("update ademob.workers set name=#{name},password=#{password},true_name=#{trueName},clock_in=#{clockIn},clock_out=#{clockOut},basic_salary=#{basicSalary},manager_id=#{managerId} where id=#{id}")
     @ResultMap("workersResultMap")
     void updateWorker(Workers worker);
 
@@ -106,7 +104,7 @@ public interface ManagersMapper {
      *
      * @param attendanceRecord
      */
-    @Insert("insert into ademob.attendance_records value (null,#{workerId},#{type},#{year},#{month},#{day},#{hour},#{minute},#{fine},#{status},#{managerId})")
+    @Insert("insert into ademob.attendance_records value (null,#{workerId},#{type},#{date},#{time},#{fine},#{status},#{managerId})")
     void addAttendanceRecord(AttendanceRecords attendanceRecord);
 
     /**
@@ -122,7 +120,7 @@ public interface ManagersMapper {
      *
      * @param attendanceRecord
      */
-    @Update("update ademob.attendance_records set worker_id=#{workerId},type=#{type},year=#{year},month=#{month},day=#{day},hour=#{hour},minute=#{minute},fine=#{fine},status=#{status},manager_id=#{managerId} where id=#{id}")
+    @Update("update ademob.attendance_records set worker_id=#{workerId},type=#{type},date=#{date},time=#{time},fine=#{fine},status=#{status},manager_id=#{managerId} where id=#{id}")
     @ResultMap("attendanceRecordsResultMap")
     void updateAttendanceRecord(AttendanceRecords attendanceRecord);
 
@@ -425,4 +423,17 @@ public interface ManagersMapper {
      */
     int selectTotalCountByCondition8(@Param("salaryRecords") SalaryRecords salaryRecords);
 
+    /**
+     * 修改密码
+     * @param managers
+     */
+    @Update("update ademob.managers set password=#{password} where id=#{id}")
+    void updatePassword(Managers managers);
+
+    /**
+     * 首次登录后，更新管理员信息
+     * @param managers
+     */
+    @Update("update ademob.managers set salt=#{salt},password=#{password} where id=#{id}")
+    void updateLogin(Managers managers);
 }

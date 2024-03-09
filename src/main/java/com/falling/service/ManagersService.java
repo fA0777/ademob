@@ -7,13 +7,11 @@ import java.util.List;
 
 public interface ManagersService {
     /**
-     * 根据用户名和密码查询
-     *
+     * 根据用户名查询
      * @param name
-     * @param password
      * @return
      */
-    Managers selectManager(String name, String password);
+    Managers selectManager(String name,String password);
 
     /**
      * 添加员工
@@ -336,4 +334,9 @@ public interface ManagersService {
      */
     PageBean<SalaryRecords> selectByPageAndCondition8(int currentPage, int pageSize, SalaryRecords salaryRecords);
 
+    /**
+     * 修改密码
+     * @param managers
+     */
+    void updatePassword(Managers managers);
 }

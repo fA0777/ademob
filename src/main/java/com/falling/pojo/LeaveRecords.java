@@ -9,27 +9,15 @@ public class LeaveRecords {
     //请假类型: 1病假、2事假、3婚假、4丧假、5产假
     private Integer leaveType;
     //请假开始时间
-    //时间:年
-    private Integer byear;
-    //时间：月
-    private Integer bmonth;
-    //时间：日
-    private Integer bday;
-    //时间：时
-    private Integer bhour;
-    //时间：分
-    private Integer bminute;
+    //日期
+    private String bdate;
+    //时间
+    private String btime;
     //请假结束时间
-    //时间:年
-    private Integer eyear;
-    //时间：月
-    private Integer emonth;
-    //时间：日
-    private Integer eday;
-    //时间：时
-    private Integer ehour;
-    //时间：分
-    private Integer eminute;
+    //日期
+    private String edate;
+    //时间
+    private String etime;
     //罚款
     private Integer fine;
     //是否批准: 0未审批，1批准，2不批准
@@ -79,84 +67,36 @@ public class LeaveRecords {
         this.leaveType = leaveType;
     }
 
-    public Integer getByear() {
-        return byear;
+    public String getBdate() {
+        return bdate;
     }
 
-    public void setByear(Integer byear) {
-        this.byear = byear;
+    public void setBdate(String bdate) {
+        this.bdate = bdate;
     }
 
-    public Integer getBmonth() {
-        return bmonth;
+    public String getBtime() {
+        return btime;
     }
 
-    public void setBmonth(Integer bmonth) {
-        this.bmonth = bmonth;
+    public void setBtime(String btime) {
+        this.btime = btime;
     }
 
-    public Integer getBday() {
-        return bday;
+    public String getEdate() {
+        return edate;
     }
 
-    public void setBday(Integer bday) {
-        this.bday = bday;
+    public void setEdate(String edate) {
+        this.edate = edate;
     }
 
-    public Integer getBhour() {
-        return bhour;
+    public String getEtime() {
+        return etime;
     }
 
-    public void setBhour(Integer bhour) {
-        this.bhour = bhour;
-    }
-
-    public Integer getBminute() {
-        return bminute;
-    }
-
-    public void setBminute(Integer bminute) {
-        this.bminute = bminute;
-    }
-
-    public Integer getEyear() {
-        return eyear;
-    }
-
-    public void setEyear(Integer eyear) {
-        this.eyear = eyear;
-    }
-
-    public Integer getEmonth() {
-        return emonth;
-    }
-
-    public void setEmonth(Integer emonth) {
-        this.emonth = emonth;
-    }
-
-    public Integer getEday() {
-        return eday;
-    }
-
-    public void setEday(Integer eday) {
-        this.eday = eday;
-    }
-
-    public Integer getEhour() {
-        return ehour;
-    }
-
-    public void setEhour(Integer ehour) {
-        this.ehour = ehour;
-    }
-
-    public Integer getEminute() {
-        return eminute;
-    }
-
-    public void setEminute(Integer eminute) {
-        this.eminute = eminute;
+    public void setEtime(String etime) {
+        this.etime = etime;
     }
 
     public Integer getFine() {

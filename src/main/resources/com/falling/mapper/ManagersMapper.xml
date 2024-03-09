@@ -5,10 +5,8 @@
 <mapper namespace="com.falling.mapper.ManagersMapper">
     <resultMap id="workersResultMap" type="workers">
         <result column="true_name" property="trueName"></result>
-        <result column="clock_in_hour" property="clockInHour"></result>
-        <result column="clock_in_minute" property="clockInMinute"></result>
-        <result column="clock_out_hour" property="clockOutHour"></result>
-        <result column="clock_out_minute" property="clockOutMinute"></result>
+        <result column="clock_in" property="clockIn"></result>
+        <result column="clock_out" property="clockOut"></result>
         <result column="profile_photo" property="profilePhoto"></result>
         <result column="basic_salary" property="basicSalary"></result>
         <result column="manager_id" property="managerId"></result>
@@ -149,20 +147,11 @@
                 and true_name like #{worker.trueName}
             </if>
 
-            <if test="worker.clockInHour!=null">
-                and clock_in_hour = #{worker.clockInHour}
+            <if test="worker.clockIn!=null and worker.clockIn!=''">
+                and clock_in = #{worker.clockIn}
             </if>
-
-            <if test="worker.clockInMinute!=null">
-                and clock_in_minute = #{worker.clockInMinute}
-            </if>
-
-            <if test="worker.clockOutHour!=null">
-                and clock_out_hour = #{worker.clockOutHour}
-            </if>
-
-            <if test="worker.clockOutMinute!=null">
-                and clock_out_minute = #{worker.clockOutMinute}
+            <if test="worker.clockOut!=null and worker.clockOut!=''">
+                and clock_out = #{worker.clockOut}
             </if>
             <if test="worker.basicSalary!=null">
                 and basic_salary = #{worker.basicSalary}
@@ -194,20 +183,11 @@
                 and true_name like #{worker.trueName}
             </if>
 
-            <if test="worker.clockInHour!=null">
-                and clock_in_hour = #{worker.clockInHour}
+            <if test="worker.clockIn!=null and worker.clockIn!=''">
+                and clock_in = #{worker.clockIn}
             </if>
-
-            <if test="worker.clockInMinute!=null">
-                and clock_in_minute = #{worker.clockInMinute}
-            </if>
-
-            <if test="worker.clockOutHour!=null">
-                and clock_out_hour = #{worker.clockOutHour}
-            </if>
-
-            <if test="worker.clockOutMinute!=null">
-                and clock_out_minute = #{worker.clockOutMinute}
+            <if test="worker.clockOut!=null and worker.clockOut!=''">
+                and clock_out = #{worker.clockOut}
             </if>
             <if test="worker.basicSalary!=null">
                 and basic_salary = #{worker.basicSalary}
@@ -235,25 +215,12 @@
             <if test="attendanceRecord.type!=null">
                 and type = #{attendanceRecord.type}
             </if>
-
-            <if test="attendanceRecord.year!=null">
-                and year = #{attendanceRecord.year}
+            <if test="attendanceRecord.date!=null and attendanceRecord.date!=''">
+                and date = #{attendanceRecord.date}
             </if>
-            <if test="attendanceRecord.month!=null">
-                and month = #{attendanceRecord.month}
+            <if test="attendanceRecord.time!=null and attendanceRecord.time!=''">
+                and time = #{attendanceRecord.time}
             </if>
-
-            <if test="attendanceRecord.day!=null">
-                and day = #{attendanceRecord.day}
-            </if>
-            <if test="attendanceRecord.hour!=null">
-                and hour = #{attendanceRecord.hour}
-            </if>
-
-            <if test="attendanceRecord.minute!=null">
-                and minute = #{attendanceRecord.minute}
-            </if>
-
             <if test="attendanceRecord.fine!=null">
                 and fine = #{attendanceRecord.fine}
             </if>
@@ -283,25 +250,12 @@
             <if test="attendanceRecord.type!=null">
                 and type = #{attendanceRecord.type}
             </if>
-
-            <if test="attendanceRecord.year!=null">
-                and year = #{attendanceRecord.year}
+            <if test="attendanceRecord.date!=null and attendanceRecord.date!=''">
+                and date = #{attendanceRecord.date}
             </if>
-            <if test="attendanceRecord.month!=null">
-                and month = #{attendanceRecord.month}
+            <if test="attendanceRecord.time!=null and attendanceRecord.time!=''">
+                and time = #{attendanceRecord.time}
             </if>
-
-            <if test="attendanceRecord.day!=null">
-                and day = #{attendanceRecord.day}
-            </if>
-            <if test="attendanceRecord.hour!=null">
-                and hour = #{attendanceRecord.hour}
-            </if>
-
-            <if test="attendanceRecord.minute!=null">
-                and minute = #{attendanceRecord.minute}
-            </if>
-
             <if test="attendanceRecord.fine!=null">
                 and fine = #{attendanceRecord.fine}
             </if>
@@ -331,35 +285,17 @@
             <if test="leaveRecords.leaveType!=null">
                 and leave_type = #{leaveRecords.leaveType}
             </if>
-            <if test="leaveRecords.byear!=null">
-                and byear = #{leaveRecords.byear}
+            <if test="leaveRecords.bdate!=null and leaveRecords.bdate!=''">
+                and bdate = #{leaveRecords.bdate}
             </if>
-            <if test="leaveRecords.bmonth!=null">
-                and bmonth = #{leaveRecords.bmonth}
+            <if test="leaveRecords.btime!=null and leaveRecords.btime!=''">
+                and btime = #{leaveRecords.btime}
             </if>
-            <if test="leaveRecords.bday!=null">
-                and bday = #{leaveRecords.bday}
+            <if test="leaveRecords.edate!=null and leaveRecords.edate!=''">
+                and edate = #{leaveRecords.edate}
             </if>
-            <if test="leaveRecords.bhour!=null">
-                and bhour = #{leaveRecords.bhour}
-            </if>
-            <if test="leaveRecords.bminute!=null">
-                and bminute = #{leaveRecords.bminute}
-            </if>
-            <if test="leaveRecords.eyear!=null">
-                and eyear = #{leaveRecords.eyear}
-            </if>
-            <if test="leaveRecords.emonth!=null">
-                and emonth = #{leaveRecords.emonth}
-            </if>
-            <if test="leaveRecords.eday!=null">
-                and eday = #{leaveRecords.eday}
-            </if>
-            <if test="leaveRecords.ehour!=null">
-                and ehour = #{leaveRecords.ehour}
-            </if>
-            <if test="leaveRecords.eminute!=null">
-                and eminute = #{leaveRecords.eminute}
+            <if test="leaveRecords.etime!=null and leaveRecords.etime!=''">
+                and etime = #{leaveRecords.etime}
             </if>
             <if test="leaveRecords.fine!=null">
                 and fine = #{leaveRecords.fine}
@@ -392,35 +328,17 @@
             <if test="leaveRecords.leaveType!=null">
                 and leave_type = #{leaveRecords.leaveType}
             </if>
-            <if test="leaveRecords.byear!=null">
-                and byear = #{leaveRecords.byear}
+            <if test="leaveRecords.bdate!=null and leaveRecords.bdate!=''">
+                and bdate = #{leaveRecords.bdate}
             </if>
-            <if test="leaveRecords.bmonth!=null">
-                and bmonth = #{leaveRecords.bmonth}
+            <if test="leaveRecords.btime!=null and leaveRecords.btime!=''">
+                and btime = #{leaveRecords.btime}
             </if>
-            <if test="leaveRecords.bday!=null">
-                and bday = #{leaveRecords.bday}
+            <if test="leaveRecords.edate!=null and leaveRecords.edate!=''">
+                and edate = #{leaveRecords.edate}
             </if>
-            <if test="leaveRecords.bhour!=null">
-                and bhour = #{leaveRecords.bhour}
-            </if>
-            <if test="leaveRecords.bminute!=null">
-                and bminute = #{leaveRecords.bminute}
-            </if>
-            <if test="leaveRecords.eyear!=null">
-                and eyear = #{leaveRecords.eyear}
-            </if>
-            <if test="leaveRecords.emonth!=null">
-                and emonth = #{leaveRecords.emonth}
-            </if>
-            <if test="leaveRecords.eday!=null">
-                and eday = #{leaveRecords.eday}
-            </if>
-            <if test="leaveRecords.ehour!=null">
-                and ehour = #{leaveRecords.ehour}
-            </if>
-            <if test="leaveRecords.eminute!=null">
-                and eminute = #{leaveRecords.eminute}
+            <if test="leaveRecords.etime!=null and leaveRecords.etime!=''">
+                and etime = #{leaveRecords.etime}
             </if>
             <if test="leaveRecords.fine!=null">
                 and fine = #{leaveRecords.fine}

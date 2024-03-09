@@ -29,21 +29,30 @@
         <el-form-item label="姓名" size="mini">
             <el-input placeholder="姓名" v-model="worker.trueName"></el-input>
         </el-form-item>
-        <el-form-item label="上班时间（时）" size="mini">
-            <el-input placeholder="上班时间（时）" v-model="worker.clockInHour"></el-input>
-        </el-form-item>
-        <el-form-item label="上班时间（分）" size="mini">
-            <el-input placeholder="上班时间（分）" v-model="worker.clockInMinute"></el-input>
-        </el-form-item>
-        <el-form-item label="下班时间（时）" size="mini">
-            <el-input placeholder="下班时间（时）" v-model="worker.clockOutHour"></el-input>
-        </el-form-item>
-        <el-form-item label="下班时间（分）" size="mini">
-            <el-input placeholder="下班时间（分）" v-model="worker.clockOutMinute"></el-input>
-        </el-form-item>
         <el-form-item label="底薪" size="mini">
             <el-input placeholder="底薪" v-model="worker.basicSalary"></el-input>
         </el-form-item>
+        <template>
+            <el-time-select
+                    placeholder="上班时间"
+                    v-model="worker.clockIn"
+                    :picker-options="{
+                         start: '06:30',
+                         step: '00:15',
+                         end: '22:30'
+                       }">
+            </el-time-select>
+            <el-time-select
+                    placeholder="下班时间"
+                    v-model="worker.clockOut"
+                    :picker-options="{
+                         start: '06:30',
+                         step: '00:15',
+                         end: '22:30',
+                         minTime:worker.clockIn
+                       }">
+            </el-time-select>
+        </template>
         <el-form-item label="管理员id" size="mini">
             <el-input placeholder="管理员id" v-model="worker.managerId"></el-input>
         </el-form-item>
@@ -77,18 +86,27 @@
             <el-form-item label="真实姓名">
                 <el-input v-model="worker.trueName"></el-input>
             </el-form-item>
-            <el-form-item label="上班时间（时）">
-                <el-input v-model="worker.clockInHour"></el-input>
-            </el-form-item>
-            <el-form-item label="上班时间（分）">
-                <el-input v-model="worker.clockInMinute"></el-input>
-            </el-form-item>
-            <el-form-item label="下班时间（时）">
-                <el-input v-model="worker.clockOutHour"></el-input>
-            </el-form-item>
-            <el-form-item label="下班时间（分）">
-                <el-input v-model="worker.clockOutMinute"></el-input>
-            </el-form-item>
+            <template>
+                <el-time-select
+                        placeholder="上班时间"
+                        v-model="worker.clockIn"
+                        :picker-options="{
+                         start: '06:30',
+                         step: '00:15',
+                         end: '22:30'
+                       }">
+                </el-time-select>
+                <el-time-select
+                        placeholder="下班时间"
+                        v-model="worker.clockOut"
+                        :picker-options="{
+                         start: '06:30',
+                         step: '00:15',
+                         end: '22:30',
+                         minTime:worker.clockIn
+                       }">
+                </el-time-select>
+            </template>
             <el-form-item label="底薪">
                 <el-input v-model="worker.basicSalary"></el-input>
             </el-form-item>
@@ -113,26 +131,33 @@
             <el-form-item label="用户名">
                 <el-input v-model="worker.name"></el-input>
             </el-form-item>
-
             <el-form-item label="密码">
                 <el-input v-model="worker.password"></el-input>
             </el-form-item>
-
             <el-form-item label="真实姓名">
                 <el-input v-model="worker.trueName"></el-input>
             </el-form-item>
-            <el-form-item label="上班时间（时）">
-                <el-input v-model="worker.clockInHour"></el-input>
-            </el-form-item>
-            <el-form-item label="上班时间（分）">
-                <el-input v-model="worker.clockInMinute"></el-input>
-            </el-form-item>
-            <el-form-item label="下班时间（时）">
-                <el-input v-model="worker.clockOutHour"></el-input>
-            </el-form-item>
-            <el-form-item label="下班时间（分）">
-                <el-input v-model="worker.clockOutMinute"></el-input>
-            </el-form-item>
+            <template>
+                <el-time-select
+                        placeholder="上班时间"
+                        v-model="worker.clockIn"
+                        :picker-options="{
+                         start: '06:30',
+                         step: '00:15',
+                         end: '22:30'
+                       }">
+                </el-time-select>
+                <el-time-select
+                        placeholder="下班时间"
+                        v-model="worker.clockOut"
+                        :picker-options="{
+                         start: '06:30',
+                         step: '00:15',
+                         end: '22:30',
+                         minTime:worker.clockIn
+                       }">
+                </el-time-select>
+            </template>
             <el-form-item label="底薪">
                 <el-input v-model="worker.basicSalary"></el-input>
             </el-form-item>
@@ -175,34 +200,18 @@
             </el-table-column>
             <el-table-column
                     align="center"
-                    label="密码"
-                    prop="password"
-            >
-            </el-table-column>
-            <el-table-column
-                    align="center"
                     label="姓名"
                     prop="trueName">
             </el-table-column>
             <el-table-column
                     align="center"
-                    label="上班时间（时）"
-                    prop="clockInHour">
+                    label="上班时间"
+                    prop="clockIn">
             </el-table-column>
             <el-table-column
                     align="center"
-                    label="上班时间（分）"
-                    prop="clockInMinute">
-            </el-table-column>
-            <el-table-column
-                    align="center"
-                    label="下班时间（时）"
-                    prop="clockOutHour">
-            </el-table-column>
-            <el-table-column
-                    align="center"
-                    label="下班时间（分）"
-                    prop="clockOutMinute">
+                    label="下班时间"
+                    prop="clockOut">
             </el-table-column>
             <el-table-column
                     align="center"
@@ -336,6 +345,8 @@
                     }).then(resp => {
                         if ("success" == resp.data) {
                             //删除成功
+                            //重新查询数据
+                            this.selectByPage();
                             //弹出提示
                             this.$message({
                                 message: '恭喜你，删除成功',
@@ -395,12 +406,11 @@
                 worker: {
                     id: "",
                     name: "",
+                    salt: "",
                     password: "",
                     trueName: "",
-                    clockInHour: "",
-                    clockInMinute: "",
-                    clockOutHour: "",
-                    clockOutHourMinute: "",
+                    clockIn: "",
+                    clockOut: "",
                     profilePhoto: "",
                     basicSalary: "",
                     status: "",
@@ -410,12 +420,11 @@
                 tableData: [{
                     id: 1,
                     name: "1",
+                    salt: "1",
                     password: "1",
                     trueName: "1",
-                    clockInHour: 1,
-                    clockInMinute: 1,
-                    clockOutHour: 1,
-                    clockOutMinute: 1,
+                    clockIn: "1",
+                    clockOut: "1",
                     profilePhoto: "1",
                     basicSalary: "1",
                     status: "1",

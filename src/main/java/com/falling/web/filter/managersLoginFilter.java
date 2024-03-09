@@ -36,7 +36,7 @@ public class managersLoginFilter implements Filter {
                 return;
             }
         }
-        //判断session中是否有User对象
+        //判断session中是否有manager对象
         HttpSession session = req.getSession();
         Object manager = session.getAttribute("manager");
 
@@ -46,7 +46,7 @@ public class managersLoginFilter implements Filter {
             chain.doFilter(request, response);
         } else {
             //没有登录。跳转到登录页面
-            req.setAttribute("login_msg", "您尚未登录");
+            req.setAttribute("register_msg", "您尚未登录");
             req.getRequestDispatcher("/managersLogin.jsp").forward(req, response);
         }
 

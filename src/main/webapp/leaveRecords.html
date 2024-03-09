@@ -29,36 +29,37 @@
         <el-form-item label="请假类型（1病假、2事假、3婚假、4丧假、5产假）" size="mini">
             <el-input placeholder="请假类型（1病假、2事假、3婚假、4丧假、5产假）" v-model="leaveRecords.leaveType"></el-input>
         </el-form-item>
-        <el-form-item label="开始时间（年）" size="mini">
-            <el-input placeholder="开始时间（年）" v-model="leaveRecords.byear"></el-input>
+        <div class="block">
+            <span class="demonstration">请假开始</span>
+            <el-date-picker
+                    v-model="leaveRecords.bdate"
+                    type="date"
+                    placeholder="选择日期">
+            </el-date-picker>
+        </div>
+        <el-time-picker
+                v-model="leaveRecords.btime"
+                :picker-options="{
+                    selectableRange: '06:30:00 - 22:30:00'
+                  }"
+                placeholder="选择时间">
+        </el-time-picker>
         </el-form-item>
-        <el-form-item label="开始时间（月）" size="mini">
-            <el-input placeholder="开始时间（月）" v-model="leaveRecords.bmonth"></el-input>
-        </el-form-item>
-        <el-form-item label="开始时间（日）" size="mini">
-            <el-input placeholder="开始时间（日）" v-model="leaveRecords.bday"></el-input>
-        </el-form-item>
-        <el-form-item label="开始时间（时）" size="mini">
-            <el-input placeholder="开始时间（时）" v-model="leaveRecords.bhour"></el-input>
-        </el-form-item>
-        <el-form-item label="开始时间（分）" size="mini">
-            <el-input placeholder="开始时间（分）" v-model="leaveRecords.bminute"></el-input>
-        </el-form-item>
-        <el-form-item label="结束时间（年）" size="mini">
-            <el-input placeholder="结束时间（年）" v-model="leaveRecords.eyear"></el-input>
-        </el-form-item>
-        <el-form-item label="结束时间（月）" size="mini">
-            <el-input placeholder="结束时间（月）" v-model="leaveRecords.emonth"></el-input>
-        </el-form-item>
-        <el-form-item label="结束时间（日）" size="mini">
-            <el-input placeholder="结束时间（日）" v-model="leaveRecords.eday"></el-input>
-        </el-form-item>
-        <el-form-item label="结束时间（时）" size="mini">
-            <el-input placeholder="结束时间（时）" v-model="leaveRecords.ehour"></el-input>
-        </el-form-item>
-        <el-form-item label="结束时间（分）" size="mini">
-            <el-input placeholder="结束时间（分）" v-model="leaveRecords.eminute"></el-input>
-        </el-form-item>
+        <div class="block">
+            <span class="demonstration">请假结束</span>
+            <el-date-picker
+                    v-model="leaveRecords.edate"
+                    type="date"
+                    placeholder="选择日期">
+            </el-date-picker>
+        </div>
+        <el-time-picker
+                v-model="leaveRecords.etime"
+                :picker-options="{
+                    selectableRange: '06:30:00 - 22:30:00'
+                  }"
+                placeholder="选择时间">
+        </el-time-picker>
         <el-form-item label="罚款" size="mini">
             <el-input placeholder="罚款" v-model="leaveRecords.fine"></el-input>
         </el-form-item>
@@ -137,33 +138,23 @@
             </el-table-column>
             <el-table-column
                     align="center"
-                    label="开始时间（年）"
-                    prop="byear">
+                    label="开始日期"
+                    prop="bdate">
             </el-table-column>
             <el-table-column
                     align="center"
-                    label="开始时间（月）"
-                    prop="bmonth">
+                    label="开始时间"
+                    prop="btime">
             </el-table-column>
             <el-table-column
                     align="center"
-                    label="开始时间（日）"
-                    prop="bday">
+                    label="结束日期"
+                    prop="edate">
             </el-table-column>
             <el-table-column
                     align="center"
-                    label="结束时间（年）"
-                    prop="eyear">
-            </el-table-column>
-            <el-table-column
-                    align="center"
-                    label="结束时间（月）"
-                    prop="emonth">
-            </el-table-column>
-            <el-table-column
-                    align="center"
-                    label="结束时间（日）"
-                    prop="eday">
+                    label="结束时间"
+                    prop="etime">
             </el-table-column>
             <el-table-column
                     align="center"
@@ -332,16 +323,10 @@
                     id: "",
                     workerId: "",
                     leaveType: "",
-                    byear: "",
-                    bmonth: "",
-                    bday: "",
-                    bhour: "",
-                    bminute: "",
-                    eyear: "",
-                    emonth: "",
-                    eday: "",
-                    ehour: "",
-                    eminute: "",
+                    bdate: "",
+                    btime: "",
+                    edate: "",
+                    etime: "",
                     fine: "",
                     approval: "",
                     status: "",
@@ -352,16 +337,10 @@
                     id: "1",
                     workerId: "1",
                     leaveType: "1",
-                    byear: "1",
-                    bmonth: "1",
-                    bday: "1",
-                    bhour: "1",
-                    bminute: "1",
-                    eyear: "1",
-                    emonth: "1",
-                    eday: "1",
-                    ehour: "1",
-                    eminute: "1",
+                    bdate: "1",
+                    btime: "1",
+                    edate: "1",
+                    etime: "1",
                     fine: "1",
                     approval: "1",
                     status: "1",

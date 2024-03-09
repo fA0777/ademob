@@ -9,16 +9,10 @@ public class AttendanceRecords {
     private Integer workerId;
     //类型 1迟到 2早退 3缺勤
     private Integer type;
-    //时间:年
-    private Integer year;
-    //时间：月
-    private Integer month;
-    //时间：日
-    private Integer day;
-    //时间：时
-    private Integer hour;
-    //时间：分
-    private Integer minute;
+    //日期
+    private String date;
+    //时间
+    private String time;
     //罚款
     private Integer fine;
     //状态 1刚添加，未结算到工资记录中 2结算到本月的工资中了,将其软删除
@@ -50,44 +44,20 @@ public class AttendanceRecords {
         this.type = type;
     }
 
-    public Integer getYear() {
-        return year;
+    public String getDate() {
+        return date;
     }
 
-    public void setYear(Integer year) {
-        this.year = year;
+    public void setDate(String date) {
+        this.date = date;
     }
 
-    public Integer getMonth() {
-        return month;
+    public String getTime() {
+        return time;
     }
 
-    public void setMonth(Integer month) {
-        this.month = month;
-    }
-
-    public Integer getDay() {
-        return day;
-    }
-
-    public void setDay(Integer day) {
-        this.day = day;
-    }
-
-    public Integer getHour() {
-        return hour;
-    }
-
-    public void setHour(Integer hour) {
-        this.hour = hour;
-    }
-
-    public Integer getMinute() {
-        return minute;
-    }
-
-    public void setMinute(Integer minute) {
-        this.minute = minute;
+    public void setTime(String time) {
+        this.time = time;
     }
 
     public Integer getFine() {

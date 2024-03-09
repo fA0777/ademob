@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.falling.pojo.*;
 import com.falling.service.ManagersService;
 import com.falling.service.impl.ManagersServiceImpl;
+import com.falling.util.SaltFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,7 +17,6 @@ import java.util.List;
 
 @WebServlet("/managers/*")
 public class ManagersServlet extends BaseServlet {
-    Managers manager;
     //创建service
     ManagersService service = new ManagersServiceImpl();
 
@@ -26,7 +26,7 @@ public class ManagersServlet extends BaseServlet {
         String name = request.getParameter("name");
         String password = request.getParameter("password");
         //调用service完成查询
-        manager = service.selectManager(name, password);
+        Managers manager = service.selectManager(name,password);
         //判断是否为null
         boolean flag = manager == null;
         if (flag) {
@@ -48,6 +48,9 @@ public class ManagersServlet extends BaseServlet {
     }
 
     public void addWorker(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        //从session中获取管理员对象
+        HttpSession session = request.getSession();
+        Managers manager = (Managers) session.getAttribute("manager");
         //接收数据
         BufferedReader br = request.getReader();
         //获取json字符串
@@ -61,6 +64,14 @@ public class ManagersServlet extends BaseServlet {
             worker.setProfilePhoto("https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png");
             worker.setStatus(1);
             worker.setManagerId(manager.getId());
+            //密码加密
+            String salt = SaltFactory.getSalt();
+            worker.setSalt(salt);
+            String password=worker.getPassword().trim();
+            password+=salt;
+            int hashCode = password.hashCode();
+            String password2=""+hashCode;
+            worker.setPassword(password2);
             //调用service方法
             service.addWorker(worker);
             //响应成功的标识
@@ -73,6 +84,9 @@ public class ManagersServlet extends BaseServlet {
     }
 
     public void deleteWorkers(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        //从session中获取管理员对象
+        HttpSession session = request.getSession();
+        Managers manager = (Managers) session.getAttribute("manager");
         //接收数据
         BufferedReader br = request.getReader();
         //获取json字符串
@@ -143,6 +157,9 @@ public class ManagersServlet extends BaseServlet {
     }
 
     public void addAttendanceRecord(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        //从session中获取管理员对象
+        HttpSession session = request.getSession();
+        Managers manager = (Managers) session.getAttribute("manager");
         //接收数据
         BufferedReader br = request.getReader();
         //获取json字符串
@@ -158,6 +175,9 @@ public class ManagersServlet extends BaseServlet {
     }
 
     public void deleteAttendanceRecords(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        //从session中获取管理员对象
+        HttpSession session = request.getSession();
+        Managers manager = (Managers) session.getAttribute("manager");
         //接受id数组
         BufferedReader br = request.getReader();
         //获取json字符串
@@ -172,6 +192,9 @@ public class ManagersServlet extends BaseServlet {
     }
 
     public void updateAttendanceRecord(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        //从session中获取管理员对象
+        HttpSession session = request.getSession();
+        Managers manager = (Managers) session.getAttribute("manager");
         //接收数据
         BufferedReader br = request.getReader();
         //获取json字符串
@@ -264,6 +287,9 @@ public class ManagersServlet extends BaseServlet {
     }
 
     public void deleteLeaveRecords(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        //从session中获取管理员对象
+        HttpSession session = request.getSession();
+        Managers manager = (Managers) session.getAttribute("manager");
         //接受id数组
         BufferedReader br = request.getReader();
         //获取json字符串
@@ -278,6 +304,9 @@ public class ManagersServlet extends BaseServlet {
     }
 
     public void updateLeaveRecords(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        //从session中获取管理员对象
+        HttpSession session = request.getSession();
+        Managers manager = (Managers) session.getAttribute("manager");
         //接收数据
         BufferedReader br = request.getReader();
         //获取json字符串
@@ -292,6 +321,9 @@ public class ManagersServlet extends BaseServlet {
     }
 
     public void updateResignations(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        //从session中获取管理员对象
+        HttpSession session = request.getSession();
+        Managers manager = (Managers) session.getAttribute("manager");
         //接收数据
         BufferedReader br = request.getReader();
         //获取json字符串
@@ -306,6 +338,9 @@ public class ManagersServlet extends BaseServlet {
     }
 
     public void deleteResignations(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        //从session中获取管理员对象
+        HttpSession session = request.getSession();
+        Managers manager = (Managers) session.getAttribute("manager");
         //接受id数组
         BufferedReader br = request.getReader();
         //获取json字符串
@@ -320,6 +355,9 @@ public class ManagersServlet extends BaseServlet {
     }
 
     public void addTrainingActivities(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        //从session中获取管理员对象
+        HttpSession session = request.getSession();
+        Managers manager = (Managers) session.getAttribute("manager");
         //接收数据
         BufferedReader br = request.getReader();
         //获取json字符串
@@ -335,6 +373,9 @@ public class ManagersServlet extends BaseServlet {
     }
 
     public void deleteTrainingActivities(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        //从session中获取管理员对象
+        HttpSession session = request.getSession();
+        Managers manager = (Managers) session.getAttribute("manager");
         //接受id数组
         BufferedReader br = request.getReader();
         //获取json字符串
@@ -375,6 +416,9 @@ public class ManagersServlet extends BaseServlet {
     }
 
     public void updateTrainingActivities(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        //从session中获取管理员对象
+        HttpSession session = request.getSession();
+        Managers manager = (Managers) session.getAttribute("manager");
         //接收数据
         BufferedReader br = request.getReader();
         //获取json字符串
@@ -389,6 +433,9 @@ public class ManagersServlet extends BaseServlet {
     }
 
     public void addTrainingActivitiesRecords(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        //从session中获取管理员对象
+        HttpSession session = request.getSession();
+        Managers manager = (Managers) session.getAttribute("manager");
         //接收数据
         BufferedReader br = request.getReader();
         //获取json字符串
@@ -429,6 +476,9 @@ public class ManagersServlet extends BaseServlet {
     }
 
     public void deleteTrainingActivitiesRecords(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        //从session中获取管理员对象
+        HttpSession session = request.getSession();
+        Managers manager = (Managers) session.getAttribute("manager");
         //接受id数组
         BufferedReader br = request.getReader();
         //获取json字符串
@@ -443,6 +493,9 @@ public class ManagersServlet extends BaseServlet {
     }
 
     public void updateTrainingActivitiesRecords(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        //从session中获取管理员对象
+        HttpSession session = request.getSession();
+        Managers manager = (Managers) session.getAttribute("manager");
         //接收数据
         BufferedReader br = request.getReader();
         //获取json字符串
@@ -457,6 +510,9 @@ public class ManagersServlet extends BaseServlet {
     }
 
     public void addAnnouncements(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        //从session中获取管理员对象
+        HttpSession session = request.getSession();
+        Managers manager = (Managers) session.getAttribute("manager");
         //接收数据
         BufferedReader br = request.getReader();
         //获取json字符串
@@ -472,6 +528,9 @@ public class ManagersServlet extends BaseServlet {
     }
 
     public void deleteAnnouncements(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        //从session中获取管理员对象
+        HttpSession session = request.getSession();
+        Managers manager = (Managers) session.getAttribute("manager");
         //接受id数组
         BufferedReader br = request.getReader();
         //获取json字符串
@@ -486,6 +545,9 @@ public class ManagersServlet extends BaseServlet {
     }
 
     public void updateAnnouncements(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        //从session中获取管理员对象
+        HttpSession session = request.getSession();
+        Managers manager = (Managers) session.getAttribute("manager");
         //接收数据
         BufferedReader br = request.getReader();
         //获取json字符串
@@ -525,6 +587,9 @@ public class ManagersServlet extends BaseServlet {
     }
 
     public void addSalaryRecords(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        //从session中获取管理员对象
+        HttpSession session = request.getSession();
+        Managers manager = (Managers) session.getAttribute("manager");
         //接收数据
         BufferedReader br = request.getReader();
         //获取json字符串
@@ -614,5 +679,45 @@ public class ManagersServlet extends BaseServlet {
         response.getWriter().write(jsonString);
     }
 
-
+    public void logout(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        //销毁session
+        request.getSession().invalidate();
+        //重定向
+        String contextPath = request.getContextPath();
+        response.sendRedirect(contextPath + "/managersLogin.jsp");
+    }
+    
+    public void updatePassword(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        //从session中获取管理员对象
+        HttpSession session = request.getSession();
+        Managers manager = (Managers) session.getAttribute("manager");
+        //接收数据
+        String password1 = request.getParameter("password1");
+        BufferedReader br = request.getReader();
+        //获取json字符串
+        String params = br.readLine();
+        //将json字符串转成manager对象
+        Managers managers = JSON.parseObject(params, Managers.class);
+        //manager中的密码是用户的密文原密码，managers中的密码是用户修改密码时输入的原密码，password1是用户要改的新密码
+        String passwordW1 = managers.getPassword().trim();
+        passwordW1+=manager.getSalt();
+        int hashCodeW = passwordW1.hashCode();
+        String passwordW2=""+hashCodeW;
+        if (passwordW2.equals(manager.getPassword())){
+            //用户输入的原密码正确，可修改密码，将新密码改为密文形式
+            String password2 = password1.trim();
+            password2+=manager.getSalt();
+            int hashCode = password2.hashCode();
+            String password3=""+hashCode;
+            manager.setPassword(password3);
+            //调用service方法
+            service.updatePassword(manager);
+            //响应成功的标识
+            response.getWriter().write("success");
+        }else {
+            //用户输入的原密码错误
+            //响应失败的标识
+            response.getWriter().write("fail");
+        }
+    }
 }

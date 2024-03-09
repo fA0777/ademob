@@ -1,8 +1,10 @@
 package com.falling.service.impl;
 
 import com.falling.mapper.ManagersMapper;
+import com.falling.mapper.WorkersMapper;
 import com.falling.pojo.*;
 import com.falling.service.ManagersService;
+import com.falling.util.SaltFactory;
 import com.falling.util.SqlSessionFactoryUtils;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -14,12 +16,46 @@ public class ManagersServiceImpl implements ManagersService {
     SqlSessionFactory factory = SqlSessionFactoryUtils.getSqlSessionFactory();
 
     @Override
-    public Managers selectManager(String name, String password) {
+    public Managers selectManager(String name,String password) {
         SqlSession sqlSession = factory.openSession();
         ManagersMapper mapper = sqlSession.getMapper(ManagersMapper.class);
-        Managers manager = mapper.selectManager(name, password);
-        sqlSession.close();
-        return manager;
+        Managers manager = mapper.selectManager(name);
+        if (manager==null){
+            return manager;
+        }
+        String password1 = password.trim();
+        String salt = manager.getSalt();
+        if (salt==null){
+            //首次登录，用明文密码登录，并且设置盐和密文密码
+            if (password1.equals(manager.getPassword())){
+                //密码正确
+                String salt1 = SaltFactory.getSalt();
+                manager.setSalt(salt1);
+                password1+=salt1;
+                int hashCode = password1.hashCode();
+                String password2=""+hashCode;
+                manager.setPassword(password2);
+                //更新数据库中该管理员信息
+                mapper.updateLogin(manager);
+                sqlSession.commit();
+                return manager;
+            }
+            //密码不正确
+            return null;
+        }else{
+            //不是首次登录
+            password1+=salt;
+            int hashCode = password1.hashCode();
+            String password2=""+hashCode;
+            if (password2.equals(manager.getPassword())){
+                //密码正确
+                sqlSession.close();
+                return manager;
+            }
+            //密码不正确
+            sqlSession.close();
+            return null;
+        }
     }
 
     @Override
@@ -537,5 +573,15 @@ public class ManagersServiceImpl implements ManagersService {
         //释放资源
         sqlSession.close();
         return pageBean;
+    }
+
+    @Override
+    public void updatePassword(Managers managers) {
+        SqlSession sqlSession = factory.openSession();
+        ManagersMapper mapper = sqlSession.getMapper(ManagersMapper.class);
+        mapper.updatePassword(managers);
+        sqlSession.commit();
+        sqlSession.close();
+        return;
     }
 }

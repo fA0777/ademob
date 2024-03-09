@@ -6,18 +6,16 @@ public class Workers {
     private Integer id;
     //用户名
     private String name;
+    //盐
+    private String salt;
     //密码
     private String password;
     //真实姓名
     private String trueName;
-    //上班时间(时)
-    private Integer clockInHour;
-    //上班时间(分)
-    private Integer clockInMinute;
-    //下班时间(时)
-    private Integer clockOutHour;
-    //下班时间(分)
-    private Integer clockOutMinute;
+    //上班时间
+    private String clockIn;
+    //下班时间
+    private String clockOut;
     //头像文件路径
     private String profilePhoto;
     //底薪
@@ -27,22 +25,12 @@ public class Workers {
     //管理员id
     private Integer managerId;
 
-    @Override
-    public String toString() {
-        return "Workers{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", password='" + password + '\'' +
-                ", trueName='" + trueName + '\'' +
-                ", clockInHour=" + clockInHour +
-                ", clockInMinute=" + clockInMinute +
-                ", clockOutHour=" + clockOutHour +
-                ", clockOutMinute=" + clockOutMinute +
-                ", profilePhoto='" + profilePhoto + '\'' +
-                ", basicSalary=" + basicSalary +
-                ", status=" + status +
-                ", managerId=" + managerId +
-                '}';
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
     }
 
     public Integer getStatus() {
@@ -101,36 +89,20 @@ public class Workers {
         this.trueName = trueName;
     }
 
-    public Integer getClockInHour() {
-        return clockInHour;
+    public String getClockIn() {
+        return clockIn;
     }
 
-    public void setClockInHour(Integer clockInHour) {
-        this.clockInHour = clockInHour;
+    public void setClockIn(String clockIn) {
+        this.clockIn = clockIn;
     }
 
-    public Integer getClockInMinute() {
-        return clockInMinute;
+    public String getClockOut() {
+        return clockOut;
     }
 
-    public void setClockInMinute(Integer clockInMinute) {
-        this.clockInMinute = clockInMinute;
-    }
-
-    public Integer getClockOutHour() {
-        return clockOutHour;
-    }
-
-    public void setClockOutHour(Integer clockOutHour) {
-        this.clockOutHour = clockOutHour;
-    }
-
-    public Integer getClockOutMinute() {
-        return clockOutMinute;
-    }
-
-    public void setClockOutMinute(Integer clockOutMinute) {
-        this.clockOutMinute = clockOutMinute;
+    public void setClockOut(String clockOut) {
+        this.clockOut = clockOut;
     }
 
     public String getProfilePhoto() {

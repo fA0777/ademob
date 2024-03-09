@@ -17,6 +17,8 @@
 <body>
 <div id="app">
     <h1>欢迎您</h1>
+    <el-button @click="updateDialogVisible = true" plain type="danger">修改密码</el-button>
+    <a href="javascript:location.href='managers/logout'">重新登录</a>
     <hr>
     <h2>功能列表</h2>
     <hr>
@@ -56,26 +58,32 @@
         <el-link href="salaryRecords.html" type="success">添加、删除、查询与修改</el-link>
     </el-row>
 
-
-    <!--开除员工对话框表单-->
+    <!--修改密码对话框表单-->
     <el-dialog
-            :visible.sync="deleteDialogVisible"
-            title="开除员工"
+            :visible.sync="updateDialogVisible"
+            title="修改密码"
             width="40%"
     >
 
-        <el-form label-width="100px" ref="form">
-            <el-form-item label="开除员工id">
-                <el-input v-model="deleteIds"></el-input>
+        <el-form :model="manager" label-width="80px" ref="form">
+            <el-form-item label="原密码">
+                <el-input show-password v-model="password0"></el-input>
             </el-form-item>
+            <el-form-item label="新密码">
+                <el-input show-password v-model="password1"></el-input>
+            </el-form-item>
+            <el-form-item label="再次确认新密码">
+                <el-input show-password v-model="password2"></el-input>
+            </el-form-item>
+
+
             <el-form-item>
-                <el-button @click="deleteWorkers" type="primary">提交</el-button>
-                <el-button @click="deleteDialogVisible = false">取消</el-button>
+                <el-button @click="updatePassword" type="primary">提交</el-button>
+                <el-button @click="updateDialogVisible = false">取消</el-button>
             </el-form-item>
         </el-form>
 
     </el-dialog>
-
 
 </div>
 
@@ -88,87 +96,64 @@
     new Vue({
         el: "#app",
         methods: {
-            //添加员工
-            addWorker() {
+            updatePassword() {
+                const reg = /^\w{6,12}$/
+                let b = reg.test(this.password1);
+                if (!b) {
+                    //不符合要求
+                    this.$message.error('密码应为6-12位字母、数字、下划线的组合');
+                    return;
+                }
+                if (this.password1 == null || this.password1 == "") {
+                    this.$message.error('密码不得为空');
+                    return;
+                }
+                if (this.password1 != this.password2) {
+                    this.$message.error('两次密码不一致');
+                    return;
+                }
+                this.manager.password=this.password0
                 axios({
                     method: "post",
-                    url: "http://localhost:8080/ademob/managers/addWorker",
-                    data: this.worker
+                    url: "http://localhost:8080/ademob/managers/updatePassword?password1="+this.password1,
+                    data: this.manager
                 }).then(resp => {
                     if ("success" == resp.data) {
-                        //添加成功
+                        //修改成功
                         //关闭窗口
-                        this.addDialogVisible = false;
-
+                        this.updateDialogVisible = false;
                         //弹出提示，添加成功
                         this.$message({
-                            message: '恭喜你，添加成功',
+                            message: '恭喜你，修改成功，请重新登录',
                             type: 'success'
                         });
+                        //回到登录界面
+                        this.logout();
+                    }else if ("fail" == resp.data) {
+                        this.$message.error('原密码错误');
                     }
                 })
             },
-            //开除员工
-            deleteWorkers() {
-                //弹出确认删除的提示框
-                this.$confirm('此操作将删除该数据, 是否继续?', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    type: 'warning'
-                }).then(() => {
-                    //点击确认
-                    axios({
-                        method: "post",
-                        url: "http://localhost:8080/ademob/managers/deleteWorkers",
-                        data: this.deleteIds
-                    }).then(resp => {
-                        if ("success" == resp.data) {
-                            //删除成功
-                            //弹出提示
-                            this.$message({
-                                message: '恭喜你，删除成功',
-                                type: 'success'
-                            });
-                        }
-                        //关闭窗口
-                        this.deleteDialogVisible = false;
-                    })
-                }).catch(() => {
-                    //点击取消
-                    this.$message({
-                        type: 'info',
-                        message: '已取消删除'
-                    });
-                    //关闭窗口
-                    this.deleteDialogVisible = false;
-                });
+            logout() {
+                axios({
+                    method: "get",
+                    url: "http://localhost:8080/ademob/managers/logout"
+                })
             },
-
-
         },
         data() {
             return {
-                // 添加员工对话框是否展示的标记
-                addDialogVisible: false,
-                // 删除员工对话框是否展示的标记
-                deleteDialogVisible: false,
-                //要删除（开除）的员工的id
-                deleteIds: "",
-                // 员工模型数据
-                worker: {
+                // 修改密码对话框是否展示的标记
+                updateDialogVisible: false,
+                manager: {
                     id: "",
                     name: "",
+                    salt:"",
                     password: "",
-                    trueName: "",
-                    clockInHour: "",
-                    clockInMinute: "",
-                    clockOutHour: "",
-                    clockOutHourMinute: "",
-                    profilePhoto: "",
-                    basicSalary: "",
-                    status: "",
-                    managerId: ""
-                }
+                },
+                password0: "",
+                password1: "",
+                password2: "",
             }
         }
     })

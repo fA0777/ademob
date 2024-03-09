@@ -67,7 +67,7 @@ public interface WorkersMapper {
      *
      * @param leaveRecords
      */
-    @Insert("insert into ademob.leave_records value (null,#{workerId},#{leaveType},#{byear},#{bmonth},#{bday},#{bhour},#{bminute},#{eyear},#{emonth},#{eday},#{ehour},#{eminute},#{fine},#{approval},#{status},#{managerId})")
+    @Insert("insert into ademob.leave_records value (null,#{workerId},#{leaveType},#{bdate},#{btime},#{edate},#{etime},#{fine},#{approval},#{status},#{managerId})")
     void addLeaveRecords(LeaveRecords leaveRecords);
 
     /**
@@ -92,7 +92,7 @@ public interface WorkersMapper {
      *
      * @param leaveRecords
      */
-    @Update("update ademob.leave_records set leave_type=#{leaveType},byear=#{byear},bmonth=#{bmonth},bday=#{bday},bhour=#{bhour},bminute=#{bminute},eyear=#{eyear},emonth=#{emonth},eday=#{eday},ehour=#{ehour},eminute=#{eminute} where id=#{id}")
+    @Update("update ademob.leave_records set leave_type=#{leaveType},bdate=#{bdate},btime=#{btime},edate=#{edate},etime=#{etime} where id=#{id}")
     @ResultMap("leaveRecordsResultMap")
     void updateLeaveRecords(LeaveRecords leaveRecords);
 
@@ -255,7 +255,7 @@ public interface WorkersMapper {
      * @param approval
      * @return
      */
-    @Select("select * from resignations where worker_id=#{workerId} and approval=#{approval} and status={status}")
+    @Select("select * from resignations where worker_id=#{workerId} and approval=#{approval} and status=#{status}")
     @ResultMap("resignationsResultMap")
     Resignations selectResignations2(@Param("workerId") Integer workerId, @Param("approval") Integer approval, @Param("status") Integer status);
 

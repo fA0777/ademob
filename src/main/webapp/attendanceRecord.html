@@ -29,21 +29,21 @@
         <el-form-item label="类型（1迟到 2早退 3缺勤）" size="mini">
             <el-input placeholder="类型（1迟到 2早退 3缺勤）" v-model="attendanceRecords.type"></el-input>
         </el-form-item>
-        <el-form-item label="年" size="mini">
-            <el-input placeholder="年" v-model="attendanceRecords.year"></el-input>
-        </el-form-item>
-        <el-form-item label="月" size="mini">
-            <el-input placeholder="月" v-model="attendanceRecords.month"></el-input>
-        </el-form-item>
-        <el-form-item label="日" size="mini">
-            <el-input placeholder="日" v-model="attendanceRecords.day"></el-input>
-        </el-form-item>
-        <el-form-item label="时" size="mini">
-            <el-input placeholder="时" v-model="attendanceRecords.hour"></el-input>
-        </el-form-item>
-        <el-form-item label="分" size="mini">
-            <el-input placeholder="分" v-model="attendanceRecords.minute"></el-input>
-        </el-form-item>
+        <div class="block">
+            <span class="demonstration">日期</span>
+            <el-date-picker
+                    v-model="attendanceRecords.date"
+                    type="date"
+                    placeholder="选择日期">
+            </el-date-picker>
+        </div>
+        <el-time-picker
+                v-model="attendanceRecords.time"
+                :picker-options="{
+                    selectableRange: '06:30:00 - 22:30:00'
+                  }"
+                placeholder="选择时间">
+        </el-time-picker>
         <el-form-item label="罚款" size="mini">
             <el-input placeholder="罚款" v-model="attendanceRecords.fine"></el-input>
         </el-form-item>
@@ -78,22 +78,21 @@
             <el-form-item label="类型">
                 <el-input v-model="attendanceRecords.type"></el-input>
             </el-form-item>
-
-            <el-form-item label="年">
-                <el-input v-model="attendanceRecords.year"></el-input>
-            </el-form-item>
-            <el-form-item label="月">
-                <el-input v-model="attendanceRecords.month"></el-input>
-            </el-form-item>
-            <el-form-item label="日">
-                <el-input v-model="attendanceRecords.day"></el-input>
-            </el-form-item>
-            <el-form-item label="时">
-                <el-input v-model="attendanceRecords.hour"></el-input>
-            </el-form-item>
-            <el-form-item label="分">
-                <el-input v-model="attendanceRecords.minute"></el-input>
-            </el-form-item>
+            <div class="block">
+                <span class="demonstration">日期</span>
+                <el-date-picker
+                        v-model="attendanceRecords.date"
+                        type="date"
+                        placeholder="选择日期">
+                </el-date-picker>
+            </div>
+            <el-time-picker
+                    v-model="attendanceRecords.time"
+                    :picker-options="{
+                    selectableRange: '06:30:00 - 22:30:00'
+                  }"
+                    placeholder="选择时间">
+            </el-time-picker>
             <el-form-item label="罚款">
                 <el-input v-model="attendanceRecords.fine"></el-input>
             </el-form-item>
@@ -122,22 +121,21 @@
             <el-form-item label="类型">
                 <el-input v-model="attendanceRecords.type"></el-input>
             </el-form-item>
-
-            <el-form-item label="年">
-                <el-input v-model="attendanceRecords.year"></el-input>
-            </el-form-item>
-            <el-form-item label="月">
-                <el-input v-model="attendanceRecords.month"></el-input>
-            </el-form-item>
-            <el-form-item label="日">
-                <el-input v-model="attendanceRecords.day"></el-input>
-            </el-form-item>
-            <el-form-item label="时">
-                <el-input v-model="attendanceRecords.hour"></el-input>
-            </el-form-item>
-            <el-form-item label="分">
-                <el-input v-model="attendanceRecords.minute"></el-input>
-            </el-form-item>
+            <div class="block">
+                <span class="demonstration">日期</span>
+                <el-date-picker
+                        v-model="attendanceRecords.date"
+                        type="date"
+                        placeholder="选择日期">
+                </el-date-picker>
+            </div>
+            <el-time-picker
+                    v-model="attendanceRecords.time"
+                    :picker-options="{
+                    selectableRange: '06:30:00 - 22:30:00'
+                  }"
+                    placeholder="选择时间">
+            </el-time-picker>
             <el-form-item label="罚款">
                 <el-input v-model="attendanceRecords.fine"></el-input>
             </el-form-item>
@@ -186,28 +184,13 @@
             </el-table-column>
             <el-table-column
                     align="center"
-                    label="年"
-                    prop="year">
+                    label="日期"
+                    prop="date">
             </el-table-column>
             <el-table-column
                     align="center"
-                    label="月"
-                    prop="month">
-            </el-table-column>
-            <el-table-column
-                    align="center"
-                    label="日"
-                    prop="day">
-            </el-table-column>
-            <el-table-column
-                    align="center"
-                    label="时"
-                    prop="hour">
-            </el-table-column>
-            <el-table-column
-                    align="center"
-                    label="分"
-                    prop="minute">
+                    label="时间"
+                    prop="time">
             </el-table-column>
             <el-table-column
                     align="center"
@@ -400,11 +383,8 @@
                     id: "",
                     workerId: "",
                     type: "",
-                    year: "",
-                    month: "",
-                    day: "",
-                    hour: "",
-                    minute: "",
+                    date:"",
+                    time: "",
                     fine: "",
                     status: "",
                     managerId: ""
@@ -414,11 +394,8 @@
                     id: 1,
                     workerId: 1,
                     type: "1",
-                    year: "1",
-                    month: "1",
-                    day: "1",
-                    hour: "1",
-                    minute: "1",
+                    date:"1",
+                    time: "1",
                     fine: "1",
                     status: "1",
                     managerId: "1"
