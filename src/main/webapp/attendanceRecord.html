@@ -83,11 +83,13 @@
                 <el-date-picker
                         v-model="attendanceRecords.date"
                         type="date"
+                        value-format="yyyy-MM-dd"
                         placeholder="选择日期">
                 </el-date-picker>
             </div>
             <el-time-picker
                     v-model="attendanceRecords.time"
+                    value-format="hh:mm:ss"
                     :picker-options="{
                     selectableRange: '06:30:00 - 22:30:00'
                   }"
